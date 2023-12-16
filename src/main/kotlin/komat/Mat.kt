@@ -17,7 +17,7 @@ class Mat {
     var row = 0
     var col = 0
 
-    val element = mutableListOf<MutableList<Double>>()
+    var element = mutableListOf<MutableList<Double>>()
 
     fun row(vararg elements: Number) {
         element.add(elements.map(Number::toDouble).toMutableList())
@@ -66,6 +66,25 @@ class Mat {
                 }
             }
         }
+
+        return newMat
+    }
+
+    fun transpose() : Mat{
+
+        val colCopy = this.col
+        this.col = this.row
+        this.row = colCopy
+
+        val newMat = Mat(row, col)
+
+        for(i : Int in 0..<newMat.row){
+            for (j : Int in 0..<newMat.col){
+                newMat.element[i][j] = element[j][i]
+            }
+        }
+
+        this.element = newMat.element
 
         return newMat
     }

@@ -9,6 +9,8 @@ fun main(args: Array<String>) {
     }
 
     mat.exchangeRow(0, 2)
+    mat.appendRow(1,1,1)
+    mat.transpose()
 
     val matrix1 = mat {
         row(1.0, 1.0, 1.0)

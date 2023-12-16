@@ -1,3 +1,4 @@
+import komat.Converter.Companion.toMat
 import komat.mat
 
 fun main(args: Array<String>) {
@@ -38,6 +39,11 @@ fun main(args: Array<String>) {
     val matrix4 = matrix2 + matrix3
 
     val matrix7 = matrix5 * matrix6
+
+    val array = arrayOf(arrayOf(2.0))
+
+    val convertedMat = array.toMat()
+
 
     println()
 

@@ -1,4 +1,3 @@
-import komat.Mat
 import komat.mat
 
 fun main(args: Array<String>) {
@@ -15,6 +14,7 @@ fun main(args: Array<String>) {
     println(matrix1.col)
 
     val matrix3 = matrix1.plus(matrix2)
+    val matrix4 = matrix2 + matrix3
 
     println()
 

@@ -20,7 +20,11 @@ class Mat {
         updateSize()
     }
 
-    fun plus(mat : Mat) : Mat {
+    operator fun Mat.plus(mat : Mat) : Mat{
+        return this.plus(mat)
+    }
+
+    operator fun plus(mat : Mat) : Mat {
 
         val newMat = Mat(this.rows)
 
@@ -30,6 +34,10 @@ class Mat {
             }
         }
         return newMat
+    }
+
+    operator fun Mat.minus(mat : Mat) : Mat{
+        return this.minus(mat)
     }
 
     fun minus(mat : Mat) : Mat {

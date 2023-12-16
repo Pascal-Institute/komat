@@ -1,5 +1,6 @@
 import komat.mat
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import kotlin.test.assertEquals
 
 class MatTest {
@@ -15,7 +16,17 @@ class MatTest {
     }
 
     @Test
-    fun testPlus(){
+    fun `test invalid matrix size`() {
+        assertThrows<IllegalArgumentException> {
+            mat {
+                v(1, 2)
+                v(1)
+            }
+        }
+    }
+
+    @Test
+    fun `test plus`(){
         assertEquals(
             mat{
                 v(5,5)
@@ -26,7 +37,7 @@ class MatTest {
     }
 
     @Test
-    fun testMinus(){
+    fun `test minus`(){
         assertEquals(
             mat{
                 v(-3,-1)

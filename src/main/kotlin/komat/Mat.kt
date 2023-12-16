@@ -117,18 +117,11 @@ class Mat {
         return newMat
     }
 
-    fun exchangeRow(src : Int, dst : Int) : Mat{
-
+    fun exchangeRow(src: Int, dst: Int): Mat {
         val srcRow = element[src]
-        val dstRow = element[dst]
-
-        element.removeAt(src)
-        element.add(src, dstRow)
-
-        element.removeAt(dst)
-        element.add(dst, srcRow)
-
-        return Mat(element)
+        element[src] = element[dst]
+        element[dst] = srcRow
+        return this
     }
 
     private fun updateSize(){
@@ -144,6 +137,6 @@ class Mat {
 
 fun mat(init: Mat.() -> Unit) : Mat {
     val mat = Mat()
-    mat.apply(init).element
+    mat.apply(init)
     return mat
 }

@@ -35,5 +35,12 @@ class Converter {
             }.toMutableList()).toMat()
         }
 
+        fun Mat.toArray() : Array<Array<Number>> {
+            return this.element.map { it.map { it as Number }.toTypedArray() }.toTypedArray()
+        }
+
+        fun Mat.toMutableList() : MutableList<MutableList<Number>> {
+            return this.element.map { it.map { it as Number }.toMutableList() }.toMutableList()
+        }
     }
 }

@@ -1,4 +1,4 @@
-import komat.mat
+import komat.Generator.Companion.mat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import kotlin.test.assertEquals

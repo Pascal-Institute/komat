@@ -19,20 +19,10 @@ class Converter {
             }.toTypedArray()).toMat()
         }
 
-        fun MutableList<MutableList<Double>>.toMat(): Mat {
-            return Mat(this)
-        }
-
         fun MutableList<MutableList<Number>>.toMat(): Mat {
-            return (this.map { row ->
+            return Mat(this.map { row ->
                 row.map { it.toDouble() }.toMutableList()
-            }.toMutableList()).toMat()
-        }
-
-        fun MutableList<MutableList<Int>>.toMat(): Mat {
-            return (this.map { row ->
-                row.map { it.toDouble() }.toMutableList()
-            }.toMutableList()).toMat()
+            }.toMutableList())
         }
 
         fun Mat.toArray() : Array<Array<Number>> {

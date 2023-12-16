@@ -2,6 +2,14 @@ import komat.mat
 
 fun main(args: Array<String>) {
 
+    val mat = mat{
+        row(1, 2, 3)
+        row(4,5,6)
+        row(7,8,9)
+    }
+
+    mat.exchangeRow(0, 2)
+
     val matrix1 = mat {
         row(1.0, 1.0, 1.0)
         row(1.0, 1.0, 1.0)

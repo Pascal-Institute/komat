@@ -5,6 +5,11 @@ import komat.Converter.Companion.toMutableList
 //Support 2D Matrix
 class Mat {
 
+    var row = 0
+    var col = 0
+
+    var element = mutableListOf<MutableList<Double>>()
+
     constructor()
 
     constructor(row : Int, col : Int) : this(MutableList(row) { MutableList(col) { 0.0 } })
@@ -37,10 +42,13 @@ class Mat {
         return true
     }
 
-    var row = 0
-    var col = 0
+    fun setValue(row: Int, col: Int, value : Double) {
+        element[row][col] = value
+    }
 
-    var element = mutableListOf<MutableList<Double>>()
+    fun getValue(row: Int, col: Int) : Double {
+        return element[row][col]
+    }
 
     fun v(vararg elements: Number) {
         if(!isValid(elements)){
@@ -125,7 +133,6 @@ class Mat {
     }
 
     private fun updateSize(){
-
         if (row == 0) {
             row = 1
             col = element.firstOrNull()?.size ?: 0

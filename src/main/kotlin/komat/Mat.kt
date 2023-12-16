@@ -51,9 +51,11 @@ class Mat {
 
         val newMat = Mat(this.row, mat.col)
 
-        for(j : Int in 0..<newMat.col){
-            for (i : Int in 0..<newMat.row){
-                newMat.element[i][j] += element[j][i] * mat.element[i][j]
+        for(i : Int in 0..<newMat.row){
+            for (j : Int in 0..<newMat.col){
+                for(k : Int in 0..<this.col){
+                    newMat.element[i][j] += element[i][k] * mat.element[k][j]
+                }
             }
         }
 

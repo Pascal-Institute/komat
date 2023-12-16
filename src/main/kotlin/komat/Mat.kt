@@ -1,5 +1,6 @@
 package komat
 
+//Support 2D Matrix
 class Mat {
 
     constructor()
@@ -21,6 +22,13 @@ class Mat {
     fun row(vararg elements: Number) {
         element.add(elements.map(Number::toDouble).toMutableList())
         updateSize()
+    }
+
+    fun appendRow(vararg elements: Number) : Mat {
+        element.add(elements.map(Number::toDouble).toMutableList())
+        updateSize()
+
+        return Mat(element)
     }
 
     operator fun plus(mat : Mat) : Mat {

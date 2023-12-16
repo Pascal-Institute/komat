@@ -98,29 +98,29 @@ class Mat {
         return newMat
     }
 
-    fun transpose() : Mat{
+    fun transpose(): Mat {
 
-        val colCopy = this.col
-        this.col = this.row
-        this.row = colCopy
+        val newMat = Mat(this.col, this.row)
 
-        val newMat = Mat(row, col)
-
-        for(i : Int in 0..<newMat.row){
-            for (j : Int in 0..<newMat.col){
+        for (i in 0..<newMat.row) {
+            for (j in 0..<newMat.col) {
                 newMat.element[i][j] = element[j][i]
             }
         }
 
+        this.row = newMat.row
+        this.col = newMat.col
         this.element = newMat.element
 
-        return newMat
+        return this
     }
 
     fun exchangeRow(src: Int, dst: Int): Mat {
+
         val srcRow = element[src]
         element[src] = element[dst]
         element[dst] = srcRow
+
         return this
     }
 

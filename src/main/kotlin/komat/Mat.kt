@@ -19,7 +19,7 @@ class Mat {
 
     var element = mutableListOf<MutableList<Double>>()
 
-    fun row(vararg elements: Number) {
+    fun v(vararg elements: Number) {
         element.add(elements.map(Number::toDouble).toMutableList())
         updateSize()
     }

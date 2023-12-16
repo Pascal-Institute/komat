@@ -8,10 +8,37 @@ class Mat {
     constructor(row : Int, col : Int) : this(MutableList(row) { MutableList(col) { 0.0 } })
 
     constructor(elements : MutableList<MutableList<Double>>){
+
+        if (!isValidMatrix(elements)) {
+            throw IllegalArgumentException("Invalid matrix: Rows must have the same length")
+        }
+
         elements.forEach {
             element.add(it)
             updateSize()
         }
+    }
+
+    private fun isValidMatrix(elements: Array<out Number>): Boolean {
+        val firstRowSize = elements.firstOrNull()?.let {
+            if (it is Collection<*>) {
+                (it as Collection<*>).size
+            } else {
+                0
+            }
+        } ?: 0
+
+        return elements.all {
+            if (it is Collection<*>) {
+                (it as Collection<*>).size == firstRowSize
+            } else {
+                false
+            }
+        }
+    }
+    private fun isValidMatrix(elements: MutableList<MutableList<Double>>): Boolean {
+        val firstRowSize = elements.firstOrNull()?.size ?: 0
+        return elements.all { it.size == firstRowSize }
     }
 
     var row = 0
@@ -20,6 +47,11 @@ class Mat {
     var element = mutableListOf<MutableList<Double>>()
 
     fun v(vararg elements: Number) {
+
+        if (!isValidMatrix(elements)) {
+            throw IllegalArgumentException("Invalid matrix: Rows must have the same length")
+        }
+
         element.add(elements.map(Number::toDouble).toMutableList())
         updateSize()
     }

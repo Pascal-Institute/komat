@@ -46,4 +46,28 @@ class MatTest {
             mat1.minus(mat2).element
         )
     }
+
+    @Test
+    fun `test exchange rows`(){
+        assertEquals(mat{
+            v(3, 4)
+            v(1,2 )
+        }.element,
+            mat1.exchangeRow(0,1).element
+            )
+    }
+
+    @Test
+    fun `test transpose`(){
+        assertEquals(mat{
+            v(1,2)
+            v(3,4)
+            v(5,6)
+        }.transpose().element,
+            mat {
+                v(1,3,5)
+                v(2,4,6)
+            }.element
+        )
+    }
 }

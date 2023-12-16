@@ -134,9 +134,3 @@ class Mat {
         }
     }
 }
-
-fun mat(init: Mat.() -> Unit) : Mat {
-    val mat = Mat()
-    mat.apply(init)
-    return mat
-}

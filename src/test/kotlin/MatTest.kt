@@ -1,4 +1,5 @@
 import komat.Generator.Companion.mat
+import org.junit.jupiter.api.Assertions.assertNotEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import kotlin.test.assertEquals
@@ -13,6 +14,19 @@ class MatTest {
     val mat2 = mat{
         v(4, 3)
         v(2, 1)
+    }
+
+    @Test
+    fun `test copy`(){
+
+        val copy = mat1.copy()
+
+        assertNotEquals(
+            copy,
+            mat1
+        )
+
+        assertEquals(mat1.element, copy.element)
     }
 
     @Test

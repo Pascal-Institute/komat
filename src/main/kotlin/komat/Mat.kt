@@ -4,9 +4,9 @@ import komat.Converter.Companion.toMutableList
 
 //Support 2D Matrix
 class Mat {
-    companion object{
+    companion object {
         operator fun Double.times(mat: Mat): Mat {
-            mat.element.forEach { row->
+            mat.element.forEach { row ->
                 row.replaceAll { this * it }
             }
 
@@ -39,8 +39,12 @@ class Mat {
         return Mat(this.element)
     }
 
-    private fun isValid(srcRow : Int, srcCol : Int, dstRow : Int, dstCol : Int): Boolean {
-        return (srcRow == dstRow && srcCol==dstCol)
+    private fun isValid(srcCol: Int, dstRow: Int): Boolean {
+        return (srcCol == dstRow)
+    }
+
+    private fun isValid(srcRow: Int, srcCol: Int, dstRow: Int, dstCol: Int): Boolean {
+        return (srcRow == dstRow && srcCol == dstCol)
     }
 
     private fun isValid(elements: MutableList<MutableList<Double>>): Boolean {
@@ -104,12 +108,12 @@ class Mat {
 
     operator fun plus(mat: Mat): Mat {
 
-        if(!isValid(row, col, mat.row, mat.col)){
+        if (!isValid(row, col, mat.row, mat.col)) {
             throw IllegalArgumentException("Invalid matrix: Matrix must be the same size")
         }
 
-        for(i : Int in 0..<row){
-            for(j : Int in 0..<col){
+        for (i: Int in 0..<row) {
+            for (j: Int in 0..<col) {
                 element[i][j] += mat.element[i][j]
             }
         }
@@ -119,12 +123,12 @@ class Mat {
 
     operator fun minus(mat: Mat): Mat {
 
-        if(!isValid(row, col, mat.row, mat.col)){
+        if (!isValid(row, col, mat.row, mat.col)) {
             throw IllegalArgumentException("Invalid matrix: Matrix must be the same size")
         }
 
-        for(i : Int in 0..<row){
-            for(j : Int in 0..<col){
+        for (i: Int in 0..<row) {
+            for (j: Int in 0..<col) {
                 element[i][j] -= mat.element[i][j]
             }
         }
@@ -132,9 +136,9 @@ class Mat {
         return this
     }
 
-    operator fun times(scale : Double): Mat {
+    operator fun times(scale: Double): Mat {
 
-        element.forEach { row->
+        element.forEach { row ->
             row.replaceAll { it * scale }
         }
 
@@ -142,6 +146,10 @@ class Mat {
     }
 
     operator fun times(mat: Mat): Mat {
+
+        if(!isValid(col, mat.row)){
+            throw IllegalArgumentException("Invalid matrix: A column & B row must be the same")
+        }
 
         val newMat = Mat(this.row, mat.col)
 

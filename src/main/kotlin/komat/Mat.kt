@@ -54,6 +54,25 @@ class Mat {
         return element[row][col]
     }
 
+    /*
+    * ERO : Elementary Row Operation
+    * */
+    fun ero1(src: Int, dst: Int): Mat {
+        return exchangeRow(src, dst)
+    }
+
+    fun ero2(scale: Double, dst: Int): Mat {
+        element[dst].replaceAll { it * scale }
+        return this
+    }
+
+    fun ero3(scale: Double, src: Int, dst: Int): Mat {
+        val srcRow = element[src]
+        srcRow.replaceAll { it * scale }
+        element[dst].addAll(srcRow)
+        return exchangeRow(src, dst)
+    }
+
     fun v(vararg elements: Number) {
         if (!isValid(elements)) {
             throw IllegalArgumentException("Invalid matrix: Rows must have the same length")

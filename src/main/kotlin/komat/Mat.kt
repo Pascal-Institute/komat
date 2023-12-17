@@ -158,6 +158,9 @@ class Mat {
     fun exchangeColumn(src: Int, dst: Int): Mat {
 
         val matCopy = this.copy()
+
+        matCopy.transpose()
+
         val srcRow = matCopy.element[src]
         matCopy.element[src] = matCopy.element[dst]
         matCopy.element[dst] = srcRow
@@ -177,7 +180,7 @@ class Mat {
         }
     }
 
-    fun sum() : Double {
+    fun sum(): Double {
         var sum = 0.0
         for (row in element) {
             sum += row.sum()
@@ -185,16 +188,16 @@ class Mat {
         return sum
     }
 
-    fun mean() : Double {
-       return sum() / (row * col)
+    fun mean(): Double {
+        return sum() / (row * col)
     }
 
-    fun max(): Double{
+    fun max(): Double {
         val rowMaxList = element.map { it.maxOrNull() ?: Double.NaN }
         return rowMaxList.maxOrNull() ?: Double.NaN
     }
 
-    fun min(): Double{
+    fun min(): Double {
         val rowMaxList = element.map { it.minOrNull() ?: Double.NaN }
         return rowMaxList.minOrNull() ?: Double.NaN
     }

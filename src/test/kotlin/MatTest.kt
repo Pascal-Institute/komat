@@ -97,4 +97,9 @@ class MatTest {
             }.element
         )
     }
+
+    @Test
+    fun `test print`() {
+        mat1.print()
+    }
 }

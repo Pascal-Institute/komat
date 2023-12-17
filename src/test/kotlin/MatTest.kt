@@ -99,6 +99,26 @@ class MatTest {
     }
 
     @Test
+    fun `test sum`() {
+        assertEquals(mat1.sum(), 10.0)
+    }
+
+    @Test
+    fun `test mean`() {
+        assertEquals(mat1.mean(), 2.5)
+    }
+
+    @Test
+    fun `test max`() {
+        assertEquals(mat1.max(), 4.0)
+    }
+
+    @Test
+    fun `test min`() {
+        assertEquals(mat1.min(), 1.0)
+    }
+
+    @Test
     fun `test print`() {
         mat1.print()
     }

@@ -26,6 +26,10 @@ class Mat {
         }
     }
 
+    fun copy() : Mat{
+        return Mat(this.element)
+    }
+
     private fun isValid(elements: MutableList<MutableList<Double>>): Boolean {
         val firstRowSize = elements.firstOrNull()?.size ?: 0
         return elements.all { it.size == firstRowSize }
@@ -131,6 +135,7 @@ class Mat {
 
         return this
     }
+
 
     private fun updateSize(){
         if (row == 0) {

@@ -87,7 +87,6 @@ class Mat {
             throw IllegalArgumentException("Invalid matrix: Rows must have the same length")
         }
 
-
         element.add(elements.map(Number::toDouble).toMutableList())
         updateSize()
     }
@@ -101,14 +100,13 @@ class Mat {
 
     operator fun plus(mat: Mat): Mat {
 
-        val newMat = Mat(this.element)
-
-        mat.element.forEachIndexed { index, row ->
-            this.element[index].forEachIndexed { idx, double ->
-                newMat.element[index][idx] = double + row[idx]
+        for(i : Int in 0..<row){
+            for(j : Int in 0..<col){
+                element[i][j] += mat.element[i][j]
             }
         }
-        return newMat
+
+        return this
     }
 
     operator fun minus(mat: Mat): Mat {

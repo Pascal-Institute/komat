@@ -177,6 +177,28 @@ class Mat {
         }
     }
 
+    fun sum() : Double {
+        var sum = 0.0
+        for (row in element) {
+            sum += row.sum()
+        }
+        return sum
+    }
+
+    fun mean() : Double {
+       return sum() / (row * col)
+    }
+
+    fun max(): Double{
+        val rowMaxList = element.map { it.maxOrNull() ?: Double.NaN }
+        return rowMaxList.maxOrNull() ?: Double.NaN
+    }
+
+    fun min(): Double{
+        val rowMaxList = element.map { it.minOrNull() ?: Double.NaN }
+        return rowMaxList.minOrNull() ?: Double.NaN
+    }
+
     fun print() {
         for (row in this.element) {
             println(row.joinToString(", ", "[", "]"))

@@ -4,6 +4,15 @@ import komat.Converter.Companion.toMutableList
 
 //Support 2D Matrix
 class Mat {
+    companion object{
+        operator fun Double.times(mat: Mat): Mat {
+            mat.element.forEach { row->
+                row.replaceAll { this * it }
+            }
+
+            return mat
+        }
+    }
 
     var row = 0
     var col = 0

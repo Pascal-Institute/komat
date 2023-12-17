@@ -1,4 +1,5 @@
 import komat.Generator.Companion.mat
+import komat.Mat.Companion.times
 import org.junit.jupiter.api.Assertions.assertNotEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -58,6 +59,17 @@ class MatTest {
                 v(1, 3)
             }.element,
             mat1.minus(mat2).element
+        )
+    }
+
+    @Test
+    fun `test scalar multiplication`() {
+        assertEquals(
+            (3.0 * mat1).element,
+            mat{
+                v(3.0, 6.0)
+                v(9.0, 12.0)
+            }.element
         )
     }
 

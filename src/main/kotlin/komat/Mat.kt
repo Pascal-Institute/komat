@@ -114,6 +114,15 @@ class Mat {
         return newMat
     }
 
+    operator fun times(scale : Double): Mat {
+
+        element.forEach { row->
+            row.replaceAll { it * scale }
+        }
+
+        return this
+    }
+
     operator fun times(mat: Mat): Mat {
 
         val newMat = Mat(this.row, mat.col)

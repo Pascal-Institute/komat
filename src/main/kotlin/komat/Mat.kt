@@ -39,6 +39,10 @@ class Mat {
         return Mat(this.element)
     }
 
+    private fun isValid(srcRow : Int, srcCol : Int, dstRow : Int, dstCol : Int): Boolean {
+        return (srcRow == dstRow && srcCol==dstCol)
+    }
+
     private fun isValid(elements: MutableList<MutableList<Double>>): Boolean {
         val firstRowSize = elements.firstOrNull()?.size ?: 0
         return elements.all { it.size == firstRowSize }
@@ -100,6 +104,10 @@ class Mat {
 
     operator fun plus(mat: Mat): Mat {
 
+        if(!isValid(row, col, mat.row, mat.col)){
+            throw IllegalArgumentException("Invalid matrix: Matrix must be the same size")
+        }
+
         for(i : Int in 0..<row){
             for(j : Int in 0..<col){
                 element[i][j] += mat.element[i][j]
@@ -110,6 +118,10 @@ class Mat {
     }
 
     operator fun minus(mat: Mat): Mat {
+
+        if(!isValid(row, col, mat.row, mat.col)){
+            throw IllegalArgumentException("Invalid matrix: Matrix must be the same size")
+        }
 
         for(i : Int in 0..<row){
             for(j : Int in 0..<col){

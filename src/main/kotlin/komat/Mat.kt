@@ -12,9 +12,9 @@ class Mat {
 
     constructor()
 
-    constructor(row : Int, col : Int) : this(MutableList(row) { MutableList(col) { 0.0 } })
+    constructor(row: Int, col: Int) : this(MutableList(row) { MutableList(col) { 0.0 } })
 
-    constructor(elements : MutableList<MutableList<Double>>){
+    constructor(elements: MutableList<MutableList<Double>>) {
 
         if (!isValid(elements)) {
             throw IllegalArgumentException("Invalid matrix: Rows must have the same length")
@@ -26,7 +26,7 @@ class Mat {
         }
     }
 
-    fun copy() : Mat{
+    fun copy(): Mat {
         return Mat(this.element)
     }
 
@@ -36,26 +36,26 @@ class Mat {
     }
 
     private fun isValid(elements: Array<out Number>): Boolean {
-        if(col == 0){
+        if (col == 0) {
             col = elements.size
-        } else{
-            if(col != elements.size){
+        } else {
+            if (col != elements.size) {
                 return false
             }
         }
         return true
     }
 
-    fun setValue(row: Int, col: Int, value : Double) {
+    fun setValue(row: Int, col: Int, value: Double) {
         element[row][col] = value
     }
 
-    fun getValue(row: Int, col: Int) : Double {
+    fun getValue(row: Int, col: Int): Double {
         return element[row][col]
     }
 
     fun v(vararg elements: Number) {
-        if(!isValid(elements)){
+        if (!isValid(elements)) {
             throw IllegalArgumentException("Invalid matrix: Rows must have the same length")
         }
 
@@ -64,14 +64,14 @@ class Mat {
         updateSize()
     }
 
-    fun appendRow(vararg elements: Number) : Mat {
+    fun appendRow(vararg elements: Number): Mat {
         element.add(elements.map(Number::toDouble).toMutableList())
         updateSize()
 
         return Mat(element)
     }
 
-    operator fun plus(mat : Mat) : Mat {
+    operator fun plus(mat: Mat): Mat {
 
         val newMat = Mat(this.element)
 
@@ -83,7 +83,7 @@ class Mat {
         return newMat
     }
 
-    operator fun minus(mat : Mat) : Mat {
+    operator fun minus(mat: Mat): Mat {
 
         val newMat = Mat(this.element)
 
@@ -95,13 +95,13 @@ class Mat {
         return newMat
     }
 
-    operator fun times(mat : Mat) : Mat {
+    operator fun times(mat: Mat): Mat {
 
         val newMat = Mat(this.row, mat.col)
 
-        for(i : Int in 0..<newMat.row){
-            for (j : Int in 0..<newMat.col){
-                for(k : Int in 0..<this.col){
+        for (i: Int in 0..<newMat.row) {
+            for (j: Int in 0..<newMat.col) {
+                for (k: Int in 0..<this.col) {
                     newMat.element[i][j] += element[i][k] * mat.element[k][j]
                 }
             }
@@ -136,8 +136,20 @@ class Mat {
         return this
     }
 
+    fun exchangeColumn(src: Int, dst: Int): Mat {
 
-    private fun updateSize(){
+        val matCopy = this.copy()
+        val srcRow = matCopy.element[src]
+        matCopy.element[src] = matCopy.element[dst]
+        matCopy.element[dst] = srcRow
+
+        this.element = matCopy.transpose().element
+
+        return this
+    }
+
+
+    private fun updateSize() {
         if (row == 0) {
             row = 1
             col = element.firstOrNull()?.size ?: 0

@@ -157,4 +157,10 @@ class Mat {
             row++
         }
     }
+
+    fun print() {
+        for (row in this.element) {
+            println(row.joinToString(", ", "[", "]"))
+        }
+    }
 }

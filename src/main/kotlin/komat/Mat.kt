@@ -99,11 +99,25 @@ class Mat {
         updateSize()
     }
 
+    fun appendRow(elements: MutableList<Double>): Mat {
+        element.add(elements)
+        updateSize()
+
+        return this
+    }
+
     fun appendRow(vararg elements: Number): Mat {
         element.add(elements.map(Number::toDouble).toMutableList())
         updateSize()
 
-        return Mat(element)
+        return this
+    }
+
+    fun removeRowAt(index : Int) : Mat {
+        element.removeAt(index)
+        updateSize()
+
+        return this
     }
 
     operator fun plus(mat: Mat): Mat {
@@ -151,11 +165,11 @@ class Mat {
             throw IllegalArgumentException("Invalid matrix: A column & B row must be the same")
         }
 
-        val newMat = Mat(this.row, mat.col)
+        val newMat = Mat(row, mat.col)
 
         for (i: Int in 0..<newMat.row) {
             for (j: Int in 0..<newMat.col) {
-                for (k: Int in 0..<this.col) {
+                for (k: Int in 0..<col) {
                     newMat.element[i][j] += element[i][k] * mat.element[k][j]
                 }
             }
@@ -205,6 +219,14 @@ class Mat {
         return this
     }
 
+    /*
+    * Row Echelon Form
+    *
+    * Prop 1. All the leading entries in each of the rows of the matrix are 1.
+    * Prop 2. If a column contains a leading entry then all entries below that leading entry are zero.
+    * Prop 3. In any two consecutive non-zero rows, the leading entry in the upper row occurs to the left of the leading entry in the lower row.
+    * Prop 4. All rows which consist entirely of zeroes appear at the bottom of the matrix.
+    *  */
 
     private fun updateSize() {
         if (row == 0) {
@@ -213,6 +235,10 @@ class Mat {
         } else {
             row++
         }
+    }
+
+    fun isZero(rowElement  : MutableList<Double>) : Boolean{
+        return (rowElement.sum() == 0.0)
     }
 
     fun sum(): Double {

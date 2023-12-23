@@ -113,18 +113,34 @@ class Mat {
         return this
     }
 
-    fun getRowsInRange(start : Int, end : Int) : Mat{
+    fun getRowsInRange(start: Int, end: Int): Mat {
 
         val elementCopy = mutableListOf<MutableList<Double>>()
 
-        for(i : Int in start..end){
+        for (i: Int in start..end) {
             elementCopy.add(element[i])
         }
 
         return Mat(elementCopy)
     }
 
-    fun removeRowAt(index : Int) : Mat {
+    fun getColsInRange(start: Int, end: Int): Mat {
+
+        val elementCopy = mutableListOf<MutableList<Double>>()
+        var matCopy = this.copy()
+
+        matCopy.transpose()
+
+        for (i: Int in start..end) {
+            elementCopy.add(matCopy.element[i])
+        }
+
+        matCopy = Mat(elementCopy).transpose()
+
+        return matCopy
+    }
+
+    fun removeRowAt(index: Int): Mat {
         element.removeAt(index)
         updateSize()
 
@@ -172,7 +188,7 @@ class Mat {
 
     operator fun times(mat: Mat): Mat {
 
-        if(!isValid(col, mat.row)){
+        if (!isValid(col, mat.row)) {
             throw IllegalArgumentException("Invalid matrix: A column & B row must be the same")
         }
 
@@ -248,7 +264,7 @@ class Mat {
         }
     }
 
-    fun isZero(rowElement  : MutableList<Double>) : Boolean{
+    fun isZero(rowElement: MutableList<Double>): Boolean {
         return (rowElement.sum() == 0.0)
     }
 

@@ -281,9 +281,17 @@ class Mat {
             for (i: Int in token..<matCopy.row) {
                 if (matCopy.element[i][j] != 0.0) {
                     matCopy.ero1(i, token)
-                    matCopy.ero2(1.0 / matCopy.element[token][j] , token)
-                    leading1.add(j)
+
+                    val scale = 1.0 / matCopy.element[token][j]
+
+                    matCopy.ero2(scale , token)
                     token++
+                    for(k : Int in token ..<matCopy.row){
+                        if(matCopy.element[k][j] != 0.0){
+                            matCopy.ero3(-matCopy.element[k][j], token - 1, k)
+                        }
+                    }
+                    leading1.add(j)
                     break
                 }
             }

@@ -14,8 +14,8 @@ class Mat {
         }
     }
 
-    var row = 0
-    var col = 0
+    private var row = 0
+    private var col = 0
 
     var element = mutableListOf<MutableList<Double>>()
 
@@ -111,6 +111,17 @@ class Mat {
         updateSize()
 
         return this
+    }
+
+    fun getRowsInRange(start : Int, end : Int) : Mat{
+
+        val elementCopy = mutableListOf<MutableList<Double>>()
+
+        for(i : Int in start..end){
+            elementCopy.add(element[i])
+        }
+
+        return Mat(elementCopy)
     }
 
     fun removeRowAt(index : Int) : Mat {

@@ -1,6 +1,6 @@
 package komat
 
-import komat.Converter.Companion.toMutableList
+import komat.Generator.Companion.zero
 
 //Support 2D Matrix
 class Mat {
@@ -111,6 +111,10 @@ class Mat {
         updateSize()
 
         return this
+    }
+
+    fun appendRowAt(idx: Int, elements: MutableList<Double>) {
+        element.add(idx, elements)
     }
 
     fun getRowsInRange(start: Int, end: Int): Mat {
@@ -254,6 +258,46 @@ class Mat {
     * Prop 3. In any two consecutive non-zero rows, the leading entry in the upper row occurs to the left of the leading entry in the lower row.
     * Prop 4. All rows which consist entirely of zeroes appear at the bottom of the matrix.
     *  */
+    fun ref(): Mat {
+
+        var zeroCount = 0
+        var matCopy = copy()
+        val zeroRow = zero(matCopy.col).element[0]
+
+        for (i: Int in 0..<row) {
+            if (isZero(element[i])) {
+                matCopy.removeRowAt(i)
+                matCopy.appendRow(zeroRow)
+                zeroCount++
+            }
+        }
+
+        if (zeroCount > 0) {
+            matCopy = matCopy.getRowsInRange(0, row - zeroCount - 1)
+        }
+
+        var token = 0
+
+        for (j: Int in 0..<matCopy.col) {
+            for (i: Int in token..<matCopy.row) {
+                if (matCopy.element[i][j] != 0.0) {
+                    matCopy.exchangeRow(i, token)
+                    token++
+                    break
+                }
+            }
+            if (token == matCopy.row) {
+                break
+            }
+        }
+
+        for (i: Int in 0..<zeroCount) {
+            matCopy.appendRow(zeroRow)
+        }
+
+        return matCopy
+    }
+
 
     private fun updateSize() {
         if (row == 0) {

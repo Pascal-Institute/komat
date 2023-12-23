@@ -17,6 +17,13 @@ class MatTest {
         v(2, 1)
     }
 
+    val mat3 = mat {
+        v(0, 0, 0, 0, 0)
+        v(0, 0, 1, 0, 1)
+        v(1, 1, 0, 1, 0)
+        v(0, 1, 0, 0, 0)
+    }
+
     @Test
     fun `test copy`() {
 
@@ -66,7 +73,7 @@ class MatTest {
     fun `test scalar multiplication`() {
         assertEquals(
             (3.0 * mat1).element,
-            mat{
+            mat {
                 v(3.0, 6.0)
                 v(9.0, 12.0)
             }.element
@@ -107,6 +114,19 @@ class MatTest {
                 v(1, 3, 5)
                 v(2, 4, 6)
             }.element
+        )
+    }
+
+    @Test
+    fun `test ref`() {
+        assertEquals(
+            mat {
+                v(1, 1, 0, 1, 0)
+                v(0, 1, 0, 0, 0)
+                v(0, 0, 1, 0, 1)
+                v(0, 0, 0, 0, 0)
+            }.element,
+            mat3.ref().element
         )
     }
 

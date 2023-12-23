@@ -146,9 +146,14 @@ class Mat {
 
     fun removeRowAt(index: Int): Mat {
         element.removeAt(index)
-        updateSize()
+        updateSizeByElement()
 
         return this
+    }
+
+    private fun updateSizeByElement() {
+        row = element.size
+        col = element[0].size
     }
 
     operator fun plus(mat: Mat): Mat {
@@ -260,6 +265,7 @@ class Mat {
     *  */
     fun ref(): Mat {
 
+        //Prop 4.
         var zeroCount = 0
         var matCopy = copy()
         val zeroRow = zero(matCopy.col).element[0]
@@ -277,11 +283,14 @@ class Mat {
         }
 
         var token = 0
+        var leading1 = mutableListOf<Int>()
 
         for (j: Int in 0..<matCopy.col) {
             for (i: Int in token..<matCopy.row) {
                 if (matCopy.element[i][j] != 0.0) {
                     matCopy.exchangeRow(i, token)
+                    matCopy.ero2(1.0 / matCopy.element[token][j] , token)
+                    leading1.add(j)
                     token++
                     break
                 }

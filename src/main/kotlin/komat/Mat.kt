@@ -14,8 +14,10 @@ class Mat {
         }
     }
 
-    private var row = 0
-    private var col = 0
+    var row : Int = 0
+        get() = if(element.isEmpty()) 0 else element.size
+    var col : Int = 0
+        get() = if(element.isEmpty()) 0 else element[0].size
 
     var element = mutableListOf<MutableList<Double>>()
 
@@ -31,7 +33,6 @@ class Mat {
 
         elements.forEach {
             element.add(it)
-            updateSize()
         }
     }
 
@@ -96,19 +97,16 @@ class Mat {
         }
 
         element.add(elements.map(Number::toDouble).toMutableList())
-        updateSize()
     }
 
     fun appendRow(elements: MutableList<Double>): Mat {
         element.add(elements)
-        updateSize()
 
         return this
     }
 
     fun appendRow(vararg elements: Number): Mat {
         element.add(elements.map(Number::toDouble).toMutableList())
-        updateSize()
 
         return this
     }
@@ -146,14 +144,8 @@ class Mat {
 
     fun removeRowAt(index: Int): Mat {
         element.removeAt(index)
-        updateSizeByElement()
 
         return this
-    }
-
-    private fun updateSizeByElement() {
-        row = element.size
-        col = element[0].size
     }
 
     operator fun plus(mat: Mat): Mat {
@@ -283,12 +275,12 @@ class Mat {
         }
 
         var token = 0
-        var leading1 = mutableListOf<Int>()
+        val leading1 = mutableListOf<Int>()
 
         for (j: Int in 0..<matCopy.col) {
             for (i: Int in token..<matCopy.row) {
                 if (matCopy.element[i][j] != 0.0) {
-                    matCopy.exchangeRow(i, token)
+                    matCopy.ero1(i, token)
                     matCopy.ero2(1.0 / matCopy.element[token][j] , token)
                     leading1.add(j)
                     token++
@@ -305,16 +297,6 @@ class Mat {
         }
 
         return matCopy
-    }
-
-
-    private fun updateSize() {
-        if (row == 0) {
-            row = 1
-            col = element.firstOrNull()?.size ?: 0
-        } else {
-            row++
-        }
     }
 
     fun isZero(rowElement: MutableList<Double>): Boolean {

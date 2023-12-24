@@ -278,6 +278,15 @@ class Mat {
         return (rowElement.sum() == 0.0)
     }
 
+    fun hasZeroRow() : Boolean{
+        element.forEach {
+            if(isZero(it)){
+                return true
+            }
+        }
+        return false
+    }
+
     fun sum(): Double {
         var sum = 0.0
         for (row in element) {
@@ -365,6 +374,13 @@ class Mat {
 //    * Ax = B
 //    * */
 //    fun solve(result: Mat): Mat {
+//
+//        val solution = Mat(result.row, result.col)
+//
+//        var refMat = this.concat(result, Axis.VERTICAL)
+//
+//        refMat = refMat.ref()
+//
 //        return this
 //    }
 }

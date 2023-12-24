@@ -118,6 +118,22 @@ class MatTest {
     }
 
     @Test
+    fun `test transpose twice`() {
+        assertEquals(
+            mat {
+                v(1, 2)
+                v(3, 4)
+                v(5, 6)
+            }.transpose().transpose().element,
+            mat {
+                v(1, 2)
+                v(3, 4)
+                v(5, 6)
+            }.element
+        )
+    }
+
+    @Test
     fun `test ref`() {
         assertEquals(
             mat {

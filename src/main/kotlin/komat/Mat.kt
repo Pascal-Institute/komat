@@ -1,6 +1,7 @@
 package komat
 
 import komat.Generator.Companion.zero
+import komat.prop.Axis
 
 //Support 2D Matrix
 class Mat {

@@ -1,5 +1,6 @@
 package komat
 
+import komat.Converter.Companion.toMutableList
 import komat.Generator.Companion.zero
 import komat.prop.Axis
 
@@ -71,6 +72,10 @@ class Mat {
         return true
     }
 
+    fun hasNoSolution(mat: Mat): Boolean {
+        return mat.hasZeroRow()
+    }
+
     fun setValue(row: Int, col: Int, value: Double) {
         element[row][col] = value
     }
@@ -122,14 +127,15 @@ class Mat {
         element.add(idx, elements)
     }
 
-    fun concat(mat: Mat, axis : Axis) : Mat{
-        when(axis){
-            Axis.HORIZONTAL->{
+    fun concat(mat: Mat, axis: Axis): Mat {
+        when (axis) {
+            Axis.HORIZONTAL -> {
                 mat.element.forEach {
                     appendRow(it)
                 }
             }
-            Axis.VERTICAL->{
+
+            Axis.VERTICAL -> {
                 this.transpose()
                 mat.transpose().element.forEach {
                     appendRow(it)
@@ -142,31 +148,32 @@ class Mat {
 
     }
 
-    fun split(splitIndex: Int, axis: Axis) : Set<Mat>{
+    fun split(splitIndex: Int, axis: Axis): List<Mat> {
 
-        val set = mutableSetOf<Mat>()
+        val list = mutableListOf<Mat>()
 
-        when(axis){
-            Axis.HORIZONTAL->{
-                set.add(getRowsInRange(0, splitIndex))
-                set.add(getRowsInRange(splitIndex + 1, row - 1))
+        when (axis) {
+            Axis.HORIZONTAL -> {
+                list.add(getRowsInRange(0, splitIndex))
+                list.add(getRowsInRange(splitIndex + 1, row - 1))
             }
-            Axis.VERTICAL->{
+
+            Axis.VERTICAL -> {
                 this.transpose()
-                set.add(getRowsInRange(0, splitIndex))
-                set.add(getRowsInRange(splitIndex + 1, col - 1))
+                list.add(getRowsInRange(0, splitIndex))
+                list.add(getRowsInRange(splitIndex + 1, col - 1))
                 this.transpose()
             }
         }
 
-        return set
+        return list
     }
 
     fun getRowsInRange(start: Int, end: Int): Mat {
 
         val elementCopy = mutableListOf<MutableList<Double>>()
 
-        for (i: Int in start..end) {
+        for (i: Int in start..<end) {
             elementCopy.add(element[i])
         }
 
@@ -175,18 +182,9 @@ class Mat {
 
     fun getColsInRange(start: Int, end: Int): Mat {
 
-        val elementCopy = mutableListOf<MutableList<Double>>()
-        var matCopy = this.copy()
+        var matCopy = this.copy().transpose()
 
-        matCopy.transpose()
-
-        for (i: Int in start..end) {
-            elementCopy.add(matCopy.element[i])
-        }
-
-        matCopy = Mat(elementCopy).transpose()
-
-        return matCopy
+        return matCopy.getRowsInRange(start, end).transpose()
     }
 
     fun removeRowAt(index: Int): Mat {
@@ -298,9 +296,9 @@ class Mat {
         return (rowElement.sum() == 0.0)
     }
 
-    fun hasZeroRow() : Boolean{
+    fun hasZeroRow(): Boolean {
         element.forEach {
-            if(isZero(it)){
+            if (isZero(it)) {
                 return true
             }
         }
@@ -329,80 +327,109 @@ class Mat {
         return rowMaxList.minOrNull() ?: Double.NaN
     }
 
-    /*
-    * Row Echelon Form
-    *
-    * Prop 1. All the leading entries in each of the rows of the matrix are 1.
-    * Prop 2. If a column contains a leading entry then all entries below that leading entry are zero.
-    * Prop 3. In any two consecutive non-zero rows, the leading entry in the upper row occurs to the left of the leading entry in the lower row.
-    * Prop 4. All rows which consist entirely of zeroes appear at the bottom of the matrix.
-    *  */
-    fun ref(): Mat {
+    fun flip(axis: Axis): Mat {
 
-        //Prop 4.
-        var zeroCount = 0
-        var matCopy = copy()
-        val zeroRow = zero(matCopy.col).element[0]
+        val mat = Mat()
 
-        for (i: Int in 0..<row) {
-            if (isZero(element[i])) {
-                matCopy.removeRowAt(i)
-                matCopy.appendRow(zeroRow)
-                zeroCount++
-            }
-        }
-
-        if (zeroCount > 0) {
-            matCopy = matCopy.getRowsInRange(0, row - zeroCount - 1)
-        }
-
-        var token = 0
-        val leading1 = mutableListOf<Int>()
-
-        for (j: Int in 0..<matCopy.col) {
-            for (i: Int in token..<matCopy.row) {
-                if (matCopy.element[i][j] != 0.0) {
-                    matCopy.ero1(i, token)
-
-                    val scale = 1.0 / matCopy.element[token][j]
-
-                    matCopy.ero2(scale, token)
-                    token++
-                    for (k: Int in token..<matCopy.row) {
-                        if (matCopy.element[k][j] != 0.0) {
-                            matCopy.ero3(-matCopy.element[k][j], token - 1, k)
-                        }
-                    }
-                    leading1.add(j)
-                    break
+        when (axis) {
+            Axis.HORIZONTAL -> {
+                element.forEachIndexed { idx, it ->
+                    mat.appendRow(element[row - idx - 1])
                 }
             }
-            if (token == matCopy.row) {
+
+            Axis.VERTICAL -> {
+                val matCopy = copy()
+                matCopy.transpose()
+                matCopy.element.forEachIndexed { idx, it ->
+                    mat.appendRow(matCopy.element[col - idx - 1])
+                }
+                mat.transpose()
+            }
+        }
+
+        this.element = mat.element
+
+        return this
+    }
+
+
+/*
+* Row Echelon Form
+*
+* Prop 1. All the leading entries in each of the rows of the matrix are 1.
+* Prop 2. If a column contains a leading entry then all entries below that leading entry are zero.
+* Prop 3. In any two consecutive non-zero rows, the leading entry in the upper row occurs to the left of the leading entry in the lower row.
+* Prop 4. All rows which consist entirely of zeroes appear at the bottom of the matrix.
+*  */
+fun ref(): Mat {
+
+    //Prop 4.
+    var zeroCount = 0
+    var matCopy = copy()
+    val zeroRow = zero(matCopy.col).element[0]
+
+    for (i: Int in 0..<row) {
+        if (isZero(element[i])) {
+            matCopy.removeRowAt(i)
+            matCopy.appendRow(zeroRow)
+            zeroCount++
+        }
+    }
+
+    if (zeroCount > 0) {
+        matCopy = matCopy.getRowsInRange(0, row - zeroCount)
+    }
+
+    var token = 0
+    val leading1 = mutableListOf<Int>()
+
+    for (j: Int in 0..<matCopy.col) {
+        for (i: Int in token..<matCopy.row) {
+            if (matCopy.element[i][j] != 0.0) {
+                matCopy.ero1(i, token)
+
+                val scale = 1.0 / matCopy.element[token][j]
+
+                matCopy.ero2(scale, token)
+                token++
+                for (k: Int in token..<matCopy.row) {
+                    if (matCopy.element[k][j] != 0.0) {
+                        matCopy.ero3(-matCopy.element[k][j], token - 1, k)
+                    }
+                }
+                leading1.add(j)
                 break
             }
         }
-
-        for (i: Int in 0..<zeroCount) {
-            matCopy.appendRow(zeroRow)
+        if (token == matCopy.row) {
+            break
         }
-
-        return matCopy
     }
 
-    /*
-    * solve x matrix
-    * Ax = B
-    * */
-//    fun solve(result: Mat): Mat {
+    for (i: Int in 0..<zeroCount) {
+        matCopy.appendRow(zeroRow)
+    }
+
+    return matCopy
+}
+
+/*
+* solve x matrix
+* Ax = B
+* */
+//fun solve(matB: Mat): Mat {
 //
-//        val solution = Mat(result.row, result.col)
+//    val matSolution = Mat(matB.row, matB.col)
 //
-//        var refMat = this.concat(result, Axis.VERTICAL)
+//    var matAB = this.concat(matB, Axis.VERTICAL)
+//    var refMat = matAB.ref()
 //
-//        refMat = refMat.ref()
-//
-//
-//
-//        return this
+//    if (hasNoSolution(refMat.getColsInRange(0, col - 1))) {
+//        throw IllegalArgumentException("Invalid matrix: Rows must have the same length")
 //    }
+//
+//
+//    return this
+//}
 }

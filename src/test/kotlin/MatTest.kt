@@ -1,5 +1,6 @@
 import komat.Generator.Companion.mat
 import komat.Mat.Companion.times
+import komat.prop.Axis
 import org.junit.jupiter.api.Assertions.assertNotEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -129,6 +130,33 @@ class MatTest {
                 v(1, 2)
                 v(3, 4)
                 v(5, 6)
+            }.element
+        )
+    }
+
+    @Test
+    fun `test concat`() {
+        assertEquals(
+            mat1.concat(
+                mat { v(5, 6) }, Axis.HORIZONTAL
+        ).element,
+            mat{
+                v(1, 2)
+                v(3, 4)
+                v(5, 6)
+            }.element
+        )
+
+        assertEquals(
+            mat2.concat(
+                mat {
+                      v(5)
+                      v(6)
+                    }, Axis.VERTICAL
+            ).element,
+            mat{
+                v(4, 3, 5)
+                v(2, 1, 6)
             }.element
         )
     }

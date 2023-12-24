@@ -142,6 +142,26 @@ class Mat {
 
     }
 
+    fun split(splitIndex: Int, axis: Axis) : Set<Mat>{
+
+        val set = mutableSetOf<Mat>()
+
+        when(axis){
+            Axis.HORIZONTAL->{
+                set.add(getRowsInRange(0, splitIndex))
+                set.add(getRowsInRange(splitIndex + 1, row - 1))
+            }
+            Axis.VERTICAL->{
+                this.transpose()
+                set.add(getRowsInRange(0, splitIndex))
+                set.add(getRowsInRange(splitIndex + 1, col - 1))
+                this.transpose()
+            }
+        }
+
+        return set
+    }
+
     fun getRowsInRange(start: Int, end: Int): Mat {
 
         val elementCopy = mutableListOf<MutableList<Double>>()
@@ -369,10 +389,10 @@ class Mat {
         return matCopy
     }
 
-//    /*
-//    * solve x matrix
-//    * Ax = B
-//    * */
+    /*
+    * solve x matrix
+    * Ax = B
+    * */
 //    fun solve(result: Mat): Mat {
 //
 //        val solution = Mat(result.row, result.col)
@@ -380,6 +400,8 @@ class Mat {
 //        var refMat = this.concat(result, Axis.VERTICAL)
 //
 //        refMat = refMat.ref()
+//
+//
 //
 //        return this
 //    }

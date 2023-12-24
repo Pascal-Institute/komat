@@ -139,8 +139,8 @@ class MatTest {
         assertEquals(
             mat1.concat(
                 mat { v(5, 6) }, Axis.HORIZONTAL
-        ).element,
-            mat{
+            ).element,
+            mat {
                 v(1, 2)
                 v(3, 4)
                 v(5, 6)
@@ -150,14 +150,28 @@ class MatTest {
         assertEquals(
             mat2.concat(
                 mat {
-                      v(5)
-                      v(6)
-                    }, Axis.VERTICAL
+                    v(5)
+                    v(6)
+                }, Axis.VERTICAL
             ).element,
-            mat{
+            mat {
                 v(4, 3, 5)
                 v(2, 1, 6)
             }.element
+        )
+    }
+
+    @Test
+    fun `test getColsInRange`() {
+        assertEquals(
+        mat{
+            v(1, 2, 3)
+            v(4, 5 ,6)
+        }.getColsInRange(0,2).element,
+        mat{
+            v(1, 2)
+            v(4, 5)
+        }.element
         )
     }
 

@@ -16,16 +16,18 @@ class Mat {
         }
     }
 
+    var element = mutableListOf<MutableList<Double>>()
     var row: Int = 0
         get() = if (element.isEmpty()) 0 else element.size
     var col: Int = 0
         get() = if (element.isEmpty()) 0 else element[0].size
 
-    var element = mutableListOf<MutableList<Double>>()
 
     constructor()
 
-    constructor(row: Int, col: Int) : this(MutableList(row) { MutableList(col) { 0.0 } })
+    constructor(row: Int, col: Int) : this(
+        MutableList(row) { MutableList(col) { 0.0 } }
+    )
 
     constructor(elements: MutableList<MutableList<Double>>) {
 
@@ -36,6 +38,13 @@ class Mat {
         elements.forEach {
             element.add(it)
         }
+
+        updateSize()
+    }
+
+    private fun updateSize() {
+        this.row = element.size
+        this.col = element[0].size
     }
 
     fun print() {
@@ -354,82 +363,90 @@ class Mat {
     }
 
 
-/*
-* Row Echelon Form
-*
-* Prop 1. All the leading entries in each of the rows of the matrix are 1.
-* Prop 2. If a column contains a leading entry then all entries below that leading entry are zero.
-* Prop 3. In any two consecutive non-zero rows, the leading entry in the upper row occurs to the left of the leading entry in the lower row.
-* Prop 4. All rows which consist entirely of zeroes appear at the bottom of the matrix.
-*  */
-fun ref(): Mat {
+    /*
+    * Row Echelon Form
+    *
+    * Prop 1. All the leading entries in each of the rows of the matrix are 1.
+    * Prop 2. If a column contains a leading entry then all entries below that leading entry are zero.
+    * Prop 3. In any two consecutive non-zero rows, the leading entry in the upper row occurs to the left of the leading entry in the lower row.
+    * Prop 4. All rows which consist entirely of zeroes appear at the bottom of the matrix.
+    *  */
+    fun ref(): Mat {
 
-    //Prop 4.
-    var zeroCount = 0
-    var matCopy = copy()
-    val zeroRow = zero(matCopy.col).element[0]
+        //Prop 4.
+        var zeroCount = 0
+        var matCopy = copy()
+        val zeroRow = zero(matCopy.col).element[0]
 
-    for (i: Int in 0..<row) {
-        if (isZero(element[i])) {
-            matCopy.removeRowAt(i)
-            matCopy.appendRow(zeroRow)
-            zeroCount++
+        for (i: Int in 0..<row) {
+            if (isZero(element[i])) {
+                matCopy.removeRowAt(i)
+                matCopy.appendRow(zeroRow)
+                zeroCount++
+            }
         }
-    }
 
-    if (zeroCount > 0) {
-        matCopy = matCopy.getRowsInRange(0, row - zeroCount)
-    }
+        if (zeroCount > 0) {
+            matCopy = matCopy.getRowsInRange(0, row - zeroCount)
+        }
 
-    var token = 0
-    val leading1 = mutableListOf<Int>()
+        var token = 0
+        val leading1 = mutableListOf<Int>()
 
-    for (j: Int in 0..<matCopy.col) {
-        for (i: Int in token..<matCopy.row) {
-            if (matCopy.element[i][j] != 0.0) {
-                matCopy.ero1(i, token)
+        for (j: Int in 0..<matCopy.col) {
+            for (i: Int in token..<matCopy.row) {
+                if (matCopy.element[i][j] != 0.0) {
+                    matCopy.ero1(i, token)
 
-                val scale = 1.0 / matCopy.element[token][j]
+                    val scale = 1.0 / matCopy.element[token][j]
 
-                matCopy.ero2(scale, token)
-                token++
-                for (k: Int in token..<matCopy.row) {
-                    if (matCopy.element[k][j] != 0.0) {
-                        matCopy.ero3(-matCopy.element[k][j], token - 1, k)
+                    matCopy.ero2(scale, token)
+                    token++
+                    for (k: Int in token..<matCopy.row) {
+                        if (matCopy.element[k][j] != 0.0) {
+                            matCopy.ero3(-matCopy.element[k][j], token - 1, k)
+                        }
                     }
+                    leading1.add(j)
+                    break
                 }
-                leading1.add(j)
+            }
+            if (token == matCopy.row) {
                 break
             }
         }
-        if (token == matCopy.row) {
-            break
+
+        for (i: Int in 0..<zeroCount) {
+            matCopy.appendRow(zeroRow)
         }
+
+        return matCopy
     }
 
-    for (i: Int in 0..<zeroCount) {
-        matCopy.appendRow(zeroRow)
+    /*
+    * solve x matrix
+    * Ax = B
+    * */
+    fun solve(matB: Mat): Mat {
+
+        val matSolution = Mat(matB.row, matB.col)
+
+        var matAB = this.concat(matB, Axis.VERTICAL)
+        var refMat = matAB.ref()
+
+        if (hasNoSolution(refMat.getColsInRange(0, col - 1))) {
+            throw IllegalArgumentException("Invalid matrix: Rows must have the same length")
+        }
+
+        matAB.flip(Axis.HORIZONTAL)
+
+        for(i : Int in 0 ..< row){
+            matSolution.element[i][0] = matAB.element[i][col-1]
+            for(j : Int in 0 ..< i){
+                matSolution.element[i][0] -= matSolution.element[i - 1][0] * matAB.element[i][col - j - 2]
+            }
+        }
+
+        return matSolution.flip(Axis.HORIZONTAL)
     }
-
-    return matCopy
-}
-
-/*
-* solve x matrix
-* Ax = B
-* */
-//fun solve(matB: Mat): Mat {
-//
-//    val matSolution = Mat(matB.row, matB.col)
-//
-//    var matAB = this.concat(matB, Axis.VERTICAL)
-//    var refMat = matAB.ref()
-//
-//    if (hasNoSolution(refMat.getColsInRange(0, col - 1))) {
-//        throw IllegalArgumentException("Invalid matrix: Rows must have the same length")
-//    }
-//
-//
-//    return this
-//}
 }

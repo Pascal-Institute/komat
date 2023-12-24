@@ -164,14 +164,14 @@ class MatTest {
     @Test
     fun `test getColsInRange`() {
         assertEquals(
-        mat{
-            v(1, 2, 3)
-            v(4, 5 ,6)
-        }.getColsInRange(0,2).element,
-        mat{
-            v(1, 2)
-            v(4, 5)
-        }.element
+            mat {
+                v(1, 2, 3)
+                v(4, 5, 6)
+            }.getColsInRange(0, 2).element,
+            mat {
+                v(1, 2)
+                v(4, 5)
+            }.element
         )
     }
 
@@ -187,6 +187,23 @@ class MatTest {
             mat3.ref().element
         )
     }
+
+    @Test
+    fun `test solve`() {
+        mat {
+            v(1, 0, 0)
+            v(0, 1, 0)
+            v(0, 0, 1)
+        }.solve(
+            mat
+            {
+                v(1)
+                v(1)
+                v(1)
+            })
+
+    }
+
 
     @Test
     fun `test sum`() {

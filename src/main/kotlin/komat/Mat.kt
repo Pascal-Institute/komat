@@ -14,10 +14,10 @@ class Mat {
         }
     }
 
-    var row : Int = 0
-        get() = if(element.isEmpty()) 0 else element.size
-    var col : Int = 0
-        get() = if(element.isEmpty()) 0 else element[0].size
+    var row: Int = 0
+        get() = if (element.isEmpty()) 0 else element.size
+    var col: Int = 0
+        get() = if (element.isEmpty()) 0 else element[0].size
 
     var element = mutableListOf<MutableList<Double>>()
 
@@ -33,6 +33,12 @@ class Mat {
 
         elements.forEach {
             element.add(it)
+        }
+    }
+
+    fun print() {
+        for (row in this.element) {
+            println(row.joinToString(", ", "[", "]"))
         }
     }
 
@@ -113,6 +119,26 @@ class Mat {
 
     fun appendRowAt(idx: Int, elements: MutableList<Double>) {
         element.add(idx, elements)
+    }
+
+    fun concat(mat: Mat, axis : Axis) : Mat{
+        when(axis){
+            Axis.HORIZONTAL->{
+                mat.element.forEach {
+                    appendRow(it)
+                }
+            }
+            Axis.VERTICAL->{
+                this.transpose()
+                mat.transpose().element.forEach {
+                    appendRow(it)
+                }
+                this.transpose()
+            }
+        }
+
+        return this
+
     }
 
     fun getRowsInRange(start: Int, end: Int): Mat {
@@ -247,6 +273,32 @@ class Mat {
         return this
     }
 
+    fun isZero(rowElement: MutableList<Double>): Boolean {
+        return (rowElement.sum() == 0.0)
+    }
+
+    fun sum(): Double {
+        var sum = 0.0
+        for (row in element) {
+            sum += row.sum()
+        }
+        return sum
+    }
+
+    fun mean(): Double {
+        return sum() / (row * col)
+    }
+
+    fun max(): Double {
+        val rowMaxList = element.map { it.maxOrNull() ?: Double.NaN }
+        return rowMaxList.maxOrNull() ?: Double.NaN
+    }
+
+    fun min(): Double {
+        val rowMaxList = element.map { it.minOrNull() ?: Double.NaN }
+        return rowMaxList.minOrNull() ?: Double.NaN
+    }
+
     /*
     * Row Echelon Form
     *
@@ -284,10 +336,10 @@ class Mat {
 
                     val scale = 1.0 / matCopy.element[token][j]
 
-                    matCopy.ero2(scale , token)
+                    matCopy.ero2(scale, token)
                     token++
-                    for(k : Int in token ..<matCopy.row){
-                        if(matCopy.element[k][j] != 0.0){
+                    for (k: Int in token..<matCopy.row) {
+                        if (matCopy.element[k][j] != 0.0) {
                             matCopy.ero3(-matCopy.element[k][j], token - 1, k)
                         }
                     }
@@ -307,35 +359,11 @@ class Mat {
         return matCopy
     }
 
-    fun isZero(rowElement: MutableList<Double>): Boolean {
-        return (rowElement.sum() == 0.0)
-    }
-
-    fun sum(): Double {
-        var sum = 0.0
-        for (row in element) {
-            sum += row.sum()
-        }
-        return sum
-    }
-
-    fun mean(): Double {
-        return sum() / (row * col)
-    }
-
-    fun max(): Double {
-        val rowMaxList = element.map { it.maxOrNull() ?: Double.NaN }
-        return rowMaxList.maxOrNull() ?: Double.NaN
-    }
-
-    fun min(): Double {
-        val rowMaxList = element.map { it.minOrNull() ?: Double.NaN }
-        return rowMaxList.minOrNull() ?: Double.NaN
-    }
-
-    fun print() {
-        for (row in this.element) {
-            println(row.joinToString(", ", "[", "]"))
-        }
-    }
+//    /*
+//    * solve x matrix
+//    * Ax = B
+//    * */
+//    fun solve(result: Mat): Mat {
+//        return this
+//    }
 }

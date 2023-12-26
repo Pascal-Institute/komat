@@ -71,6 +71,30 @@ class MatTest {
     }
 
     @Test
+    fun `test flip`(){
+        assertEquals(
+            mat1.flip(Axis.HORIZONTAL).element,
+            mat {
+                v(3, 4)
+                v(1, 2)
+            }.element
+        )
+
+
+
+        assertEquals(
+            mat {
+                v(1, 2)
+                v(3, 4)
+            }.flip(Axis.VERTICAL).element,
+            mat {
+                v(2, 1)
+                v(4, 3)
+            }.element
+        )
+    }
+
+    @Test
     fun `test scalar multiplication`() {
         assertEquals(
             (3.0 * mat1).element,

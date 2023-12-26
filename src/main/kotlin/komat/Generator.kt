@@ -19,5 +19,17 @@ class Generator {
             }
             return mat
         }
+
+        fun elementary(size : Int) : Mat{
+            return e(size)
+        }
+
+        fun diagonal(mutableList: MutableList<Double>) : Mat {
+            val mat = zero(mutableList.size)
+            mutableList.forEachIndexed { idx, value ->
+                mat.element[idx][idx] = value
+            }
+            return mat
+        }
     }
 }

@@ -136,6 +136,24 @@ class Mat {
         element.add(idx, elements)
     }
 
+    fun appendCol(elements : MutableList<Double>) : Mat{
+        this.transpose().element.add(elements)
+        this.transpose()
+        return this
+    }
+
+    fun appendCol(vararg elements : Number) : Mat{
+        this.transpose().element.add(elements.map(Number::toDouble).toMutableList())
+        this.transpose()
+        return this
+    }
+
+    fun appendColAt(idx: Int, elements: MutableList<Double>) : Mat{
+        this.transpose().element.add(idx, elements)
+        this.transpose()
+        return this
+    }
+
     fun concat(mat: Mat, axis: Axis): Mat {
         when (axis) {
             Axis.HORIZONTAL -> {

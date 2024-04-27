@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import kotlin.test.assertEquals
 
-class MatTest {
+class UnitTest {
 
     val mat1 = mat {
         v(1, 2)
@@ -247,6 +247,26 @@ class MatTest {
     @Test
     fun `test min`() {
         assertEquals(mat1.min(), 1.0)
+    }
+
+    @Test
+    fun `test appendCol`() {
+        var mat4 = mat1.copy()
+        mat4.appendCol(mutableListOf(3.0, 5.0))
+        assertEquals(mat4.element, mat{
+            v(1, 2, 3)
+            v(3, 4, 5)
+        }.element)
+    }
+
+    @Test
+    fun `test appendCol2`() {
+        var mat4 = mat1.copy()
+        mat4.appendCol(3.0, 5.0)
+        assertEquals(mat4.element, mat{
+            v(1, 2, 3)
+            v(3, 4, 5)
+        }.element)
     }
 
     @Test

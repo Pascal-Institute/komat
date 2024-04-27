@@ -25,10 +25,10 @@ kotlin {
 publishing {
     publications {
         create<MavenPublication>("maven") {
-            groupId = "com.snacklab"
+            groupId = "com.volta2030"
             artifactId = "komat"
 
-            version = "1.0.0"
+            version = "1.1.0"
 
             from(components["java"])
         }

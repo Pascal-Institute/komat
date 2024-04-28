@@ -1,5 +1,6 @@
 import komat.Generator.Companion.mat
 import komat.Mat.Companion.times
+import komat.Vector
 import komat.prop.Axis
 import org.junit.jupiter.api.Assertions.assertNotEquals
 import org.junit.jupiter.api.Test
@@ -11,6 +12,11 @@ class UnitTest {
     val mat1 = mat {
         v(1, 2)
         v(3, 4)
+    }
+
+    val mat34 = mat{
+        Vector(1,2)
+        Vector(1, 2)
     }
 
     val mat2 = mat {

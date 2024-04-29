@@ -116,9 +116,7 @@ class Mat {
         if (!isValid(elements)) {
             throw IllegalArgumentException("Invalid matrix: Rows must have the same length")
         }
-        val vector = Vector()
-        vector.elements = elements.map(Number::toDouble).toMutableList()
-        element.add(vector.elements)
+        element.add(elements.map(Number::toDouble).toMutableList())
     }
 
     fun appendRow(elements: MutableList<Double>): Mat {

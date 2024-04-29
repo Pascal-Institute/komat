@@ -219,6 +219,20 @@ class Mat {
         return this
     }
 
+    fun dotProduct(mat : Mat): Double{
+        if (row != 1 || mat.row != 1 ) {
+            throw IllegalArgumentException("Invalid matrix: Matrix row must be 1")
+        }
+
+        var sum  = 0.0
+
+        element[0].forEachIndexed { index, value ->
+            sum += value * mat.element[0][index]
+        }
+
+        return sum
+    }
+
     operator fun plus(mat: Mat): Mat {
 
         if (!isValid(row, column, mat.row, mat.column)) {
@@ -303,7 +317,7 @@ class Mat {
         return this
     }
 
-    fun exchangeColumnumn(src: Int, dst: Int): Mat {
+    fun exchangeColumn(src: Int, dst: Int): Mat {
 
         val matCopy = this.copy()
 

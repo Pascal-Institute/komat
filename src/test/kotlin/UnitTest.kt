@@ -191,7 +191,7 @@ class UnitTest {
             mat {
                 v(1, 2, 3)
                 v(4, 5, 6)
-            }.getColsInRange(0, 2).element,
+            }.getColumnsInRange(0, 2).element,
             mat {
                 v(1, 2)
                 v(4, 5)
@@ -252,7 +252,7 @@ class UnitTest {
     @Test
     fun `test appendCol`() {
         var mat4 = mat1.copy()
-        mat4.appendCol(mutableListOf(3.0, 5.0))
+        mat4.appendColumn(mutableListOf(3.0, 5.0))
         assertEquals(mat4.element, mat{
             v(1, 2, 3)
             v(3, 4, 5)
@@ -262,7 +262,7 @@ class UnitTest {
     @Test
     fun `test appendCol2`() {
         var mat4 = mat1.copy()
-        mat4.appendCol(3.0, 5.0)
+        mat4.appendColumn(3.0, 5.0)
         assertEquals(mat4.element, mat{
             v(1, 2, 3)
             v(3, 4, 5)

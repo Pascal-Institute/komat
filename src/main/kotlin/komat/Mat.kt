@@ -338,6 +338,10 @@ class Mat {
         return this
     }
 
+    fun isSquare(): Boolean {
+        return (row == column)
+    }
+
     fun isZero(rowElement: MutableList<Double>): Boolean {
         return (rowElement.sum() == 0.0)
     }

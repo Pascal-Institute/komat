@@ -1,5 +1,6 @@
 package komat
 
+import komat.Generator.Companion.e
 import komat.Generator.Companion.zero
 import komat.prop.Axis
 import kotlin.math.pow
@@ -344,6 +345,16 @@ class Mat {
 
     fun isZero(rowElement: MutableList<Double>): Boolean {
         return (rowElement.sum() == 0.0)
+    }
+
+    fun isInvertible(matB: Mat): Boolean {
+        if(!(this.isSquare() && matB.isSquare())){
+            throw IllegalArgumentException("Invalid matrix: A, B matrix must be square matrix")
+        }
+
+        val mat = this * matB
+
+        return (mat == matB * this) && (mat == e(mat.row))
     }
 
     fun hasZeroRow(): Boolean {

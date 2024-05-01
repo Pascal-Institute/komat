@@ -399,8 +399,7 @@ class Mat {
         return this
     }
 
-
-     fun det(): Double {
+    fun det(): Double {
 
         var sum: Double = 0.0
 

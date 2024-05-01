@@ -32,11 +32,24 @@ class UnitTest {
         v(0, 2, 0, 4)
     }
 
-    val mat5 = mat{
+    val mat5 = mat {
         v(1, 3, 4, 1)
         v(1, 2, -3, 2)
         v(2, 6, 5, 6)
         v(3, 4, 5, 9)
+    }
+
+    val mat6 = mat {
+        v(2, 1, 3)
+        v(-1, 0, 2)
+        v(4, 3, 1)
+    }
+
+    val mat7 = mat {
+        v(1, 2, 3, 4)
+        v(2, 4, 5, 6)
+        v(3, 5, 7, 8)
+        v(4, 6, 8, 10)
     }
 
     @Test
@@ -85,7 +98,7 @@ class UnitTest {
     }
 
     @Test
-    fun `test flip`(){
+    fun `test flip`() {
         assertEquals(
             mat1.flip(Axis.HORIZONTAL).element,
             mat {
@@ -142,6 +155,31 @@ class UnitTest {
     }
 
     @Test
+    fun `test adjugate`() {
+        assertEquals(
+            mat6.adjugate().element,
+            mat {
+                v(-6, 8, 2)
+                v(9, -10, -7)
+                v(-3, -2, 1)
+            }.element
+        )
+    }
+
+    @Test
+    fun `test inverse`(){
+        assertEquals(
+            mat7.inverse().element,
+            mat {
+                v(-1, -1, 0, 1)
+                v(-1, 2, -1, 0)
+                v(0, -1, 2, -1)
+                v(1, 0, -1, 0.5)
+            }.element
+        )
+    }
+
+    @Test
     fun `test transpose`() {
         assertEquals(
             mat {
@@ -173,21 +211,23 @@ class UnitTest {
     }
 
     @Test
-    fun `test removeColumnAt`(){
-        assertEquals(mat4.removeColumnAt(1).element,
-            mat{
+    fun `test removeColumnAt`() {
+        assertEquals(
+            mat4.removeColumnAt(1).element,
+            mat {
                 v(1, 0, 0)
                 v(0, 3, 0)
                 v(1, 3, 1)
                 v(0, 0, 4)
             }.element
-            )
+        )
     }
 
     @Test
-    fun `test removeRowAt`(){
-        assertEquals(mat4.removeRowAt(2).element,
-            mat{
+    fun `test removeRowAt`() {
+        assertEquals(
+            mat4.removeRowAt(2).element,
+            mat {
                 v(1, 0, 0, 0)
                 v(0, 2, 3, 0)
                 v(0, 2, 0, 4)
@@ -196,9 +236,10 @@ class UnitTest {
     }
 
     @Test
-    fun `test removeAt`(){
-        assertEquals(mat4.removeAt(2, 1).element,
-            mat{
+    fun `test removeAt`() {
+        assertEquals(
+            mat4.removeAt(2, 1).element,
+            mat {
                 v(1, 0, 0)
                 v(0, 3, 0)
                 v(0, 0, 4)
@@ -248,7 +289,7 @@ class UnitTest {
     }
 
     @Test
-    fun `test det`(){
+    fun `test det`() {
         assertEquals(
             mat5.det(), 115.0
         )
@@ -308,7 +349,7 @@ class UnitTest {
     fun `test appendCol`() {
         var mat4 = mat1.copy()
         mat4.appendColumn(mutableListOf(3.0, 5.0))
-        assertEquals(mat4.element, mat{
+        assertEquals(mat4.element, mat {
             v(1, 2, 3)
             v(3, 4, 5)
         }.element)
@@ -318,7 +359,7 @@ class UnitTest {
     fun `test appendCol2`() {
         var mat4 = mat1.copy()
         mat4.appendColumn(3.0, 5.0)
-        assertEquals(mat4.element, mat{
+        assertEquals(mat4.element, mat {
             v(1, 2, 3)
             v(3, 4, 5)
         }.element)

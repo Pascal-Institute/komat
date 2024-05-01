@@ -1,5 +1,6 @@
 package komat
 
+import komat.Generator.Companion.e
 import komat.Generator.Companion.zero
 import komat.prop.Axis
 import kotlin.math.pow
@@ -42,21 +43,6 @@ class Mat {
         updateSize()
     }
 
-    private fun updateSize() {
-        this.row = element.size
-        this.column = element[0].size
-    }
-
-    fun print() {
-        for (row in this.element) {
-            println(row.joinToString(", ", "[", "]"))
-        }
-    }
-
-    fun copy(): Mat {
-        return Mat(this.element)
-    }
-
     private fun isValid(srcColumn: Int, dstRow: Int): Boolean {
         return (srcColumn == dstRow)
     }
@@ -83,6 +69,55 @@ class Mat {
 
     fun hasNoSolution(mat: Mat): Boolean {
         return mat.hasZeroRow()
+    }
+
+    fun isSquare(): Boolean {
+        return (row == column)
+    }
+
+    fun isZero(rowElement: MutableList<Double>): Boolean {
+        return (rowElement.sum() == 0.0)
+    }
+
+    fun isInvertible(): Boolean {
+        return (det() != 0.0)
+    }
+
+    fun hasZeroRow(): Boolean {
+        element.forEach {
+            if (isZero(it)) {
+                return true
+            }
+        }
+        return false
+    }
+
+    private fun updateSize() {
+        this.row = element.size
+        this.column = element[0].size
+    }
+
+    private fun cleanMinusZero() : Mat {
+
+        for(i : Int in 0..<row){
+            for(j : Int in 0..<column){
+                if(getValue(i,j) == -0.0){
+                    setValue(i, j, 0.0)
+                }
+            }
+        }
+
+        return this
+    }
+
+    fun print() {
+        for (row in this.element) {
+            println(row.joinToString(", ", "[", "]"))
+        }
+    }
+
+    fun copy(): Mat {
+        return Mat(this.element)
     }
 
     fun setValue(row: Int, column: Int, value: Double) {
@@ -297,6 +332,14 @@ class Mat {
         return newMat
     }
 
+    fun cofactor(row : Int, column: Int): Double{
+        if(!this.isSquare()){
+            throw IllegalArgumentException("Invalid matrix: matrix must be square")
+        }
+
+        return (-1).toDouble().pow(row + column) * copy().removeAt(row, column).det()
+    }
+
     fun transpose(): Mat {
 
         val newMat = Mat(this.column, this.row)
@@ -336,19 +379,6 @@ class Mat {
         this.element = matCopy.transpose().element
 
         return this
-    }
-
-    fun isZero(rowElement: MutableList<Double>): Boolean {
-        return (rowElement.sum() == 0.0)
-    }
-
-    fun hasZeroRow(): Boolean {
-        element.forEach {
-            if (isZero(it)) {
-                return true
-            }
-        }
-        return false
     }
 
     fun sum(): Double {
@@ -399,9 +429,26 @@ class Mat {
         return this
     }
 
+    fun adjugate() : Mat{
+
+        if(!this.isSquare()){
+            throw IllegalArgumentException("Invalid matrix: matrix must be square")
+        }
+
+        val mat = Mat(row, column)
+
+        for(i : Int in 0..<row){
+            for(j : Int in 0..<column){
+                mat.setValue(i, j , cofactor(i, j))
+            }
+        }
+
+        return mat.transpose()
+    }
+
     fun det(): Double {
 
-        var sum: Double = 0.0
+        var determinant = 0.0
 
         if (row != column) {
             throw IllegalArgumentException("Invalid matrix: Rows must have the same length")
@@ -412,9 +459,19 @@ class Mat {
         }
 
         for (j: Int in 0..<column) {
-            sum += (-1).toDouble().pow(0 + j) * getValue(0, j) * copy().removeAt(0, j).det()
+            determinant += cofactor(0,j) * getValue(0, j)
         }
-        return sum
+        return determinant
+    }
+
+    fun inverse() : Mat{
+        if(!this.isInvertible()){
+            throw IllegalArgumentException("Invalid matrix: matrix is not invertible")
+        }
+
+        val mat = (1.0 / det()) * adjugate()
+
+        return mat.cleanMinusZero()
     }
 
     /*

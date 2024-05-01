@@ -195,6 +195,12 @@ class Mat {
         return list
     }
 
+    fun removeRowAt(index: Int): Mat {
+        element.removeAt(index)
+
+        return this
+    }
+
     fun getRowsInRange(start: Int, end: Int): Mat {
 
         val elementCopy = mutableListOf<MutableList<Double>>()
@@ -206,17 +212,17 @@ class Mat {
         return Mat(elementCopy)
     }
 
+    fun removeColumnAt(index : Int) : Mat {
+        var matCopy = this.copy().transpose()
+        matCopy.removeRowAt(index)
+        return matCopy
+    }
+
     fun getColumnsInRange(start: Int, end: Int): Mat {
 
         var matCopy = this.copy().transpose()
 
         return matCopy.getRowsInRange(start, end).transpose()
-    }
-
-    fun removeRowAt(index: Int): Mat {
-        element.removeAt(index)
-
-        return this
     }
 
     fun dotProduct(mat : Mat): Double{

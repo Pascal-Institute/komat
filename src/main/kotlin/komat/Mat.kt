@@ -1,8 +1,8 @@
 package komat
 
-import komat.Converter.Companion.toMutableList
 import komat.Generator.Companion.zero
 import komat.prop.Axis
+import kotlin.math.pow
 
 //Support 2D Matrix
 class Mat {
@@ -19,14 +19,14 @@ class Mat {
     var element = mutableListOf<MutableList<Double>>()
     var row: Int = 0
         get() = if (element.isEmpty()) 0 else element.size
-    var col: Int = 0
+    var column: Int = 0
         get() = if (element.isEmpty()) 0 else element[0].size
 
 
     constructor()
 
-    constructor(row: Int, col: Int) : this(
-        MutableList(row) { MutableList(col) { 0.0 } }
+    constructor(row: Int, column: Int) : this(
+        MutableList(row) { MutableList(column) { 0.0 } }
     )
 
     constructor(elements: MutableList<MutableList<Double>>) {
@@ -44,7 +44,7 @@ class Mat {
 
     private fun updateSize() {
         this.row = element.size
-        this.col = element[0].size
+        this.column = element[0].size
     }
 
     fun print() {
@@ -57,12 +57,12 @@ class Mat {
         return Mat(this.element)
     }
 
-    private fun isValid(srcCol: Int, dstRow: Int): Boolean {
-        return (srcCol == dstRow)
+    private fun isValid(srcColumn: Int, dstRow: Int): Boolean {
+        return (srcColumn == dstRow)
     }
 
-    private fun isValid(srcRow: Int, srcCol: Int, dstRow: Int, dstCol: Int): Boolean {
-        return (srcRow == dstRow && srcCol == dstCol)
+    private fun isValid(srcRow: Int, srcColumn: Int, dstRow: Int, dstColumn: Int): Boolean {
+        return (srcRow == dstRow && srcColumn == dstColumn)
     }
 
     private fun isValid(elements: MutableList<MutableList<Double>>): Boolean {
@@ -71,10 +71,10 @@ class Mat {
     }
 
     private fun isValid(elements: Array<out Number>): Boolean {
-        if (col == 0) {
-            col = elements.size
+        if (column == 0) {
+            column = elements.size
         } else {
-            if (col != elements.size) {
+            if (column != elements.size) {
                 return false
             }
         }
@@ -85,12 +85,12 @@ class Mat {
         return mat.hasZeroRow()
     }
 
-    fun setValue(row: Int, col: Int, value: Double) {
-        element[row][col] = value
+    fun setValue(row: Int, column: Int, value: Double) {
+        element[row][column] = value
     }
 
-    fun getValue(row: Int, col: Int): Double {
-        return element[row][col]
+    fun getValue(row: Int, column: Int): Double {
+        return element[row][column]
     }
 
     /*
@@ -116,7 +116,6 @@ class Mat {
         if (!isValid(elements)) {
             throw IllegalArgumentException("Invalid matrix: Rows must have the same length")
         }
-
         element.add(elements.map(Number::toDouble).toMutableList())
     }
 
@@ -136,19 +135,19 @@ class Mat {
         element.add(idx, elements)
     }
 
-    fun appendCol(elements : MutableList<Double>) : Mat{
+    fun appendColumn(elements: MutableList<Double>): Mat {
         this.transpose().element.add(elements)
         this.transpose()
         return this
     }
 
-    fun appendCol(vararg elements : Number) : Mat{
+    fun appendColumn(vararg elements: Number): Mat {
         this.transpose().element.add(elements.map(Number::toDouble).toMutableList())
         this.transpose()
         return this
     }
 
-    fun appendColAt(idx: Int, elements: MutableList<Double>) : Mat{
+    fun appendColumnAt(idx: Int, elements: MutableList<Double>): Mat {
         this.transpose().element.add(idx, elements)
         this.transpose()
         return this
@@ -188,12 +187,18 @@ class Mat {
             Axis.VERTICAL -> {
                 this.transpose()
                 list.add(getRowsInRange(0, splitIndex))
-                list.add(getRowsInRange(splitIndex + 1, col - 1))
+                list.add(getRowsInRange(splitIndex + 1, column - 1))
                 this.transpose()
             }
         }
 
         return list
+    }
+
+    fun removeRowAt(index: Int): Mat {
+        element.removeAt(index)
+        updateSize()
+        return this
     }
 
     fun getRowsInRange(start: Int, end: Int): Mat {
@@ -207,27 +212,41 @@ class Mat {
         return Mat(elementCopy)
     }
 
-    fun getColsInRange(start: Int, end: Int): Mat {
-
-        var matCopy = this.copy().transpose()
-
-        return matCopy.getRowsInRange(start, end).transpose()
+    fun removeColumnAt(index: Int): Mat {
+        return transpose().removeRowAt(index).transpose()
     }
 
-    fun removeRowAt(index: Int): Mat {
-        element.removeAt(index)
+    fun removeAt(row: Int, column: Int): Mat {
+        val copy = removeRowAt(row).removeColumnAt(column)
+        return copy
+    }
 
-        return this
+    fun getColumnsInRange(start: Int, end: Int): Mat {
+        return transpose().getRowsInRange(start, end).transpose()
+    }
+
+    fun dotProduct(mat: Mat): Double {
+        if (row != 1 || mat.row != 1) {
+            throw IllegalArgumentException("Invalid matrix: Matrix row must be 1")
+        }
+
+        var sum = 0.0
+
+        element[0].forEachIndexed { index, value ->
+            sum += value * mat.element[0][index]
+        }
+
+        return sum
     }
 
     operator fun plus(mat: Mat): Mat {
 
-        if (!isValid(row, col, mat.row, mat.col)) {
+        if (!isValid(row, column, mat.row, mat.column)) {
             throw IllegalArgumentException("Invalid matrix: Matrix must be the same size")
         }
 
         for (i: Int in 0..<row) {
-            for (j: Int in 0..<col) {
+            for (j: Int in 0..<column) {
                 element[i][j] += mat.element[i][j]
             }
         }
@@ -237,12 +256,12 @@ class Mat {
 
     operator fun minus(mat: Mat): Mat {
 
-        if (!isValid(row, col, mat.row, mat.col)) {
+        if (!isValid(row, column, mat.row, mat.column)) {
             throw IllegalArgumentException("Invalid matrix: Matrix must be the same size")
         }
 
         for (i: Int in 0..<row) {
-            for (j: Int in 0..<col) {
+            for (j: Int in 0..<column) {
                 element[i][j] -= mat.element[i][j]
             }
         }
@@ -261,15 +280,15 @@ class Mat {
 
     operator fun times(mat: Mat): Mat {
 
-        if (!isValid(col, mat.row)) {
-            throw IllegalArgumentException("Invalid matrix: A column & B row must be the same")
+        if (!isValid(column, mat.row)) {
+            throw IllegalArgumentException("Invalid matrix: A columnumn & B row must be the same")
         }
 
-        val newMat = Mat(row, mat.col)
+        val newMat = Mat(row, mat.column)
 
         for (i: Int in 0..<newMat.row) {
-            for (j: Int in 0..<newMat.col) {
-                for (k: Int in 0..<col) {
+            for (j: Int in 0..<newMat.column) {
+                for (k: Int in 0..<column) {
                     newMat.element[i][j] += element[i][k] * mat.element[k][j]
                 }
             }
@@ -280,16 +299,16 @@ class Mat {
 
     fun transpose(): Mat {
 
-        val newMat = Mat(this.col, this.row)
+        val newMat = Mat(this.column, this.row)
 
         for (i in 0..<newMat.row) {
-            for (j in 0..<newMat.col) {
+            for (j in 0..<newMat.column) {
                 newMat.element[i][j] = element[j][i]
             }
         }
 
         this.row = newMat.row
-        this.col = newMat.col
+        this.column = newMat.column
         this.element = newMat.element
 
         return this
@@ -341,7 +360,7 @@ class Mat {
     }
 
     fun mean(): Double {
-        return sum() / (row * col)
+        return sum() / (row * column)
     }
 
     fun max(): Double {
@@ -369,7 +388,7 @@ class Mat {
                 val matCopy = copy()
                 matCopy.transpose()
                 matCopy.element.forEachIndexed { idx, it ->
-                    mat.appendRow(matCopy.element[col - idx - 1])
+                    mat.appendRow(matCopy.element[column - idx - 1])
                 }
                 mat.transpose()
             }
@@ -380,12 +399,29 @@ class Mat {
         return this
     }
 
+    fun det(): Double {
+
+        var sum: Double = 0.0
+
+        if (row != column) {
+            throw IllegalArgumentException("Invalid matrix: Rows must have the same length")
+        }
+
+        if (row == 2 && column == 2) {
+            return (getValue(0, 0) * getValue(1, 1) - getValue(0, 1) * getValue(1, 0))
+        }
+
+        for (j: Int in 0..<column) {
+            sum += (-1).toDouble().pow(0 + j) * getValue(0, j) * copy().removeAt(0, j).det()
+        }
+        return sum
+    }
 
     /*
     * Row Echelon Form
     *
     * Prop 1. All the leading entries in each of the rows of the matrix are 1.
-    * Prop 2. If a column contains a leading entry then all entries below that leading entry are zero.
+    * Prop 2. If a columnumn contains a leading entry then all entries below that leading entry are zero.
     * Prop 3. In any two consecutive non-zero rows, the leading entry in the upper row occurs to the left of the leading entry in the lower row.
     * Prop 4. All rows which consist entirely of zeroes appear at the bottom of the matrix.
     *  */
@@ -394,7 +430,7 @@ class Mat {
         //Prop 4.
         var zeroCount = 0
         var matCopy = copy()
-        val zeroRow = zero(matCopy.col).element[0]
+        val zeroRow = zero(matCopy.column).element[0]
 
         for (i: Int in 0..<row) {
             if (isZero(element[i])) {
@@ -411,7 +447,7 @@ class Mat {
         var token = 0
         val leading1 = mutableListOf<Int>()
 
-        for (j: Int in 0..<matCopy.col) {
+        for (j: Int in 0..<matCopy.column) {
             for (i: Int in token..<matCopy.row) {
                 if (matCopy.element[i][j] != 0.0) {
                     matCopy.ero1(i, token)
@@ -447,21 +483,21 @@ class Mat {
     * */
     fun solve(matB: Mat): Mat {
 
-        val matSolution = Mat(matB.row, matB.col)
+        val matSolution = Mat(matB.row, matB.column)
 
         var matAB = this.concat(matB, Axis.VERTICAL)
         var refMat = matAB.ref()
 
-        if (hasNoSolution(refMat.getColsInRange(0, col - 1))) {
+        if (hasNoSolution(refMat.getColumnsInRange(0, column - 1))) {
             throw IllegalArgumentException("Invalid matrix: Rows must have the same length")
         }
 
         matAB.flip(Axis.HORIZONTAL)
 
-        for(i : Int in 0 ..< row){
-            matSolution.element[i][0] = matAB.element[i][col-1]
-            for(j : Int in 0 ..< i){
-                matSolution.element[i][0] -= matSolution.element[i - 1][0] * matAB.element[i][col - j - 2]
+        for (i: Int in 0..<row) {
+            matSolution.element[i][0] = matAB.element[i][column - 1]
+            for (j: Int in 0..<i) {
+                matSolution.element[i][0] -= matSolution.element[i - 1][0] * matAB.element[i][column - j - 2]
             }
         }
 

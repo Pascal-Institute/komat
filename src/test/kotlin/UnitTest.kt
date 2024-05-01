@@ -25,6 +25,20 @@ class UnitTest {
         v(0, 2, 0, 0, 0)
     }
 
+    val mat4 = mat {
+        v(1, 0, 0, 0)
+        v(0, 2, 3, 0)
+        v(1, 1, 3, 1)
+        v(0, 2, 0, 4)
+    }
+
+    val mat5 = mat{
+        v(1, 3, 4, 1)
+        v(1, 2, -3, 2)
+        v(2, 6, 5, 6)
+        v(3, 4, 5, 9)
+    }
+
     @Test
     fun `test copy`() {
 
@@ -159,6 +173,40 @@ class UnitTest {
     }
 
     @Test
+    fun `test removeColumnAt`(){
+        assertEquals(mat4.removeColumnAt(1).element,
+            mat{
+                v(1, 0, 0)
+                v(0, 3, 0)
+                v(1, 3, 1)
+                v(0, 0, 4)
+            }.element
+            )
+    }
+
+    @Test
+    fun `test removeRowAt`(){
+        assertEquals(mat4.removeRowAt(2).element,
+            mat{
+                v(1, 0, 0, 0)
+                v(0, 2, 3, 0)
+                v(0, 2, 0, 4)
+            }.element
+        )
+    }
+
+    @Test
+    fun `test removeAt`(){
+        assertEquals(mat4.removeAt(2, 1).element,
+            mat{
+                v(1, 0, 0)
+                v(0, 3, 0)
+                v(0, 0, 4)
+            }.element
+        )
+    }
+
+    @Test
     fun `test concat`() {
         assertEquals(
             mat1.concat(
@@ -191,11 +239,18 @@ class UnitTest {
             mat {
                 v(1, 2, 3)
                 v(4, 5, 6)
-            }.getColsInRange(0, 2).element,
+            }.getColumnsInRange(0, 2).element,
             mat {
                 v(1, 2)
                 v(4, 5)
             }.element
+        )
+    }
+
+    @Test
+    fun `test det`(){
+        assertEquals(
+            mat5.det(), 115.0
         )
     }
 
@@ -252,7 +307,7 @@ class UnitTest {
     @Test
     fun `test appendCol`() {
         var mat4 = mat1.copy()
-        mat4.appendCol(mutableListOf(3.0, 5.0))
+        mat4.appendColumn(mutableListOf(3.0, 5.0))
         assertEquals(mat4.element, mat{
             v(1, 2, 3)
             v(3, 4, 5)
@@ -262,7 +317,7 @@ class UnitTest {
     @Test
     fun `test appendCol2`() {
         var mat4 = mat1.copy()
-        mat4.appendCol(3.0, 5.0)
+        mat4.appendColumn(3.0, 5.0)
         assertEquals(mat4.element, mat{
             v(1, 2, 3)
             v(3, 4, 5)

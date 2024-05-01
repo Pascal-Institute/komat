@@ -215,7 +215,7 @@ class Mat {
     fun removeColumnAt(index : Int) : Mat {
         var matCopy = this.copy().transpose()
         matCopy.removeRowAt(index)
-        return matCopy
+        return matCopy.transpose()
     }
 
     fun getColumnsInRange(start: Int, end: Int): Mat {

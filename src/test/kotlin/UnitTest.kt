@@ -189,6 +189,17 @@ class UnitTest {
     }
 
     @Test
+    fun `test removeAt`(){
+        assertEquals(mat4.removeAt(2, 1).element,
+            mat{
+                v(1, 0, 0)
+                v(0, 3, 0)
+                v(0, 0, 4)
+            }.element
+        )
+    }
+
+    @Test
     fun `test concat`() {
         assertEquals(
             mat1.concat(

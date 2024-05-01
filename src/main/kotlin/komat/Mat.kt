@@ -1,6 +1,5 @@
 package komat
 
-import komat.Converter.Companion.toMutableList
 import komat.Generator.Companion.zero
 import komat.prop.Axis
 
@@ -197,7 +196,6 @@ class Mat {
 
     fun removeRowAt(index: Int): Mat {
         element.removeAt(index)
-
         return this
     }
 
@@ -213,9 +211,7 @@ class Mat {
     }
 
     fun removeColumnAt(index : Int) : Mat {
-        var matCopy = this.copy().transpose()
-        matCopy.removeRowAt(index)
-        return matCopy.transpose()
+        return copy().transpose().removeRowAt(index).transpose()
     }
 
     fun removeAt(row : Int, column : Int) : Mat {
@@ -223,10 +219,7 @@ class Mat {
     }
 
     fun getColumnsInRange(start: Int, end: Int): Mat {
-
-        var matCopy = this.copy().transpose()
-
-        return matCopy.getRowsInRange(start, end).transpose()
+        return copy().transpose().getRowsInRange(start, end).transpose()
     }
 
     fun dotProduct(mat : Mat): Double{

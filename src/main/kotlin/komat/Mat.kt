@@ -2,6 +2,7 @@ package komat
 
 import komat.Generator.Companion.zero
 import komat.prop.Axis
+import kotlin.math.pow
 
 //Support 2D Matrix
 class Mat {
@@ -134,19 +135,19 @@ class Mat {
         element.add(idx, elements)
     }
 
-    fun appendColumn(elements : MutableList<Double>) : Mat{
+    fun appendColumn(elements: MutableList<Double>): Mat {
         this.transpose().element.add(elements)
         this.transpose()
         return this
     }
 
-    fun appendColumn(vararg elements : Number) : Mat{
+    fun appendColumn(vararg elements: Number): Mat {
         this.transpose().element.add(elements.map(Number::toDouble).toMutableList())
         this.transpose()
         return this
     }
 
-    fun appendColumnAt(idx: Int, elements: MutableList<Double>) : Mat{
+    fun appendColumnAt(idx: Int, elements: MutableList<Double>): Mat {
         this.transpose().element.add(idx, elements)
         this.transpose()
         return this
@@ -196,6 +197,7 @@ class Mat {
 
     fun removeRowAt(index: Int): Mat {
         element.removeAt(index)
+        updateSize()
         return this
     }
 
@@ -210,24 +212,25 @@ class Mat {
         return Mat(elementCopy)
     }
 
-    fun removeColumnAt(index : Int) : Mat {
-        return copy().transpose().removeRowAt(index).transpose()
+    fun removeColumnAt(index: Int): Mat {
+        return transpose().removeRowAt(index).transpose()
     }
 
-    fun removeAt(row : Int, column : Int) : Mat {
-        return copy().removeRowAt(row).removeColumnAt(column)
+    fun removeAt(row: Int, column: Int): Mat {
+        val copy = removeRowAt(row).removeColumnAt(column)
+        return copy
     }
 
     fun getColumnsInRange(start: Int, end: Int): Mat {
-        return copy().transpose().getRowsInRange(start, end).transpose()
+        return transpose().getRowsInRange(start, end).transpose()
     }
 
-    fun dotProduct(mat : Mat): Double{
-        if (row != 1 || mat.row != 1 ) {
+    fun dotProduct(mat: Mat): Double {
+        if (row != 1 || mat.row != 1) {
             throw IllegalArgumentException("Invalid matrix: Matrix row must be 1")
         }
 
-        var sum  = 0.0
+        var sum = 0.0
 
         element[0].forEachIndexed { index, value ->
             sum += value * mat.element[0][index]
@@ -397,6 +400,24 @@ class Mat {
     }
 
 
+     fun det(): Double {
+
+        var sum: Double = 0.0
+
+        if (row != column) {
+            throw IllegalArgumentException("Invalid matrix: Rows must have the same length")
+        }
+
+        if (row == 2 && column == 2) {
+            return (getValue(0, 0) * getValue(1, 1) - getValue(0, 1) * getValue(1, 0))
+        }
+
+        for (j: Int in 0..<column) {
+            sum += (-1).toDouble().pow(0 + j) * getValue(0, j) * copy().removeAt(0, j).det()
+        }
+        return sum
+    }
+
     /*
     * Row Echelon Form
     *
@@ -474,9 +495,9 @@ class Mat {
 
         matAB.flip(Axis.HORIZONTAL)
 
-        for(i : Int in 0 ..< row){
-            matSolution.element[i][0] = matAB.element[i][column-1]
-            for(j : Int in 0 ..< i){
+        for (i: Int in 0..<row) {
+            matSolution.element[i][0] = matAB.element[i][column - 1]
+            for (j: Int in 0..<i) {
                 matSolution.element[i][0] -= matSolution.element[i - 1][0] * matAB.element[i][column - j - 2]
             }
         }

@@ -347,14 +347,8 @@ class Mat {
         return (rowElement.sum() == 0.0)
     }
 
-    fun isInvertible(matB: Mat): Boolean {
-        if(!(this.isSquare() && matB.isSquare())){
-            throw IllegalArgumentException("Invalid matrix: A, B matrix must be square matrix")
-        }
-
-        val mat = this * matB
-
-        return (mat == matB * this) && (mat == e(mat.row))
+    fun isInvertible(): Boolean {
+        return (det() != 0.0)
     }
 
     fun hasZeroRow(): Boolean {

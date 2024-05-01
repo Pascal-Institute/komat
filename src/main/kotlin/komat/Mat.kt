@@ -298,6 +298,14 @@ class Mat {
         return newMat
     }
 
+    fun cofactor(row : Int, column: Int): Double{
+        if(!this.isSquare()){
+            throw IllegalArgumentException("Invalid matrix: matrix must be square")
+        }
+
+        return (-1).toDouble().pow(row + column) * copy().removeAt(row, column).det()
+    }
+
     fun transpose(): Mat {
 
         val newMat = Mat(this.column, this.row)
@@ -421,7 +429,7 @@ class Mat {
         }
 
         for (j: Int in 0..<column) {
-            sum += (-1).toDouble().pow(0 + j) * getValue(0, j) * copy().removeAt(0, j).det()
+            sum += cofactor(0,j) * getValue(0, j)
         }
         return sum
     }

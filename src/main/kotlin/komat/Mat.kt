@@ -1,6 +1,7 @@
 package komat
 
 import komat.Generator.Companion.e
+import komat.Generator.Companion.mat
 import komat.Generator.Companion.zero
 import komat.prop.Axis
 import kotlin.math.pow
@@ -97,11 +98,11 @@ class Mat {
         this.column = element[0].size
     }
 
-    private fun cleanMinusZero() : Mat {
+    private fun cleanMinusZero(): Mat {
 
-        for(i : Int in 0..<row){
-            for(j : Int in 0..<column){
-                if(getValue(i,j) == -0.0){
+        for (i: Int in 0..<row) {
+            for (j: Int in 0..<column) {
+                if (getValue(i, j) == -0.0) {
                     setValue(i, j, 0.0)
                 }
             }
@@ -143,7 +144,11 @@ class Mat {
     fun ero3(scale: Double, src: Int, dst: Int): Mat {
         val srcRow = element[src]
         srcRow.replaceAll { it * scale }
-        element[dst].addAll(srcRow)
+
+        for (i: Int in 0..<this.column) {
+            element[dst][i] += srcRow[i]
+        }
+
         return exchangeRow(src, dst)
     }
 
@@ -332,8 +337,8 @@ class Mat {
         return newMat
     }
 
-    fun cofactor(row : Int, column: Int): Double{
-        if(!this.isSquare()){
+    fun cofactor(row: Int, column: Int): Double {
+        if (!this.isSquare()) {
             throw IllegalArgumentException("Invalid matrix: matrix must be square")
         }
 
@@ -429,17 +434,17 @@ class Mat {
         return this
     }
 
-    fun adjugate() : Mat{
+    fun adjugate(): Mat {
 
-        if(!this.isSquare()){
+        if (!this.isSquare()) {
             throw IllegalArgumentException("Invalid matrix: matrix must be square")
         }
 
         val mat = Mat(row, column)
 
-        for(i : Int in 0..<row){
-            for(j : Int in 0..<column){
-                mat.setValue(i, j , cofactor(i, j))
+        for (i: Int in 0..<row) {
+            for (j: Int in 0..<column) {
+                mat.setValue(i, j, cofactor(i, j))
             }
         }
 
@@ -459,13 +464,13 @@ class Mat {
         }
 
         for (j: Int in 0..<column) {
-            determinant += cofactor(0,j) * getValue(0, j)
+            determinant += cofactor(0, j) * getValue(0, j)
         }
         return determinant
     }
 
-    fun inverse() : Mat{
-        if(!this.isInvertible()){
+    fun inverse(): Mat {
+        if (!this.isInvertible()) {
             throw IllegalArgumentException("Invalid matrix: matrix is not invertible")
         }
 
@@ -502,7 +507,18 @@ class Mat {
         }
 
         var token = 0
-        val leading1 = mutableListOf<Int>()
+
+        while(token < matCopy.column){
+            for (i: Int in token..<matCopy.row) {
+                if (matCopy.element[i][token] != 0.0) {
+
+                } else {
+                    matCopy.ero1(i, matCopy.row - 1)
+                }
+            }
+            token++
+        }
+
 
         for (j: Int in 0..<matCopy.column) {
             for (i: Int in token..<matCopy.row) {
@@ -518,7 +534,6 @@ class Mat {
                             matCopy.ero3(-matCopy.element[k][j], token - 1, k)
                         }
                     }
-                    leading1.add(j)
                     break
                 }
             }
@@ -559,5 +574,18 @@ class Mat {
         }
 
         return matSolution.flip(Axis.HORIZONTAL)
+    }
+
+
+    /*
+        * A =  I * A
+        * */
+    fun luDecompose(): Mat {
+        if (!this.isInvertible()) {
+            throw IllegalArgumentException("Invalid matrix: matrix is not invertible")
+        }
+
+        return this
+
     }
 }

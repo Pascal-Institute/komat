@@ -52,6 +52,12 @@ class UnitTest {
         v(4, 6, 8, 10)
     }
 
+    val mat8 = mat {
+        v(2, 1, -1)
+        v(-3, -1, 2)
+        v(-2, 1, 2)
+    }
+
     @Test
     fun `test copy`() {
 
@@ -324,6 +330,12 @@ class UnitTest {
 
     }
 
+    @Test
+    fun `test luDecompose`(){
+        mat8.print()
+        val matCopy = mat8.ref()
+        matCopy.print()
+    }
 
     @Test
     fun `test sum`() {

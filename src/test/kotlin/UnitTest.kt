@@ -20,7 +20,7 @@ class UnitTest {
 
     val mat3 = mat {
         v(0, 0, 0, 0, 0)
-        v(0, 0, 3, 0, 1)
+        v(0, 2, 3, 0, 1)
         v(1, 1, 0, 1, 0)
         v(0, 2, 0, 0, 0)
     }
@@ -306,8 +306,8 @@ class UnitTest {
         assertEquals(
             mat {
                 v(1, 1, 0, 1, 0)
-                v(0, 1, 0, 0, 0)
-                v(0, 0, 1, 0, (1.0 / 3))
+                v(0, 2, 3, 0, 1)
+                v(0, 0, -3, 0, -1)
                 v(0, 0, 0, 0, 0)
             }.element,
             mat3.ref().element

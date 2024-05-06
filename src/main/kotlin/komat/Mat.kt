@@ -142,14 +142,14 @@ class Mat {
     }
 
     fun ero3(scale: Double, src: Int, dst: Int): Mat {
-        val srcRow = element[src]
+        val srcRow = element[src].toMutableList()
         srcRow.replaceAll { it * scale }
 
         for (i: Int in 0..<this.column) {
             element[dst][i] += srcRow[i]
         }
 
-        return exchangeRow(src, dst)
+        return this
     }
 
     fun v(vararg elements: Number) {
@@ -491,56 +491,54 @@ class Mat {
 
         //Prop 4.
         var zeroCount = 0
-        var matCopy = copy()
-        val zeroRow = zero(matCopy.column).element[0]
+        var matReference = copy()
+        val zeroRow = zero(matReference.column).element[0]
 
         for (i: Int in 0..<row) {
             if (isZero(element[i])) {
-                matCopy.removeRowAt(i)
-                matCopy.appendRow(zeroRow)
+                matReference.removeRowAt(i)
+                matReference.appendRow(zeroRow)
                 zeroCount++
             }
         }
 
         if (zeroCount > 0) {
-            matCopy = matCopy.getRowsInRange(0, row - zeroCount)
+            matReference = matReference.getRowsInRange(0, row - zeroCount)
+        }
+
+        var leading1 = mutableMapOf<Int, Int>()
+
+        for(i : Int in 0..<matReference.row){
+            for(j : Int in 0..<matReference.column){
+                if(matReference.element[i][j]!=0.0){
+                    leading1[i] = j
+                    break
+                }
+            }
+        }
+
+        val sortedMap = leading1.toList().sortedBy { (_, value) -> value }.toMap()
+
+        var matCopy = Mat(matReference.row, matReference.column)
+
+        var i = 0
+        for (key in sortedMap.keys) {
+            matCopy.element[i] = matReference.element[key]
+            i++
         }
 
         var token = 0
 
-        while(token < matCopy.column){
-            for (i: Int in token..<matCopy.row) {
-                if (matCopy.element[i][token] != 0.0) {
+        for (i: Int in 0..<matCopy.row) {
 
-                } else {
-                    matCopy.ero1(i, matCopy.row - 1)
+            for (j: Int in i + 1..<matCopy.row) {
+                if (matCopy.element[j][token] != 0.0) {
+                    matCopy.ero3(-(matCopy.element[j][token]/matCopy.element[i][token]), i, j)
                 }
             }
             token++
         }
 
-
-        for (j: Int in 0..<matCopy.column) {
-            for (i: Int in token..<matCopy.row) {
-                if (matCopy.element[i][j] != 0.0) {
-                    matCopy.ero1(i, token)
-
-                    val scale = 1.0 / matCopy.element[token][j]
-
-                    matCopy.ero2(scale, token)
-                    token++
-                    for (k: Int in token..<matCopy.row) {
-                        if (matCopy.element[k][j] != 0.0) {
-                            matCopy.ero3(-matCopy.element[k][j], token - 1, k)
-                        }
-                    }
-                    break
-                }
-            }
-            if (token == matCopy.row) {
-                break
-            }
-        }
 
         for (i: Int in 0..<zeroCount) {
             matCopy.appendRow(zeroRow)

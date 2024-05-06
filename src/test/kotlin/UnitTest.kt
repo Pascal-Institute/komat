@@ -315,6 +315,19 @@ class UnitTest {
     }
 
     @Test
+    fun `test rref`() {
+        assertEquals(
+            mat {
+                v(1, 0, 0, 1, 0)
+                v(0, 1, 0, 0, 0)
+                v(0, 0, 1, 0, 1.0/3)
+                v(0, 0, 0, 0, 0)
+            }.element,
+            mat3.rref().element
+        )
+    }
+
+    @Test
     fun `test solve`() {
         mat {
             v(1, 0, 0)
@@ -328,13 +341,6 @@ class UnitTest {
                 v(1)
             })
 
-    }
-
-    @Test
-    fun `test luDecompose`(){
-        mat8.print()
-        val matCopy = mat8.ref()
-        matCopy.print()
     }
 
     @Test

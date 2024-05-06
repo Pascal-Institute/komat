@@ -482,10 +482,9 @@ class Mat {
     /*
     * Row Echelon Form
     *
-    * Prop 1. All the leading entries in each of the rows of the matrix are 1.
-    * Prop 2. If a columnumn contains a leading entry then all entries below that leading entry are zero.
-    * Prop 3. In any two consecutive non-zero rows, the leading entry in the upper row occurs to the left of the leading entry in the lower row.
-    * Prop 4. All rows which consist entirely of zeroes appear at the bottom of the matrix.
+    * Prop 1. If a columnumn contains a leading entry then all entries below that leading entry are zero.
+    * Prop 2. In any two consecutive non-zero rows, the leading entry in the upper row occurs to the left of the leading entry in the lower row.
+    * Prop 3. All rows which consist entirely of zeroes appear at the bottom of the matrix.
     *  */
     fun ref(): Mat {
 
@@ -506,25 +505,12 @@ class Mat {
             matReference = matReference.getRowsInRange(0, row - zeroCount)
         }
 
-        var leading1 = mutableMapOf<Int, Int>()
+        val leadingEntry = getLeadingEntry(matReference)
 
-        for(i : Int in 0..<matReference.row){
-            for(j : Int in 0..<matReference.column){
-                if(matReference.element[i][j]!=0.0){
-                    leading1[i] = j
-                    break
-                }
-            }
-        }
+        val matCopy = Mat(matReference.row, matReference.column)
 
-        val sortedMap = leading1.toList().sortedBy { (_, value) -> value }.toMap()
-
-        var matCopy = Mat(matReference.row, matReference.column)
-
-        var i = 0
-        for (key in sortedMap.keys) {
+        for ((i, key) in leadingEntry.keys.withIndex()) {
             matCopy.element[i] = matReference.element[key]
-            i++
         }
 
         var token = 0
@@ -543,6 +529,56 @@ class Mat {
         for (i: Int in 0..<zeroCount) {
             matCopy.appendRow(zeroRow)
         }
+
+        return matCopy
+    }
+
+    private fun getLeadingEntry(mat : Mat) : Map<Int, Int> {
+        var leadingEntry = mutableMapOf<Int, Int>()
+
+        for(i : Int in 0..<mat.row){
+            for(j : Int in 0..<mat.column){
+                if(mat.element[i][j]!=0.0){
+                    leadingEntry[i] = j
+                    break
+                }
+            }
+        }
+        return leadingEntry.toList().sortedBy { (_, value) -> value }.toMap()
+    }
+
+    /*
+    * Reduced Row Echelon Form
+    *
+    * Prop 1. All the leading entries in each of the rows of the matrix are 1.
+    * Prop 2. If a columnumn contains a leading entry then all entries upper and below that leading entry are zero.
+    *  */
+    fun rref(): Mat {
+
+        val matCopy = this.ref()
+        val leadingEntry = getLeadingEntry(matCopy)
+
+        for (key in leadingEntry.keys) {
+            if(key == 0){
+
+            }else{
+                for(j : Int in 0..<matCopy.row){
+                    if(j == key){
+
+                    }else{
+                        var coef = -(matCopy.element[j][key]  / matCopy.element[key][leadingEntry[key]!!])
+                        matCopy.ero3(coef, key, j)
+                    }
+
+                }
+            }
+        }
+
+        for (key in leadingEntry.keys) {
+            matCopy.ero2( 1/matCopy.element[key][leadingEntry[key]!!], key)
+        }
+
+        matCopy.cleanMinusZero()
 
         return matCopy
     }
@@ -572,18 +608,5 @@ class Mat {
         }
 
         return matSolution.flip(Axis.HORIZONTAL)
-    }
-
-
-    /*
-        * A =  I * A
-        * */
-    fun luDecompose(): Mat {
-        if (!this.isInvertible()) {
-            throw IllegalArgumentException("Invalid matrix: matrix is not invertible")
-        }
-
-        return this
-
     }
 }

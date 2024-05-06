@@ -592,7 +592,7 @@ class Mat {
         val matSolution = Mat(matB.row, matB.column)
 
         var matAB = this.concat(matB, Axis.VERTICAL)
-        var refMat = matAB.ref()
+        var refMat = matAB.rref()
 
         if (hasNoSolution(refMat.getColumnsInRange(0, column - 1))) {
             throw IllegalArgumentException("Invalid matrix: Rows must have the same length")

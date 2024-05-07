@@ -28,7 +28,7 @@ publishing {
             groupId = "com.volta2030"
             artifactId = "komat"
 
-            version = "1.4.0"
+            version = "1.5.0"
 
             from(components["java"])
         }

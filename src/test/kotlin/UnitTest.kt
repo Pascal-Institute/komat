@@ -58,6 +58,12 @@ class UnitTest {
         v(-2, 1, 2)
     }
 
+    val mat9 = mat{
+        v(1,2,3)
+        v(2,4,6)
+        v(3,6,9)
+    }
+
     @Test
     fun `test copy`() {
 
@@ -324,6 +330,36 @@ class UnitTest {
                 v(0, 0, 0, 0, 0)
             }.element,
             mat3.rref().element
+        )
+    }
+
+    @Test
+    fun `test luDecompose`(){
+
+        val copy = mat9.copy()
+
+        val luDecomposeValue = copy.luDecompose()
+        assertEquals(luDecomposeValue.first.element, mat{
+            v(1,0,0)
+            v(2,1,0)
+            v(3,0,1)
+        }.element)
+        
+        assertEquals(luDecomposeValue.second.element, mat{
+            v(1,2,3)
+            v(0,0,0)
+            v(0,0,0)
+        }.element)
+
+        val restore = (luDecomposeValue.first * luDecomposeValue.second)
+
+        assertEquals(
+            restore.element,
+            mat{
+               v(1.0,2.0,3.0)
+                v(2.0,4.0,6.0)
+                v(3.0,6.0,9.0)
+            }.element,
         )
     }
 

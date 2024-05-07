@@ -482,13 +482,13 @@ class Mat {
     /*
     * Row Echelon Form
     *
-    * Prop 1. If a columnumn contains a leading entry then all entries below that leading entry are zero.
+    * Prop 1. If a column contains a leading entry then all entries below that leading entry are zero.
     * Prop 2. In any two consecutive non-zero rows, the leading entry in the upper row occurs to the left of the leading entry in the lower row.
     * Prop 3. All rows which consist entirely of zeroes appear at the bottom of the matrix.
     *  */
     fun ref(): Mat {
 
-        //Prop 4.
+        //Prop 3.
         var zeroCount = 0
         var matReference = copy()
         val zeroRow = zero(matReference.column).element[0]
@@ -581,6 +581,67 @@ class Mat {
         matCopy.cleanMinusZero()
 
         return matCopy
+    }
+
+    fun luDecompose() : Pair<Mat, Mat> {
+
+        var lowerMat = e(row)
+        val eromList = mutableListOf<Mat>()
+
+        //Prop 3.
+        var zeroCount = 0
+        var matReference = copy()
+        val zeroRow = zero(matReference.column).element[0]
+
+        for (i: Int in 0..<row) {
+            if (isZero(element[i])) {
+                matReference.removeRowAt(i)
+                matReference.appendRow(zeroRow)
+                zeroCount++
+            }
+        }
+
+        if (zeroCount > 0) {
+            matReference = matReference.getRowsInRange(0, row - zeroCount)
+        }
+
+        val leadingEntry = getLeadingEntry(matReference)
+
+        val matCopy = Mat(matReference.row, matReference.column)
+
+        for ((i, key) in leadingEntry.keys.withIndex()) {
+            matCopy.element[i] = matReference.element[key]
+        }
+
+        var token = 0
+
+        for (i: Int in 0..<matCopy.row) {
+
+            for (j: Int in i + 1..<matCopy.row) {
+                if (matCopy.element[j][token] != 0.0) {
+                    val scale = -(matCopy.element[j][token]/matCopy.element[i][token])
+                    matCopy.ero3(scale, i, j)
+                    val erom = e(row)
+                    erom.setValue(j, i, scale)
+                    eromList.add(erom)
+                }
+            }
+            token++
+        }
+
+
+        for (i: Int in 0..<zeroCount) {
+            matCopy.appendRow(zeroRow)
+        }
+
+        val upperMat = matCopy.copy()
+
+        eromList.reverse()
+        eromList.forEach {
+            lowerMat *= it.inverse()
+        }
+
+        return Pair(lowerMat, upperMat)
     }
 
     /*

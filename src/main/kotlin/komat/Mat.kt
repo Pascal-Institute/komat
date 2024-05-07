@@ -521,29 +521,39 @@ class Mat {
     *  */
     fun ref(): Mat {
 
-        var matReference = copy()
-
-        val leadingEntry = getLeadingEntry(matReference)
-
-        val matCopy = Mat(matReference.row, matReference.column)
+        val leadingEntry = getLeadingEntry()
 
         for ((i, key) in leadingEntry.keys.withIndex()) {
-            matCopy.element[i] = matReference.element[key]
+            exchangeRow(i, key)
         }
 
         var token = 0
 
-        for (i: Int in 0..<matCopy.row) {
-
-            for (j: Int in i + 1..<matCopy.row) {
-                if (matCopy.element[j][token] != 0.0) {
-                    matCopy.ero3(-(matCopy.element[j][token]/matCopy.element[i][token]), i, j)
+        for (i: Int in 0..<row) {
+            for (j: Int in i + 1..<row) {
+                if (element[j][token] != 0.0) {
+                    val coef = -(element[j][token]/element[i][token])
+                    ero3(coef, i, j)
                 }
             }
             token++
         }
 
-        return matCopy
+        return this
+    }
+
+    private fun getLeadingEntry() : Map<Int, Int> {
+        var leadingEntry = mutableMapOf<Int, Int>()
+
+        for(i : Int in 0..<row){
+            for(j : Int in 0..<column){
+                if(element[i][j]!=0.0){
+                    leadingEntry[i] = j
+                    break
+                }
+            }
+        }
+        return leadingEntry.toList().sortedBy { (_, value) -> value }.toMap()
     }
 
     private fun getLeadingEntry(mat : Mat) : Map<Int, Int> {
@@ -579,7 +589,7 @@ class Mat {
                     if(j == key){
 
                     }else{
-                        var coef = -(matCopy.element[j][key]  / matCopy.element[key][leadingEntry[key]!!])
+                        val coef = -(matCopy.element[j][key]  / matCopy.element[key][leadingEntry[key]!!])
                         matCopy.ero3(coef, key, j)
                     }
 

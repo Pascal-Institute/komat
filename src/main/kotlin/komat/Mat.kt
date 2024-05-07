@@ -76,6 +76,17 @@ class Mat {
         return (row == column)
     }
 
+    fun isSymmetric(): Boolean {
+        if(!isSquare()){
+            throw IllegalArgumentException("Invalid matrix: matrix must be square")
+        }
+
+        val matCopy = copy()
+        transpose()
+
+        return (matCopy.element == this.element)
+    }
+
     fun isZero(rowElement: MutableList<Double>): Boolean {
         return (rowElement.sum() == 0.0)
     }

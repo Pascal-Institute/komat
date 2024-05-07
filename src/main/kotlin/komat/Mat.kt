@@ -77,7 +77,7 @@ class Mat {
     }
 
     fun isSymmetric(): Boolean {
-        if(!isSquare()){
+        if (!isSquare()) {
             throw IllegalArgumentException("Invalid matrix: matrix must be square")
         }
 
@@ -88,18 +88,18 @@ class Mat {
     }
 
     fun isDiagonal(): Boolean {
-        if(!isSquare()){
+        if (!isSquare()) {
             throw IllegalArgumentException("Invalid matrix: matrix must be square")
         }
 
-        for(i : Int in 0 ..<row){
-            for(j : Int in 0..<column){
-                if(i == j){
-                    if(element[i][j] == 0.0){
+        for (i: Int in 0..<row) {
+            for (j: Int in 0..<column) {
+                if (i == j) {
+                    if (element[i][j] == 0.0) {
                         return false
                     }
-                }else{
-                    if(element[i][j]!=0.0){
+                } else {
+                    if (element[i][j] != 0.0) {
                         return false
                     }
                 }
@@ -532,7 +532,7 @@ class Mat {
         for (i: Int in 0..<row) {
             for (j: Int in i + 1..<row) {
                 if (element[j][token] != 0.0) {
-                    val coef = -(element[j][token]/element[i][token])
+                    val coef = -(element[j][token] / element[i][token])
                     ero3(coef, i, j)
                 }
             }
@@ -542,12 +542,12 @@ class Mat {
         return this
     }
 
-    private fun getLeadingEntry() : Map<Int, Int> {
+    private fun getLeadingEntry(): Map<Int, Int> {
         var leadingEntry = mutableMapOf<Int, Int>()
 
-        for(i : Int in 0..<row){
-            for(j : Int in 0..<column){
-                if(element[i][j]!=0.0){
+        for (i: Int in 0..<row) {
+            for (j: Int in 0..<column) {
+                if (element[i][j] != 0.0) {
                     leadingEntry[i] = j
                     break
                 }
@@ -556,12 +556,12 @@ class Mat {
         return leadingEntry.toList().sortedBy { (_, value) -> value }.toMap()
     }
 
-    private fun getLeadingEntry(mat : Mat) : Map<Int, Int> {
+    private fun getLeadingEntry(mat: Mat): Map<Int, Int> {
         var leadingEntry = mutableMapOf<Int, Int>()
 
-        for(i : Int in 0..<mat.row){
-            for(j : Int in 0..<mat.column){
-                if(mat.element[i][j]!=0.0){
+        for (i: Int in 0..<mat.row) {
+            for (j: Int in 0..<mat.column) {
+                if (mat.element[i][j] != 0.0) {
                     leadingEntry[i] = j
                     break
                 }
@@ -584,9 +584,9 @@ class Mat {
 
         for (key in leadingEntry.keys) {
             if (key != 0) {
-                for(j : Int in 0..<row){
+                for (j: Int in 0..<row) {
                     if (j != key) {
-                        val coef = -(element[j][key]  / element[key][leadingEntry[key]!!])
+                        val coef = -(element[j][key] / element[key][leadingEntry[key]!!])
                         ero3(coef, key, j)
                     }
 
@@ -595,7 +595,7 @@ class Mat {
         }
 
         for (key in leadingEntry.keys) {
-            ero2(1/element[key][leadingEntry[key]!!], key)
+            ero2(1 / element[key][leadingEntry[key]!!], key)
         }
 
         cleanMinusZero()
@@ -603,7 +603,7 @@ class Mat {
         return this
     }
 
-    fun luDecompose() : Pair<Mat, Mat> {
+    fun luDecompose(): Pair<Mat, Mat> {
 
         var lowerMat = e(row)
         val eromList = mutableListOf<Mat>()
@@ -626,7 +626,7 @@ class Mat {
 
             for (j: Int in i + 1..<matCopy.row) {
                 if (matCopy.element[j][token] != 0.0) {
-                    val scale = -(matCopy.element[j][token]/matCopy.element[i][token])
+                    val scale = -(matCopy.element[j][token] / matCopy.element[i][token])
                     matCopy.ero3(scale, i, j)
                     val erom = e(row)
                     erom.setValue(j, i, scale)
@@ -655,15 +655,15 @@ class Mat {
         val matSolution = Mat(matB.row, matB.column)
 
         var matAB = this.concat(matB, Axis.VERTICAL)
-        var refMat = matAB.rref()
+        matAB.rref()
 
-        if (hasNoSolution(refMat.getColumnsInRange(0, column - 1))) {
+        if (hasNoSolution(getColumnsInRange(0, matAB.column - 1))) {
             throw IllegalArgumentException("Invalid matrix: Rows must have the same length")
         }
 
         matAB.flip(Axis.HORIZONTAL)
 
-        for (i: Int in 0..<row) {
+        for (i: Int in 0..<matSolution.row) {
             matSolution.element[i][0] = matAB.element[i][column - 1]
             for (j: Int in 0..<i) {
                 matSolution.element[i][0] -= matSolution.element[i - 1][0] * matAB.element[i][column - j - 2]

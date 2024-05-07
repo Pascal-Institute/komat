@@ -87,6 +87,28 @@ class Mat {
         return (matCopy.element == this.element)
     }
 
+    fun isDiagonal(): Boolean {
+        if(!isSquare()){
+            throw IllegalArgumentException("Invalid matrix: matrix must be square")
+        }
+
+        for(i : Int in 0 ..<row){
+            for(j : Int in 0..<column){
+                if(i == j){
+                    if(element[i][j] == 0.0){
+                        return false
+                    }
+                }else{
+                    if(element[i][j]!=0.0){
+                        return false
+                    }
+                }
+            }
+        }
+
+        return true
+    }
+
     fun isZero(rowElement: MutableList<Double>): Boolean {
         return (rowElement.sum() == 0.0)
     }
@@ -499,22 +521,7 @@ class Mat {
     *  */
     fun ref(): Mat {
 
-        //Prop 3.
-        var zeroCount = 0
         var matReference = copy()
-        val zeroRow = zero(matReference.column).element[0]
-
-        for (i: Int in 0..<row) {
-            if (isZero(element[i])) {
-                matReference.removeRowAt(i)
-                matReference.appendRow(zeroRow)
-                zeroCount++
-            }
-        }
-
-        if (zeroCount > 0) {
-            matReference = matReference.getRowsInRange(0, row - zeroCount)
-        }
 
         val leadingEntry = getLeadingEntry(matReference)
 
@@ -534,11 +541,6 @@ class Mat {
                 }
             }
             token++
-        }
-
-
-        for (i: Int in 0..<zeroCount) {
-            matCopy.appendRow(zeroRow)
         }
 
         return matCopy
@@ -600,21 +602,8 @@ class Mat {
         val eromList = mutableListOf<Mat>()
 
         //Prop 3.
-        var zeroCount = 0
+
         var matReference = copy()
-        val zeroRow = zero(matReference.column).element[0]
-
-        for (i: Int in 0..<row) {
-            if (isZero(element[i])) {
-                matReference.removeRowAt(i)
-                matReference.appendRow(zeroRow)
-                zeroCount++
-            }
-        }
-
-        if (zeroCount > 0) {
-            matReference = matReference.getRowsInRange(0, row - zeroCount)
-        }
 
         val leadingEntry = getLeadingEntry(matReference)
 
@@ -638,11 +627,6 @@ class Mat {
                 }
             }
             token++
-        }
-
-
-        for (i: Int in 0..<zeroCount) {
-            matCopy.appendRow(zeroRow)
         }
 
         val upperMat = matCopy.copy()

@@ -578,19 +578,16 @@ class Mat {
     *  */
     fun rref(): Mat {
 
-        val matCopy = this.ref()
-        val leadingEntry = getLeadingEntry(matCopy)
+        ref()
+
+        val leadingEntry = getLeadingEntry()
 
         for (key in leadingEntry.keys) {
-            if(key == 0){
-
-            }else{
-                for(j : Int in 0..<matCopy.row){
-                    if(j == key){
-
-                    }else{
-                        val coef = -(matCopy.element[j][key]  / matCopy.element[key][leadingEntry[key]!!])
-                        matCopy.ero3(coef, key, j)
+            if (key != 0) {
+                for(j : Int in 0..<row){
+                    if (j != key) {
+                        val coef = -(element[j][key]  / element[key][leadingEntry[key]!!])
+                        ero3(coef, key, j)
                     }
 
                 }
@@ -598,12 +595,12 @@ class Mat {
         }
 
         for (key in leadingEntry.keys) {
-            matCopy.ero2( 1/matCopy.element[key][leadingEntry[key]!!], key)
+            ero2(1/element[key][leadingEntry[key]!!], key)
         }
 
-        matCopy.cleanMinusZero()
+        cleanMinusZero()
 
-        return matCopy
+        return this
     }
 
     fun luDecompose() : Pair<Mat, Mat> {

@@ -64,6 +64,12 @@ class UnitTest {
         v(3,6,9)
     }
 
+    val mat10 = mat{
+        v(3.0/7, 2.0/7, 6.0/7)
+        v(-6.0/7, 3.0/7, 2.0/7)
+        v(2.0/7, 6.0/7, -3.0/7)
+    }
+
     @Test
     fun `test copy`() {
 
@@ -75,6 +81,11 @@ class UnitTest {
         )
 
         assertEquals(mat1.element, copy.element)
+    }
+
+    @Test
+    fun `test isOrthogonal`() {
+        assertEquals(mat10.isOrthogonal(), true)
     }
 
     @Test

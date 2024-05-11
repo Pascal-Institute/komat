@@ -25,7 +25,7 @@ kotlin {
 publishing {
     publications {
         create<MavenPublication>("maven") {
-            groupId = "com.volta2030"
+            groupId = "com.volta2030" //Program Worlds Better
             artifactId = "komat"
 
             version = "1.4.0"

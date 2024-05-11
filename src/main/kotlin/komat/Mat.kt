@@ -109,6 +109,13 @@ class Mat {
         return true
     }
 
+    fun isOrthogonal() : Boolean {
+        val inverseMat = this.copy().inverse()
+        val transposeMat = this.copy().transpose()
+
+        return inverseMat.element == transposeMat.element
+    }
+
     fun isZero(rowElement: MutableList<Double>): Boolean {
         return (rowElement.sum() == 0.0)
     }

@@ -1,9 +1,13 @@
 package komat
 
-class Vect(init: DoubleArray) {
+class Vect() {
     var element = mutableListOf<Double>()
 
-    init {
-        element.addAll(init.asList())
+    constructor(vararg elem : Number) : this() {
+        element.addAll(elem.map { it.toDouble() })
+    }
+
+    constructor(elem : MutableList<Double>) : this(){
+        element = elem
     }
 }

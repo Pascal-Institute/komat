@@ -1,5 +1,5 @@
+import komat.Converter.Companion.toVect
 import komat.Generator.Companion.mat
-import komat.Generator.Companion.v
 import komat.Mat.Companion.times
 import komat.prop.Axis
 import org.junit.jupiter.api.Assertions.assertNotEquals
@@ -8,8 +8,6 @@ import org.junit.jupiter.api.assertThrows
 import kotlin.test.assertEquals
 
 class UnitTest {
-
-    val vect1 = v(1.0, 2.0, 3.0)
 
     val mat1 = mat {
         v(1, 2)
@@ -71,6 +69,12 @@ class UnitTest {
         v(3.0/7, 2.0/7, 6.0/7)
         v(-6.0/7, 3.0/7, 2.0/7)
         v(2.0/7, 6.0/7, -3.0/7)
+    }
+
+    @Test
+    fun `test toVect`(){
+        val list = mat3.toVect()
+        println(list)
     }
 
     @Test

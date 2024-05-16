@@ -2,12 +2,6 @@ package komat
 
 class Generator {
     companion object {
-        fun v(vararg init: Double) : Vect{
-            val vect = Vect(init)
-
-            return vect
-        }
-
         fun mat(init: Mat.() -> Unit) : Mat {
             val mat = Mat()
             mat.apply(init)

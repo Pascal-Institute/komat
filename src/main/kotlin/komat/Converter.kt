@@ -25,6 +25,17 @@ class Converter {
             }.toMutableList())
         }
 
+        fun Mat.toVect() : MutableList<Vect> {
+
+            val vectList = mutableListOf<Vect>()
+
+            element.forEach {
+                vectList.add(Vect(it));
+            }
+
+            return vectList;
+        }
+
         fun Mat.toArray() : Array<Array<Number>> {
             return this.element.map { it.map { it as Number }.toTypedArray() }.toTypedArray()
         }

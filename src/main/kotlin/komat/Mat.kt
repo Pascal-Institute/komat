@@ -3,7 +3,9 @@ package komat
 import komat.Generator.Companion.e
 import komat.Generator.Companion.mat
 import komat.Generator.Companion.zero
+import komat.Utility.Companion.EPSLION
 import komat.prop.Axis
+import kotlin.math.abs
 import kotlin.math.pow
 
 //Support 2D Matrix
@@ -106,6 +108,29 @@ class Mat {
             }
         }
 
+        return true
+    }
+
+    fun isOrthogonal() : Boolean {
+
+        val transposeMat = this.copy().transpose()
+        val identityMat = (this*transposeMat)
+
+        for (i in 0..<row) {
+            for (j in 0..<row) {
+                if (i == j) {
+                    // 대각 원소는 1이어야 함
+                    if (abs(identityMat.getValue(i, j) - 1.0) > EPSLION) {
+                        return false
+                    }
+                } else {
+                    // 비대각 원소는 0이어야 함
+                    if (Math.abs(identityMat.getValue(i, j)) > EPSLION) {
+                        return false
+                    }
+                }
+            }
+        }
         return true
     }
 

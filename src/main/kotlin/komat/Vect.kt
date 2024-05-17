@@ -11,11 +11,11 @@ class Vect() {
         element = elem
     }
 
-    fun dot() : Double {
+    fun dot(vect : Vect) : Double {
         var scalar = 1.0
 
-        element.forEach {
-            scalar *= it
+        element.forEachIndexed { index, it ->
+            scalar += it * vect.element[index]
         }
         return scalar
     }

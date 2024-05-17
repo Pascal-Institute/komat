@@ -28,7 +28,7 @@ publishing {
             groupId = "com.volta2030" //Program Worlds Better
             artifactId = "komat"
 
-            version = "1.6.0"
+            version = "1.6.1"
 
             from(components["java"])
         }

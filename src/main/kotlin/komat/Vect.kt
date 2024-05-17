@@ -1,5 +1,7 @@
 package komat
 
+import kotlin.math.sqrt
+
 class Vect() {
     var element = mutableListOf<Double>()
 
@@ -18,5 +20,16 @@ class Vect() {
             scalar += it * vect.element[index]
         }
         return scalar
+    }
+
+    fun l2Norm() : Double{
+
+        var sum = 0.0
+
+        element.forEach{
+            sum += (it * it)
+        }
+
+        return sqrt(sum)
     }
 }

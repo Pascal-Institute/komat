@@ -22,7 +22,7 @@ class Vect() {
         return scalar
     }
 
-    fun l2Norm() : Double{
+    fun l2norm() : Double{
 
         var sum = 0.0
 

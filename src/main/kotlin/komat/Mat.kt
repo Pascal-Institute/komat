@@ -7,6 +7,7 @@ import komat.Utility.Companion.EPSLION
 import komat.prop.Axis
 import kotlin.math.abs
 import kotlin.math.pow
+import kotlin.math.sqrt
 
 //Support 2D Matrix
 class Mat {
@@ -111,10 +112,10 @@ class Mat {
         return true
     }
 
-    fun isOrthogonal() : Boolean {
+    fun isOrthogonal(): Boolean {
 
         val transposeMat = this.copy().transpose()
-        val identityMat = (this*transposeMat)
+        val identityMat = (this * transposeMat)
 
         for (i in 0..<row) {
             for (j in 0..<row) {
@@ -185,6 +186,18 @@ class Mat {
 
     fun getValue(row: Int, column: Int): Double {
         return element[row][column]
+    }
+
+    fun l2norm(): Double {
+        var sum = 0.0
+
+        element.forEach { rowElement ->
+            rowElement.forEach {
+                sum += (it * it)
+            }
+        }
+
+        return sqrt(sum)
     }
 
     /*

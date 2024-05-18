@@ -1,5 +1,6 @@
 package komat
 
+import kotlin.math.exp
 import kotlin.math.sqrt
 
 class Vect() {
@@ -37,5 +38,20 @@ class Vect() {
         }
 
         return sqrt(sum)
+    }
+
+    fun softmax() : Vect{
+        var denominator = 0.0
+
+        element.forEach {
+            denominator += exp(it)
+        }
+
+        for(i : Int in 0..<element.size){
+            val numerator = exp(element[i])
+            element[i] = numerator/denominator
+        }
+
+        return this
     }
 }

@@ -20,6 +20,24 @@ class Vect() {
         return vect
     }
 
+    operator fun plus(vect: Vect): Vect {
+
+        for (i: Int in 0..<element.size) {
+                element[i] += vect.element[i]
+        }
+
+        return this
+    }
+
+    operator fun minus(vect: Vect): Vect {
+
+        for (i: Int in 0..<element.size) {
+            element[i] -= vect.element[i]
+        }
+
+        return this
+    }
+
     fun dot(vect: Vect): Double {
         var scalar = 1.0
 

@@ -4,6 +4,16 @@ import kotlin.math.exp
 import kotlin.math.sqrt
 
 class Vect() {
+    companion object {
+        operator fun Double.times(vect: Vect): Vect {
+
+            for (i: Int in 0..<vect.element.size) {
+                vect.element[i] *= vect.element[i]
+            }
+
+            return vect
+        }
+    }
     var element = mutableListOf<Double>()
 
     constructor(vararg elem: Number) : this() {
@@ -38,13 +48,14 @@ class Vect() {
         return this
     }
 
-    operator fun times(vect: Vect): Vect {
+    fun Double.times() : Vect{
+
+        val vect = copy()
 
         for (i: Int in 0..<element.size) {
-            element[i] *= vect.element[i]
+            element[i] = this * element[i]
         }
-
-        return this
+        return vect
     }
 
     fun dot(vect: Vect): Double {
@@ -80,5 +91,10 @@ class Vect() {
         }
 
         return this
+    }
+
+    //projection from this to u
+    fun project(u : Vect) : Vect{
+        return (u.dot(this) / u.dot(u))*u
     }
 }

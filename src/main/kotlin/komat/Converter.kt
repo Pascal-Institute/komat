@@ -1,5 +1,7 @@
 package komat
 
+import komat.Generator.Companion.mat
+
 class Converter {
     companion object{
 
@@ -23,6 +25,17 @@ class Converter {
             return Mat(this.map { row ->
                 row.map { it.toDouble() }.toMutableList()
             }.toMutableList())
+        }
+
+        fun MutableList<Vect>.toMat() : Mat {
+
+            val mutableListVect = this
+
+            return mat{
+                for(i : Int in 0..<mutableListVect.size){
+                    v(mutableListVect[i].element)
+                }
+            }
         }
 
         fun Mat.toVect() : MutableList<Vect> {

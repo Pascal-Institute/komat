@@ -223,6 +223,10 @@ class Mat {
         return this
     }
 
+    fun v(elements: MutableList<Double>) {
+        element.add(elements)
+    }
+
     fun v(vararg elements: Number) {
         if (!isValid(elements)) {
             throw IllegalArgumentException("Invalid matrix: Rows must have the same length")

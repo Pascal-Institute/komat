@@ -38,6 +38,15 @@ class Vect() {
         return this
     }
 
+    operator fun times(vect: Vect): Vect {
+
+        for (i: Int in 0..<element.size) {
+            element[i] *= vect.element[i]
+        }
+
+        return this
+    }
+
     fun dot(vect: Vect): Double {
         var scalar = 1.0
 

@@ -8,7 +8,7 @@ class Vect() {
         operator fun Double.times(vect: Vect): Vect {
 
             for (i: Int in 0..<vect.element.size) {
-                vect.element[i] *= vect.element[i]
+                vect.element[i] = this * vect.element[i]
             }
 
             return vect
@@ -59,7 +59,7 @@ class Vect() {
     }
 
     fun dot(vect: Vect): Double {
-        var scalar = 1.0
+        var scalar = 0.0
 
         element.forEachIndexed { index, it ->
             scalar += it * vect.element[index]

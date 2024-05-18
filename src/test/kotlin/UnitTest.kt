@@ -1,6 +1,7 @@
 import komat.Converter.Companion.toVect
 import komat.Generator.Companion.mat
 import komat.Mat.Companion.times
+import komat.Vect
 import komat.prop.Axis
 import org.junit.jupiter.api.Assertions.assertNotEquals
 import org.junit.jupiter.api.Test
@@ -75,6 +76,16 @@ class UnitTest {
     fun `test toVect`(){
         val list = mat3.toVect()
         println(list)
+    }
+
+    @Test
+    fun `test project`(){
+        val a = Vect(2, 3, 4)
+        val b = Vect(1, 0, 0)
+
+        assertEquals(a.project(b).element,
+            Vect(2, 0, 0).element)
+
     }
 
     @Test

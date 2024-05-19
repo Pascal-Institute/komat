@@ -103,6 +103,8 @@ class Vect() {
     }
 
     fun gramSchmidt(b : Vect) : Vect{
-        return (this - b.project(this))
+        val vect = this - project(b)
+
+        return vect
     }
 }

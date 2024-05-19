@@ -103,6 +103,15 @@ class UnitTest {
 
         assertEquals(a.project(b).element,
             Vect(2, 0, 0).element)
+    }
+
+    @Test
+    fun `test gramSchmidt`(){
+        val u1 = Vect(3,1)
+        val u2 = Vect(2,2)
+
+        assertEquals( u2.gramSchmidt(u1).element,
+            Vect(-0.4, 1.2).element)
 
     }
 

@@ -58,6 +58,10 @@ class Vect() {
         return vect
     }
 
+    fun isOrthogonal(vect: Vect) : Boolean {
+        return (dot(vect) == 0.0)
+    }
+
     fun dot(vect: Vect): Double {
         var scalar = 0.0
 
@@ -96,5 +100,9 @@ class Vect() {
     //projection from this to u
     fun project(u : Vect) : Vect{
         return (u.dot(this) / u.dot(u))*u
+    }
+
+    fun gramSchmidt(b : Vect) : Vect{
+        return (this - b.project(this))
     }
 }

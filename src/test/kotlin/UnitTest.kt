@@ -1,6 +1,9 @@
+import komat.Converter.Companion.toMat
 import komat.Converter.Companion.toVect
+import komat.Converter.Companion.vectToMat
 import komat.Generator.Companion.mat
 import komat.Mat.Companion.times
+import komat.Vect
 import komat.prop.Axis
 import org.junit.jupiter.api.Assertions.assertNotEquals
 import org.junit.jupiter.api.Test
@@ -72,9 +75,43 @@ class UnitTest {
     }
 
     @Test
+    fun `test toMat`(){
+        val mutablelistVect = mutableListOf<Vect>()
+
+        mutablelistVect.add(Vect(1,1,1,1,1))
+        mutablelistVect.add(Vect(2,2,2,2,2))
+        mutablelistVect.add(Vect(3,3,3,3,3))
+
+        assertEquals(mutablelistVect.vectToMat().element,
+            mat{
+                v(1,1,1,1,1)
+                v(2,2,2,2,2)
+                v(3,3,3,3,3)
+            }.element)
+    }
+
+    @Test
     fun `test toVect`(){
         val list = mat3.toVect()
         println(list)
+    }
+
+    @Test
+    fun `test project`(){
+        val a = Vect(2, 3, 4)
+        val b = Vect(1, 0, 0)
+
+        assertEquals(a.project(b).element,
+            Vect(2, 0, 0).element)
+    }
+
+    @Test
+    fun `test gramSchmidt`(){
+       /* val u1 = Vect(3,1)
+        val u2 = Vect(2,2)
+
+        assertEquals( u2.gramSchmidt(u1).element,
+            Vect(-0.4, 1.2).element)*/
     }
 
     @Test

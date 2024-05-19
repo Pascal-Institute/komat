@@ -1,4 +1,6 @@
+import komat.Converter.Companion.toMat
 import komat.Converter.Companion.toVect
+import komat.Converter.Companion.vectToMat
 import komat.Generator.Companion.mat
 import komat.Mat.Companion.times
 import komat.Vect
@@ -70,6 +72,22 @@ class UnitTest {
         v(3.0/7, 2.0/7, 6.0/7)
         v(-6.0/7, 3.0/7, 2.0/7)
         v(2.0/7, 6.0/7, -3.0/7)
+    }
+
+    @Test
+    fun `test toMat`(){
+        val mutablelistVect = mutableListOf<Vect>()
+
+        mutablelistVect.add(Vect(1,1,1,1,1))
+        mutablelistVect.add(Vect(2,2,2,2,2))
+        mutablelistVect.add(Vect(3,3,3,3,3))
+
+        assertEquals(mutablelistVect.vectToMat().element,
+            mat{
+                v(1,1,1,1,1)
+                v(2,2,2,2,2)
+                v(3,3,3,3,3)
+            }.element)
     }
 
     @Test

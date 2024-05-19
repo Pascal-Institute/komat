@@ -27,7 +27,7 @@ class Converter {
             }.toMutableList())
         }
 
-        fun MutableList<Vect>.toMat() : Mat {
+        fun MutableList<Vect>.vectToMat() : Mat {
 
             val mutableListVect = this
 

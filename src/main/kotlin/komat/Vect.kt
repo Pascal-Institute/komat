@@ -102,9 +102,9 @@ class Vect() {
         return (u.dot(this) / u.dot(u))*u
     }
 
+    //gramSchmidt for b
     fun gramSchmidt(b : Vect) : Vect{
         val vect = this - project(b)
-
         return vect
     }
 }

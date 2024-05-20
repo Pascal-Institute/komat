@@ -1,4 +1,3 @@
-import komat.Converter.Companion.toMat
 import komat.Converter.Companion.toVect
 import komat.Converter.Companion.vectToMat
 import komat.Generator.Companion.mat

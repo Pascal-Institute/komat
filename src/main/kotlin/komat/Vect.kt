@@ -14,7 +14,7 @@ class Vect() {
             return vect
         }
     }
-    var element = mutableListOf<Double>()
+    private var element = mutableListOf<Double>()
 
     constructor(vararg elem: Number) : this() {
         element.addAll(elem.map { it.toDouble() })
@@ -60,6 +60,26 @@ class Vect() {
 
     fun isOrthogonal(vect: Vect) : Boolean {
         return (dot(vect) == 0.0)
+    }
+
+    fun sum(): Double {
+        var sum = 0.0
+        for (value in element) {
+            sum += value
+        }
+        return sum
+    }
+
+    fun mean(): Double {
+        return sum() / (element.size)
+    }
+
+    fun max(): Double {
+        return element.maxOrNull() ?: Double.NaN
+    }
+
+    fun min(): Double {
+        return element.minOrNull() ?: Double.NaN
     }
 
     fun dot(vect: Vect): Double {

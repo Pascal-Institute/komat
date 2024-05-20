@@ -118,11 +118,11 @@ class Mat {
         for (i in 0..<row) {
             for (j in 0..<row) {
                 if (i == j) {
-                    if (abs(identityMat.getValue(i, j) - 1.0) > EPSLION) {
+                    if (abs(identityMat.get(i, j) - 1.0) > EPSLION) {
                         return false
                     }
                 } else {
-                    if (abs(identityMat.getValue(i, j)) > EPSLION) {
+                    if (abs(identityMat.get(i, j)) > EPSLION) {
                         return false
                     }
                 }
@@ -157,8 +157,8 @@ class Mat {
 
         for (i: Int in 0..<row) {
             for (j: Int in 0..<column) {
-                if (getValue(i, j) == -0.0) {
-                    setValue(i, j, 0.0)
+                if (get(i, j) == -0.0) {
+                    set(i, j, 0.0)
                 }
             }
         }
@@ -176,11 +176,11 @@ class Mat {
         return Mat(this.element)
     }
 
-    fun setValue(row: Int, column: Int, value: Double) {
+    operator fun set(row: Int, column: Int, value: Double) {
         element[row][column] = value
     }
 
-    fun getValue(row: Int, column: Int): Double {
+    operator fun get(row: Int, column: Int): Double {
         return element[row][column]
     }
 
@@ -515,7 +515,7 @@ class Mat {
 
         for (i: Int in 0..<row) {
             for (j: Int in 0..<column) {
-                mat.setValue(i, j, cofactor(i, j))
+                mat.set(i, j, cofactor(i, j))
             }
         }
 
@@ -531,11 +531,11 @@ class Mat {
         }
 
         if (row == 2 && column == 2) {
-            return (getValue(0, 0) * getValue(1, 1) - getValue(0, 1) * getValue(1, 0))
+            return (get(0, 0) * get(1, 1) - get(0, 1) * get(1, 0))
         }
 
         for (j: Int in 0..<column) {
-            determinant += cofactor(0, j) * getValue(0, j)
+            determinant += cofactor(0, j) * get(0, j)
         }
         return determinant
     }
@@ -667,7 +667,7 @@ class Mat {
                     val scale = -(matCopy.element[j][token] / matCopy.element[i][token])
                     matCopy.ero3(scale, i, j)
                     val erom = e(row)
-                    erom.setValue(j, i, scale)
+                    erom[j, i] = scale
                     eromList.add(erom)
                 }
             }

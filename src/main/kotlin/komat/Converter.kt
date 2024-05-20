@@ -33,7 +33,7 @@ class Converter {
 
             return mat{
                 for(i : Int in 0..<mutableListVect.size){
-                    mutableListVect[i]
+                    v(mutableListVect[i].element)
                 }
             }
         }

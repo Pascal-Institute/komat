@@ -3,7 +3,7 @@ package komat
 import kotlin.math.exp
 import kotlin.math.sqrt
 
-class Vect()  {
+open class Vect() {
     companion object {
         operator fun Double.times(vect: Vect): Vect {
 
@@ -14,6 +14,7 @@ class Vect()  {
             return vect
         }
     }
+
     var element = mutableListOf<Double>()
 
     operator fun get(index: Int): Double {
@@ -30,12 +31,6 @@ class Vect()  {
 
     constructor(elem: MutableList<Double>) : this() {
         element = elem
-    }
-
-    fun copy(): Vect {
-        val vect = Vect()
-        vect.element.addAll(this.element)
-        return vect
     }
 
     operator fun plus(vect: Vect): Vect {
@@ -58,15 +53,13 @@ class Vect()  {
 
     fun Double.times() : Vect{
 
-        val vect = copy()
-
         for (i: Int in 0..<element.size) {
             element[i] = this * element[i]
         }
-        return vect
+        return this@Vect
     }
 
-    fun isOrthogonal(vect: Vect) : Boolean {
+    open fun isOrthogonal(vect: Vect) : Boolean {
         return (dot(vect) == 0.0)
     }
 

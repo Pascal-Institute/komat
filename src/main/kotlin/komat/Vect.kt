@@ -14,7 +14,7 @@ class Vect() {
             return vect
         }
     }
-    private var element = mutableListOf<Double>()
+    var element = mutableListOf<Double>()
 
     constructor(vararg elem: Number) : this() {
         element.addAll(elem.map { it.toDouble() })

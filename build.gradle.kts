@@ -1,5 +1,5 @@
 plugins {
-    kotlin("jvm") version "2.0.0-RC1"
+    kotlin("jvm") version "2.0.0"
     `maven-publish`
 }
 
@@ -25,10 +25,10 @@ kotlin {
 publishing {
     publications {
         create<MavenPublication>("maven") {
-            groupId = "com.volta2030" //Program Worlds Better
+            groupId = "com.pascal.institute" //Navigate beyond computing oceans.
             artifactId = "komat"
 
-            version = "1.4.0"
+            version = "1.7.1"
 
             from(components["java"])
         }

@@ -8,6 +8,12 @@ class Generator {
             return mat
         }
 
+        fun mat2D(init: Mat2D.() -> Unit) : Mat2D {
+            val mat2d = Mat2D()
+            mat2d.apply(init)
+            return mat2d
+        }
+
         fun zero(size: Int): Mat {
             return Mat(size, size)
         }

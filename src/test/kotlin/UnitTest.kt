@@ -1,7 +1,7 @@
-import komat.Converter.Companion.toMat
 import komat.Converter.Companion.toVect
 import komat.Converter.Companion.vectToMat
 import komat.Generator.Companion.mat
+import komat.Generator.Companion.mat2D
 import komat.Mat.Companion.times
 import komat.Vect
 import komat.prop.Axis
@@ -477,5 +477,23 @@ class UnitTest {
     @Test
     fun `test print`() {
         mat1.print()
+    }
+
+    //Test for Mat2D
+    @Test
+    fun `test times`(){
+
+        val mat1 = mat2D {
+            v(1,2)
+            v(3,4)
+        }
+
+        val mat2 = mat2D {
+            v(4,3)
+            v(2,1)
+        }
+
+        val mat3 = mat1.times(mat2)
+        mat3.print()
     }
 }

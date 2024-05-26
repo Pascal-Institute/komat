@@ -76,6 +76,25 @@ class Mat2D : Vect {
         return newMat
     }
 
+    fun print(){
+        for (i : Int in 0..<row) {
+            print("[")
+            for(j : Int in 0..<column){
+                print(element[i * column + j])
+                when {
+                    (j + 1) % column == 0 -> {
+
+                    }
+                    else -> {
+                        print(", ")
+                    }
+                }
+
+            }
+            println("]")
+        }
+    }
+
     fun copy(): Mat2D {
         val mat = Mat2D(row, column)
         mat.element = element
@@ -114,22 +133,30 @@ class Mat2D : Vect {
         return mat
     }
 
-    fun print(){
-        for (i : Int in 0..<row) {
-            print("[")
-            for(j : Int in 0..<column){
-                print(element[i * column + j])
-                when {
-                    (j + 1) % column == 0 -> {
-
-                    }
-                    else -> {
-                        print(", ")
-                    }
-                }
-
-            }
-            println("]")
+    fun cofactor(row: Int, column: Int): Double {
+        if (!this.isSquare()) {
+            throw IllegalArgumentException("Invalid matrix: matrix must be square")
         }
+
+        return (-1).toDouble().pow(row + column) * copy().removeAt(row, column).det()
     }
+
+    fun det(): Double {
+
+        var determinant = 0.0
+
+        if (row != column) {
+            throw IllegalArgumentException("Invalid matrix: Rows must have the same length")
+        }
+
+        if (row == 2 && column == 2) {
+            return (this[0, 0] * this[1, 1] - this[0, 1] * this[1, 0])
+        }
+
+        for (j: Int in 0..<column) {
+            determinant += cofactor(0, j) * this[0, j]
+        }
+        return determinant
+    }
+
 }

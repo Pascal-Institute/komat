@@ -481,6 +481,21 @@ class UnitTest {
 
     //Test for Mat2D
     @Test
+    fun `test get set`(){
+        val mat = mat2D {
+            v(1, 2)
+            v(3, 4)
+        }
+
+        assertEquals(mat[0,0] ,1.0)
+
+        mat[0,0] = 100
+
+        assertEquals(mat[0,0], 100.0)
+
+    }
+
+    @Test
     fun `test times`(){
 
         val mat1 = mat2D {

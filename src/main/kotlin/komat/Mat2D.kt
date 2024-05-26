@@ -97,6 +97,10 @@ class Mat2D : Vect {
         return this
     }
 
+    fun removeColumnAt(index: Int): Mat2D {
+        return transpose().removeRowAt(index).transpose()
+    }
+
     fun print(){
         for (i : Int in 0..<row) {
             print("[")

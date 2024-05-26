@@ -45,6 +45,21 @@ class Mat2D : Vect {
     }
 
     fun print(){
-        println(element.joinToString(", ", "[", "]"))
+        for (i : Int in 0..<row) {
+            print("[")
+            for(j : Int in 0..<column){
+                print(element[i * column + j])
+                when {
+                    (j + 1) % column == 0 -> {
+
+                    }
+                    else -> {
+                        print(", ")
+                    }
+                }
+
+            }
+            println("]")
+        }
     }
 }

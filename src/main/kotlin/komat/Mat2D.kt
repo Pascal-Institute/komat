@@ -1,5 +1,7 @@
 package komat
 
+import kotlin.math.pow
+
 class Mat2D : Vect {
 
     var row: Int = 0
@@ -74,6 +76,12 @@ class Mat2D : Vect {
         return newMat
     }
 
+    fun copy(): Mat2D {
+        val mat = Mat2D(row, column)
+        mat.element = element
+        return mat
+    }
+
     fun transpose(): Mat2D {
 
         val mat = Mat2D(this.column, this.row)
@@ -99,6 +107,11 @@ class Mat2D : Vect {
 
     fun removeColumnAt(index: Int): Mat2D {
         return transpose().removeRowAt(index).transpose()
+    }
+
+    fun removeAt(row: Int, column: Int): Mat2D {
+        val mat = removeRowAt(row).removeColumnAt(column)
+        return mat
     }
 
     fun print(){

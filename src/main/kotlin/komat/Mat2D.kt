@@ -37,6 +37,10 @@ class Mat2D : Vect {
         return (srcRow == dstRow && srcColumn == dstColumn)
     }
 
+    fun isSquare(): Boolean {
+        return (row == column)
+    }
+
     operator fun get(i: Int, j: Int): Double {
         if (i >= row || j >= column) {
             throw IndexOutOfBoundsException("Index out of bounds: [$i, $j]")

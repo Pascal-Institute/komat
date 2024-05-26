@@ -515,4 +515,19 @@ class UnitTest {
             v(20, 13)
         }.element)
     }
+
+    @Test
+    fun `test mat2d transpose`(){
+        val mat = mat2D{
+            v(1,2,3)
+            v(4,5,6)
+        }
+
+        assertEquals(mat.transpose().element,
+            mat2D{
+                v(1,4)
+                v(2, 5)
+                v(3, 6)
+            }.element)
+    }
 }

@@ -74,6 +74,23 @@ class Mat2D : Vect {
         return newMat
     }
 
+    fun transpose(): Mat2D {
+
+        val mat = Mat2D(this.column, this.row)
+
+        for (i in 0..<mat.row) {
+            for (j in 0..<mat.column) {
+                mat[i, j] = this[j, i]
+            }
+        }
+
+        this.row = mat.row
+        this.column = mat.column
+        this.element = mat.element
+
+        return this
+    }
+
     fun removeRowAt(index: Int): Mat2D {
         element.subList(index * row, index * row + column).clear()
         row--

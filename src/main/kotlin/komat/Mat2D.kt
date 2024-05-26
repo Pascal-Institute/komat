@@ -33,6 +33,20 @@ class Mat2D : Vect {
         return (srcColumn == dstRow)
     }
 
+    operator fun get(i: Int, j: Int): Double {
+        if (i >= row || j >= column) {
+            throw IndexOutOfBoundsException("Index out of bounds: [$i, $j]")
+        }
+        return element[i * column + j]
+    }
+
+    operator fun set(i: Int, j: Int, value: Number) {
+        if (i >= row || j >= column) {
+            throw IndexOutOfBoundsException("Index out of bounds: [$i, $j]")
+        }
+        element[i * column + j] = value.toDouble()
+    }
+
     operator fun times(mat: Mat2D): Mat2D {
 
         if (!isValid(column, mat.row)) {

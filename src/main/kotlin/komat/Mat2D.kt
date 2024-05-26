@@ -74,6 +74,12 @@ class Mat2D : Vect {
         return newMat
     }
 
+    fun removeRowAt(index: Int): Mat2D {
+        element.subList(index * row, index * row + column).clear()
+        row--
+        return this
+    }
+
     fun print(){
         for (i : Int in 0..<row) {
             print("[")

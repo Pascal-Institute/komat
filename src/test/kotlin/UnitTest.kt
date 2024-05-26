@@ -494,6 +494,10 @@ class UnitTest {
         }
 
         val mat3 = mat1.times(mat2)
-        mat3.print()
+
+        assertEquals(mat3.element, mat2D {
+            v(8, 5)
+            v(20, 13)
+        }.element)
     }
 }

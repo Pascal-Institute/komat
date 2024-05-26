@@ -33,6 +33,10 @@ class Mat2D : Vect {
         return (srcColumn == dstRow)
     }
 
+    private fun isValid(srcRow: Int, srcColumn: Int, dstRow: Int, dstColumn: Int): Boolean {
+        return (srcRow == dstRow && srcColumn == dstColumn)
+    }
+
     operator fun get(i: Int, j: Int): Double {
         if (i >= row || j >= column) {
             throw IndexOutOfBoundsException("Index out of bounds: [$i, $j]")

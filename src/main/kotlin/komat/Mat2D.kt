@@ -29,7 +29,15 @@ class Mat2D : Vect {
         row++
     }
 
+    private fun isValid(srcColumn: Int, dstRow: Int): Boolean {
+        return (srcColumn == dstRow)
+    }
+
     operator fun times(mat: Mat2D): Mat2D {
+
+        if (!isValid(column, mat.row)) {
+            throw IllegalArgumentException("Invalid matrix: A's column & B's row must be the same")
+        }
 
         val newMat = Mat2D(row, mat.column)
 

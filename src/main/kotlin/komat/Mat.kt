@@ -537,6 +537,7 @@ class Mat {
         for (j: Int in 0..<column) {
             determinant += cofactor(0, j) * get(0, j)
         }
+        println(determinant)
         return determinant
     }
 

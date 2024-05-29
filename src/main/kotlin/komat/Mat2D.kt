@@ -80,7 +80,12 @@ class Mat2D : Vect {
         for (i : Int in 0..<row) {
             print("[")
             for(j : Int in 0..<column){
-                print(element[i * column + j])
+                try {
+                    print(element[i * column + j])
+                }catch (e : Exception){
+                    println()
+                }
+
                 when {
                     (j + 1) % column == 0 -> {
 
@@ -96,31 +101,30 @@ class Mat2D : Vect {
     }
 
     fun copy(): Mat2D {
-        val mat = Mat2D(row, column)
-        mat.element = element
+        val mat = this
         return mat
     }
 
     fun transpose(): Mat2D {
 
-        val mat = Mat2D(this.column, this.row)
+        val newMat = Mat2D(this.column, this.row)
 
-        for (i in 0..<mat.row) {
-            for (j in 0..<mat.column) {
-                mat[i, j] = this[j, i]
+        for (i in 0..<newMat.row) {
+            for (j in 0..<newMat.column) {
+                newMat[i,j] = this[j,i]
             }
         }
 
-        this.row = mat.row
-        this.column = mat.column
-        this.element = mat.element
+        this.row = newMat.row
+        this.column = newMat.column
+        this.element = newMat.element
 
         return this
     }
 
     fun removeRowAt(index: Int): Mat2D {
-        element.subList(index * row, index * row + column).clear()
-        row--
+        element.subList(index * column, index * (column + 1)).clear()
+        row -= 1
         return this
     }
 
@@ -129,34 +133,6 @@ class Mat2D : Vect {
     }
 
     fun removeAt(row: Int, column: Int): Mat2D {
-        val mat = removeRowAt(row).removeColumnAt(column)
-        return mat
+        return removeRowAt(row).removeColumnAt(column)
     }
-
-    fun cofactor(row: Int, column: Int): Double {
-        if (!this.isSquare()) {
-            throw IllegalArgumentException("Invalid matrix: matrix must be square")
-        }
-
-        return (-1).toDouble().pow(row + column) * copy().removeAt(row, column).det()
-    }
-
-    fun det(): Double {
-
-        var determinant = 0.0
-
-        if (row != column) {
-            throw IllegalArgumentException("Invalid matrix: Rows must have the same length")
-        }
-
-        if (row == 2 && column == 2) {
-            return (this[0, 0] * this[1, 1] - this[0, 1] * this[1, 0])
-        }
-
-        for (j: Int in 0..<column) {
-            determinant += cofactor(0, j) * this[0, j]
-        }
-        return determinant
-    }
-
 }

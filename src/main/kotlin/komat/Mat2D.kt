@@ -9,14 +9,14 @@ class Mat2D : Vect {
 
     constructor()
 
-    constructor(row: Int, column: Int){
+    constructor(row: Int, column: Int) {
         this.row = row
         this.column = column
-        element.addAll(MutableList(row * column){0.0})
+        element.addAll(MutableList(row * column) { 0.0 })
     }
 
     fun v(elements: MutableList<Double>) {
-        if(column == 0){
+        if (column == 0) {
             column = elements.size
         }
         element.addAll(elements)
@@ -24,7 +24,7 @@ class Mat2D : Vect {
     }
 
     fun v(vararg elements: Number) {
-        if(column == 0){
+        if (column == 0) {
             column = elements.size
         }
         element.addAll(elements.map(Number::toDouble).toMutableList())
@@ -68,7 +68,7 @@ class Mat2D : Vect {
         for (i: Int in 0..<newMat.row) {
             for (j: Int in 0..<newMat.column) {
                 for (k: Int in 0..<column) {
-                    newMat.element[i * newMat.column  + j] += element[i* column + k] * mat.element[k* mat.column + j]
+                    newMat.element[i * newMat.column + j] += element[i * column + k] * mat.element[k * mat.column + j]
                 }
             }
         }
@@ -76,20 +76,18 @@ class Mat2D : Vect {
         return newMat
     }
 
-    fun print(){
-        for (i : Int in 0..<row) {
+    fun print() {
+        for (i: Int in 0..<row) {
             print("[")
-            for(j : Int in 0..<column){
-                try {
-                    print(element[i * column + j])
-                }catch (e : Exception){
-                    println()
-                }
+            for (j: Int in 0..<column) {
+
+                print(this[i, j])
 
                 when {
                     (j + 1) % column == 0 -> {
 
                     }
+
                     else -> {
                         print(", ")
                     }
@@ -111,7 +109,7 @@ class Mat2D : Vect {
 
         for (i in 0..<newMat.row) {
             for (j in 0..<newMat.column) {
-                newMat[i,j] = this[j,i]
+                newMat[i, j] = this[j, i]
             }
         }
 
@@ -123,7 +121,11 @@ class Mat2D : Vect {
     }
 
     fun removeRowAt(index: Int): Mat2D {
-        element.subList(index * column, index * (column + 1)).clear()
+
+        for (i: Int in 0..<column) {
+            element.removeAt(index * column)
+        }
+
         row -= 1
         return this
     }

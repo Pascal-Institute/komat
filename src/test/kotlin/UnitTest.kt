@@ -532,9 +532,33 @@ class UnitTest {
     }
 
     @Test
+    fun `test mat2D removeRowAt`() {
+
+        val mat10 = mat2D {
+            v(1, 0, 0, 0)
+            v(0, 2, 3, 0)
+            v(1, 1, 3, 1)
+            v(0, 2, 0, 4)
+        }
+
+        mat10.removeRowAt(1)
+
+        assertEquals(
+            mat10.element,
+            mat2D {
+                v(1, 0, 0, 0)
+                v(1, 1, 3, 1)
+                v(0, 2, 0, 4)
+            }.element
+        )
+
+        mat10.print()
+    }
+
+    @Test
     fun `test mat2D removeColumnAt`() {
 
-        val mat4 = mat2D {
+        val mat7 = mat2D {
             v(1, 0, 0, 0)
             v(0, 2, 3, 0)
             v(1, 1, 3, 1)
@@ -542,7 +566,7 @@ class UnitTest {
         }
 
         assertEquals(
-            mat4.removeColumnAt(1).element,
+            mat7.removeColumnAt(1).element,
             mat2D {
                 v(1, 0, 0)
                 v(0, 3, 0)

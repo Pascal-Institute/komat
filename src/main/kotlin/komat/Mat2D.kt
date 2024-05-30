@@ -131,10 +131,43 @@ class Mat2D : Vect {
     }
 
     fun removeColumnAt(index: Int): Mat2D {
-        return transpose().removeRowAt(index).transpose()
+        for (i: Int in 0..<row) {
+            element.removeAt(index + (column-1) * i )
+        }
+
+        column -= 1
+
+        return this
     }
 
     fun removeAt(row: Int, column: Int): Mat2D {
         return removeRowAt(row).removeColumnAt(column)
+    }
+
+    fun cofactor(row: Int, column: Int): Double {
+        if (!this.isSquare()) {
+            throw IllegalArgumentException("Invalid matrix: matrix must be square")
+        }
+
+        return (-1).toDouble().pow(row + column) * copy().removeAt(row, column).det()
+    }
+
+    fun det(): Double {
+
+        var determinant = 0.0
+
+        if (row != column) {
+            throw IllegalArgumentException("Invalid matrix: Rows must have the same length")
+        }
+
+        if (row == 2 && column == 2) {
+            return (this[0, 0] * this[1, 1] - this[0, 1] * this[1, 0])
+        }
+
+        for (j: Int in 0..<column) {
+            determinant += cofactor(0, j) * this[0, j]
+        }
+
+        return determinant
     }
 }

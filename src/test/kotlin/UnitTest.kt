@@ -583,7 +583,25 @@ class UnitTest {
             v(1, 2, -3, 2)
             v(2, 6, 5, 6)
         }
+        assertEquals(
+            mat6.removeAt(1,1).element,
+            mat2D{
+                v(1,4,1)
+                v(2,5,6)
+            }.element
+        )
+    }
 
-
+    @Test
+    fun `test mat2d det`(){
+        val mat5 = mat2D {
+            v(1, 3, 4, 1)
+            v(1, 2, -3, 2)
+            v(2, 6, 5, 6)
+            v(3, 4, 5, 9)
+        }
+        assertEquals(
+            mat5.det(), 115.0
+        )
     }
 }

@@ -185,6 +185,19 @@ class Mat2D : Vect {
         return this
     }
 
+    private fun cleanMinusZero(): Mat2D {
+
+        for (i: Int in 0..<row) {
+            for (j: Int in 0..<column) {
+                if (this[i, j] == -0.0) {
+                    this[i, j] = 0.0
+                }
+            }
+        }
+        return this
+    }
+
+
     /*
    * ERO : Elementary Row Operation
    * */
@@ -238,6 +251,39 @@ class Mat2D : Vect {
             }
             token++
         }
+
+        return this
+    }
+
+    /*
+    * Reduced Row Echelon Form
+    *
+    * Prop 1. All the leading entries in each of the rows of the matrix are 1.
+    * Prop 2. If a columnumn contains a leading entry then all entries upper and below that leading entry are zero.
+    *  */
+    fun rref(): Mat2D {
+
+        ref()
+
+        val leadingEntry = getLeadingEntry()
+
+        for (key in leadingEntry.keys) {
+            if (key != 0) {
+                for (j: Int in 0..<row) {
+                    if (j != key) {
+                        val coef = -(this[j,key] / this[key,leadingEntry[key]!!])
+                        ero3(coef, key, j)
+                    }
+
+                }
+            }
+        }
+
+        for (key in leadingEntry.keys) {
+            ero2(1 / this[key,leadingEntry[key]!!], key)
+        }
+
+        cleanMinusZero()
 
         return this
     }

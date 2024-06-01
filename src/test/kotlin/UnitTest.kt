@@ -685,4 +685,24 @@ class UnitTest {
             mat3.ref().element
         )
     }
+
+    @Test
+    fun `test mat2D rref`() {
+        val mat3 = mat2D {
+            v(0, 0, 0, 0, 0)
+            v(0, 2, 3, 0, 1)
+            v(1, 1, 0, 1, 0)
+            v(0, 2, 0, 0, 0)
+        }
+
+        assertEquals(
+            mat2D {
+                v(1, 0, 0, 1, 0)
+                v(0, 1, 0, 0, 0)
+                v(0, 0, 1, 0, 1.0/3)
+                v(0, 0, 0, 0, 0)
+            }.element,
+            mat3.rref().element
+        )
+    }
 }

@@ -186,6 +186,29 @@ class Mat2D : Vect {
         return this
     }
 
+    /*
+   * ERO : Elementary Row Operation
+   * */
+    fun ero1(src: Int, dst: Int): Mat2D {
+        return exchangeRow(src, dst)
+    }
+
+    fun ero2(scale: Double, dst: Int): Mat2D {
+        element.subList(dst * column, (dst+1)*column).replaceAll { it * scale }
+        return this
+    }
+
+    fun ero3(scale: Double, src: Int, dst: Int): Mat2D {
+
+        val srcRow = copy().ero2(scale, src)
+
+        for (i: Int in 0..<this.column) {
+            this[dst,i] += srcRow[i]
+        }
+
+        return this
+    }
+
     fun adjugate(): Mat2D {
 
         if (!this.isSquare()) {

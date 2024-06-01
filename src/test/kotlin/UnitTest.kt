@@ -637,6 +637,21 @@ class UnitTest {
     }
 
     @Test
+    fun `test mat2D exchange column`() {
+        val mat1 = mat2D {
+            v(1, 2)
+            v(3, 4)
+        }
+        assertEquals(
+            mat1.exchangeColumn(0, 1).element,
+            mat2D {
+                v(2, 1)
+                v(4, 3)
+            }.element
+        )
+    }
+
+    @Test
     fun `test mat2d exchange rows`() {
         val mat1 = mat2D {
             v(1, 2)

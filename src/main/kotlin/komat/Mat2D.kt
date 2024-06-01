@@ -167,6 +167,25 @@ class Mat2D : Vect {
         return this
     }
 
+    fun exchangeColumn(src: Int, dst: Int): Mat2D {
+
+
+        val srcRow = mutableListOf<Double>()
+
+        for(i : Int in 0..<row){
+            srcRow.add(this[i * row + src])
+        }
+
+        for(i : Int in 0..<row){
+            this[i * row + src] = this[i * row + dst]
+        }
+
+        for(i : Int in 0..<row){
+            this[i * row + dst] = srcRow[i]
+        }
+        return this
+    }
+
     fun adjugate(): Mat2D {
 
         if (!this.isSquare()) {

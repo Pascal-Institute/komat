@@ -99,8 +99,16 @@ class Mat2D : Vect {
     }
 
     fun copy(): Mat2D {
-        val mat = this
-        return mat
+        val element = mutableListOf<Double>()
+        for (i in 0..<row) {
+            for (j in 0..<column) {
+                element.add(this[i, j])
+            }
+        }
+
+        val copyMat2D = Mat2D(row, column)
+        copyMat2D.element = element
+        return copyMat2D
     }
 
     fun transpose(): Mat2D {
@@ -136,7 +144,6 @@ class Mat2D : Vect {
         }
 
         column -= 1
-
         return this
     }
 
@@ -165,7 +172,7 @@ class Mat2D : Vect {
         }
 
         for (j: Int in 0..<column) {
-            determinant += cofactor(0, j) * this[0, j]
+            determinant +=  cofactor(0, j) * this[0, j]
         }
 
         return determinant

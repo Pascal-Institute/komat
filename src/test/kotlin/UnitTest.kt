@@ -593,6 +593,18 @@ class UnitTest {
     }
 
     @Test
+    fun `test mat2d 1 det`(){
+        val mat5 = mat2D {
+            v(1, 3)
+            v(1, 2)
+
+        }
+        assertEquals(
+            mat5.det(), -1.0
+        )
+    }
+
+    @Test
     fun `test mat2d det`(){
         val mat5 = mat2D {
             v(1, 3, 4, 1)

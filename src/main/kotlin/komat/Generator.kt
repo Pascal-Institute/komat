@@ -18,7 +18,7 @@ class Generator {
             return Mat(size, size)
         }
 
-        fun e(size : Int) : Mat{
+        fun _e(size : Int) : Mat{
             val mat = Mat(size,size)
             (0..<size).forEach { index->
                 mat.element[index][index] = 1.0
@@ -26,8 +26,16 @@ class Generator {
             return mat
         }
 
+        fun e(size : Int) : Mat2D{
+            val mat = Mat2D(size,size)
+            (0..<size).forEach { index->
+                mat[index,index] = 1.0
+            }
+            return mat
+        }
+
         fun elementary(size : Int) : Mat{
-            return e(size)
+            return _e(size)
         }
 
         fun diagonal(mutableList: MutableList<Double>) : Mat {

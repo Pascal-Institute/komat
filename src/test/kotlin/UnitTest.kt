@@ -665,4 +665,24 @@ class UnitTest {
             mat1.exchangeRow(0, 1).element
         )
     }
+
+    @Test
+    fun `test mat2D ref`() {
+        val mat3 = mat2D {
+            v(0, 0, 0, 0, 0)
+            v(0, 2, 3, 0, 1)
+            v(1, 1, 0, 1, 0)
+            v(0, 2, 0, 0, 0)
+        }
+
+        assertEquals(
+            mat2D {
+                v(1, 1, 0, 1, 0)
+                v(0, 2, 3, 0, 1)
+                v(0, 0, -3, 0, -1)
+                v(0, 0, 0, 0, 0)
+            }.element,
+            mat3.ref().element
+        )
+    }
 }

@@ -157,18 +157,17 @@ class Mat2D : Vect {
         srcRow.addAll(element.subList(src * column, (src + 1) * column))
 
         for(i : Int in 0..<column){
-            this[src * column + i] = this[dst * column + i]
+            this[src, + i] = this[dst, + i]
         }
 
         for(i : Int in 0..<column){
-            this[dst * column + i] = srcRow[i]
+            this[dst, + i] = srcRow[i]
         }
 
         return this
     }
 
     fun exchangeColumn(src: Int, dst: Int): Mat2D {
-
 
         val srcRow = mutableListOf<Double>()
 
@@ -194,19 +193,67 @@ class Mat2D : Vect {
     }
 
     fun ero2(scale: Double, dst: Int): Mat2D {
-        element.subList(dst * column, (dst+1)*column).replaceAll { it * scale }
+
+        for(i : Int in 0 ..<column){
+            this[dst, i] *= scale
+        }
+
         return this
     }
 
     fun ero3(scale: Double, src: Int, dst: Int): Mat2D {
 
-        val srcRow = copy().ero2(scale, src)
+        val srcRow = copy().ero2(scale, src).element.subList(src * column , (src + 1) * column)
 
         for (i: Int in 0..<this.column) {
-            this[dst,i] += srcRow[i]
+            this[dst, i] += srcRow[i]
         }
 
         return this
+    }
+
+    /*
+    * Row Echelon Form
+    *
+    * Prop 1. If a column contains a leading entry then all entries below that leading entry are zero.
+    * Prop 2. In any two consecutive non-zero rows, the leading entry in the upper row occurs to the left of the leading entry in the lower row.
+    * Prop 3. All rows which consist entirely of zeroes appear at the bottom of the matrix.
+    *  */
+    fun ref(): Mat2D {
+
+        val leadingEntry = getLeadingEntry()
+
+        for ((i, key) in leadingEntry.keys.withIndex()) {
+            ero1(i, key)
+        }
+
+        var token = 0
+
+        for (i: Int in 0..<row) {
+            for (j: Int in i + 1..<row) {
+                if (this[j,token] != 0.0) {
+                    val coef = -(this[j,token] / this[i,token])
+                    ero3(coef, i, j)
+                }
+            }
+            token++
+        }
+
+        return this
+    }
+
+    private fun getLeadingEntry(): Map<Int, Int> {
+        val leadingEntry = mutableMapOf<Int, Int>()
+
+        for (i: Int in 0..<row) {
+            for (j: Int in 0..<column) {
+                if (this[i,j] != 0.0) {
+                    leadingEntry[i] = j
+                    break
+                }
+            }
+        }
+        return leadingEntry.toList().sortedBy { (_, value) -> value }.toMap()
     }
 
     fun adjugate(): Mat2D {

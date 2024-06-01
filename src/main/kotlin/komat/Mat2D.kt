@@ -151,6 +151,23 @@ class Mat2D : Vect {
         return removeRowAt(row).removeColumnAt(column)
     }
 
+    fun adjugate(): Mat2D {
+
+        if (!this.isSquare()) {
+            throw IllegalArgumentException("Invalid matrix: matrix must be square")
+        }
+
+        val mat2D = Mat2D(row, column)
+
+        for (i: Int in 0..<row) {
+            for (j: Int in 0..<column) {
+                mat2D[i, j] = cofactor(i, j)
+            }
+        }
+
+        return mat2D.transpose()
+    }
+
     fun cofactor(row: Int, column: Int): Double {
         if (!this.isSquare()) {
             throw IllegalArgumentException("Invalid matrix: matrix must be square")

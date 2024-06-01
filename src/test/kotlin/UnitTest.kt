@@ -616,4 +616,23 @@ class UnitTest {
             mat5.det(), 115.0
         )
     }
+
+    @Test
+    fun `test mat2d adjugate`() {
+
+        val mat6 = mat2D {
+            v(2, 1, 3)
+            v(-1, 0, 2)
+            v(4, 3, 1)
+        }
+
+        assertEquals(
+            mat6.adjugate().element,
+            mat2D {
+                v(-6, 8, 2)
+                v(9, -10, -7)
+                v(-3, -2, 1)
+            }.element
+        )
+    }
 }

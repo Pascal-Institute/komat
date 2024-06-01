@@ -200,7 +200,7 @@ class UnitTest {
     }
 
     @Test
-    fun `test exchange rows`() {
+    fun `test exchange column`() {
         assertEquals(
             mat1.exchangeColumn(0, 1).element,
             mat {
@@ -211,7 +211,7 @@ class UnitTest {
     }
 
     @Test
-    fun `test exchange columns`() {
+    fun `test exchange row`() {
         assertEquals(
             mat {
                 v(3, 4)
@@ -633,6 +633,21 @@ class UnitTest {
                 v(9, -10, -7)
                 v(-3, -2, 1)
             }.element
+        )
+    }
+
+    @Test
+    fun `test mat2d exchange rows`() {
+        val mat1 = mat2D {
+            v(1, 2)
+            v(3, 4)
+        }
+        assertEquals(
+            mat2D {
+                v(3, 4)
+                v(1, 2)
+            }.element,
+            mat1.exchangeRow(0, 1).element
         )
     }
 }

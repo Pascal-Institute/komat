@@ -481,6 +481,21 @@ class UnitTest {
 
     //Test for Mat2D
     @Test
+    fun `test get set`(){
+        val mat = mat2D {
+            v(1, 2)
+            v(3, 4)
+        }
+
+        assertEquals(mat[0,0] ,1.0)
+
+        mat[0,0] = 100
+
+        assertEquals(mat[0,0], 100.0)
+
+    }
+
+    @Test
     fun `test times`(){
 
         val mat1 = mat2D {
@@ -494,6 +509,130 @@ class UnitTest {
         }
 
         val mat3 = mat1.times(mat2)
-        mat3.print()
+
+        assertEquals(mat3.element, mat2D {
+            v(8, 5)
+            v(20, 13)
+        }.element)
+    }
+
+    @Test
+    fun `test mat2d transpose`(){
+        val mat = mat2D{
+            v(1,2,3)
+            v(4,5,6)
+        }
+
+        assertEquals(mat.transpose().element,
+            mat2D{
+                v(1,4)
+                v(2, 5)
+                v(3, 6)
+            }.element)
+    }
+
+    @Test
+    fun `test mat2D removeRowAt`() {
+
+        val mat10 = mat2D {
+            v(1, 0, 0, 0)
+            v(0, 2, 3, 0)
+            v(1, 1, 3, 1)
+            v(0, 2, 0, 4)
+        }
+
+        mat10.removeRowAt(1)
+
+        assertEquals(
+            mat10.element,
+            mat2D {
+                v(1, 0, 0, 0)
+                v(1, 1, 3, 1)
+                v(0, 2, 0, 4)
+            }.element
+        )
+
+        mat10.print()
+    }
+
+    @Test
+    fun `test mat2D removeColumnAt`() {
+
+        val mat7 = mat2D {
+            v(1, 0, 0, 0)
+            v(0, 2, 3, 0)
+            v(1, 1, 3, 1)
+            v(0, 2, 0, 4)
+        }
+
+        assertEquals(
+            mat7.removeColumnAt(1).element,
+            mat2D {
+                v(1, 0, 0)
+                v(0, 3, 0)
+                v(1, 3, 1)
+                v(0, 0, 4)
+            }.element
+        )
+    }
+
+    @Test
+    fun `test mat2d removeAt`(){
+        val mat6 = mat2D {
+            v(1, 3, 4, 1)
+            v(1, 2, -3, 2)
+            v(2, 6, 5, 6)
+        }
+        assertEquals(
+            mat6.removeAt(1,1).element,
+            mat2D{
+                v(1,4,1)
+                v(2,5,6)
+            }.element
+        )
+    }
+
+    @Test
+    fun `test mat2d 1 det`(){
+        val mat5 = mat2D {
+            v(1, 3)
+            v(1, 2)
+
+        }
+        assertEquals(
+            mat5.det(), -1.0
+        )
+    }
+
+    @Test
+    fun `test mat2d det`(){
+        val mat5 = mat2D {
+            v(1, 3, 4, 1)
+            v(1, 2, -3, 2)
+            v(2, 6, 5, 6)
+            v(3, 4, 5, 9)
+        }
+        assertEquals(
+            mat5.det(), 115.0
+        )
+    }
+
+    @Test
+    fun `test mat2d adjugate`() {
+
+        val mat6 = mat2D {
+            v(2, 1, 3)
+            v(-1, 0, 2)
+            v(4, 3, 1)
+        }
+
+        assertEquals(
+            mat6.adjugate().element,
+            mat2D {
+                v(-6, 8, 2)
+                v(9, -10, -7)
+                v(-3, -2, 1)
+            }.element
+        )
     }
 }

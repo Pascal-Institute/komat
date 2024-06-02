@@ -48,6 +48,10 @@ class Mat2D : Vect {
         return (srcRow == dstRow && srcColumn == dstColumn)
     }
 
+    fun isZero(): Boolean {
+        return (sum() == 0.0)
+    }
+
     fun isSquare(): Boolean {
         return (row == column)
     }
@@ -257,7 +261,7 @@ class Mat2D : Vect {
 
         for (i: Int in 0..<mat.row) {
             for (j: Int in 0..<mat.column) {
-                if (this[i,j] != 0.0) {
+                if (this[i, j] != 0.0) {
                     leadingEntry[i] = j
                     break
                 }
@@ -322,12 +326,12 @@ class Mat2D : Vect {
 
 
     /*
-* Row Echelon Form
-*
-* Prop 1. If a column contains a leading entry then all entries below that leading entry are zero.
-* Prop 2. In any two consecutive non-zero rows, the leading entry in the upper row occurs to the left of the leading entry in the lower row.
-* Prop 3. All rows which consist entirely of zeroes appear at the bottom of the matrix.
-*  */
+    * Row Echelon Form
+    *
+    * Prop 1. If a column contains a leading entry then all entries below that leading entry are zero.
+    * Prop 2. In any two consecutive non-zero rows, the leading entry in the upper row occurs to the left of the leading entry in the lower row.
+    * Prop 3. All rows which consist entirely of zeroes appear at the bottom of the matrix.
+    *  */
     fun ref(): Mat2D {
 
         val leadingEntry = getLeadingEntry()
@@ -399,8 +403,8 @@ class Mat2D : Vect {
 
         for ((i, key) in leadingEntry.keys.withIndex()) {
 
-            for(j : Int in 0 ..<column){
-                matCopy[i, j] = matReference[key , j]
+            for (j: Int in 0..<column) {
+                matCopy[i, j] = matReference[key, j]
             }
         }
 
@@ -409,8 +413,8 @@ class Mat2D : Vect {
         for (i: Int in 0..<matCopy.row) {
 
             for (j: Int in i + 1..<matCopy.row) {
-                if (matCopy[j,token] != 0.0) {
-                    val scale = -(matCopy[j,token] / matCopy[i,token])
+                if (matCopy[j, token] != 0.0) {
+                    val scale = -(matCopy[j, token] / matCopy[i, token])
                     matCopy.ero3(scale, i, j)
                     val erom = e(row)
                     erom[j, i] = scale

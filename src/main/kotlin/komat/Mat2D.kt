@@ -1,7 +1,6 @@
 package komat
 
 import komat.Generator.Companion.e
-import komat.Mat.Companion.times
 import kotlin.math.pow
 
 class Mat2D : Vect {
@@ -141,6 +140,12 @@ class Mat2D : Vect {
         this.row = newMat.row
         this.column = newMat.column
         this.element = newMat.element
+
+        return this
+    }
+
+    fun appendRow(elements: MutableList<Double>): Mat2D {
+        element.addAll(elements)
 
         return this
     }

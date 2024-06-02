@@ -200,7 +200,7 @@ class UnitTest {
     }
 
     @Test
-    fun `test exchange rows`() {
+    fun `test exchange column`() {
         assertEquals(
             mat1.exchangeColumn(0, 1).element,
             mat {
@@ -211,7 +211,7 @@ class UnitTest {
     }
 
     @Test
-    fun `test exchange columns`() {
+    fun `test exchange row`() {
         assertEquals(
             mat {
                 v(3, 4)
@@ -633,6 +633,112 @@ class UnitTest {
                 v(9, -10, -7)
                 v(-3, -2, 1)
             }.element
+        )
+    }
+
+    @Test
+    fun `test mat2D exchange column`() {
+        val mat1 = mat2D {
+            v(1, 2)
+            v(3, 4)
+        }
+        assertEquals(
+            mat1.exchangeColumn(0, 1).element,
+            mat2D {
+                v(2, 1)
+                v(4, 3)
+            }.element
+        )
+    }
+
+    @Test
+    fun `test mat2d exchange rows`() {
+        val mat1 = mat2D {
+            v(1, 2)
+            v(3, 4)
+        }
+        assertEquals(
+            mat2D {
+                v(3, 4)
+                v(1, 2)
+            }.element,
+            mat1.exchangeRow(0, 1).element
+        )
+    }
+
+    @Test
+    fun `test mat2D ref`() {
+        val mat3 = mat2D {
+            v(0, 0, 0, 0, 0)
+            v(0, 2, 3, 0, 1)
+            v(1, 1, 0, 1, 0)
+            v(0, 2, 0, 0, 0)
+        }
+
+        assertEquals(
+            mat2D {
+                v(1, 1, 0, 1, 0)
+                v(0, 2, 3, 0, 1)
+                v(0, 0, -3, 0, -1)
+                v(0, 0, 0, 0, 0)
+            }.element,
+            mat3.ref().element
+        )
+    }
+
+    @Test
+    fun `test mat2D rref`() {
+        val mat3 = mat2D {
+            v(0, 0, 0, 0, 0)
+            v(0, 2, 3, 0, 1)
+            v(1, 1, 0, 1, 0)
+            v(0, 2, 0, 0, 0)
+        }
+
+        assertEquals(
+            mat2D {
+                v(1, 0, 0, 1, 0)
+                v(0, 1, 0, 0, 0)
+                v(0, 0, 1, 0, 1.0/3)
+                v(0, 0, 0, 0, 0)
+            }.element,
+            mat3.rref().element
+        )
+    }
+
+    @Test
+    fun `test mat2D luDecompose`(){
+
+        val mat9 = mat2D{
+            v(1,2,3)
+            v(2,4,6)
+            v(3,6,9)
+        }
+
+        val copy = mat9.copy()
+
+        val luDecomposeValue = copy.luDecompose()
+        assertEquals(luDecomposeValue.first.element, mat2D{
+            v(1,0,0)
+            v(2,1,0)
+            v(3,0,1)
+        }.element)
+
+        assertEquals(luDecomposeValue.second.element, mat2D{
+            v(1,2,3)
+            v(0,0,0)
+            v(0,0,0)
+        }.element)
+
+        val restore = (luDecomposeValue.first * luDecomposeValue.second)
+
+        assertEquals(
+            restore.element,
+            mat2D{
+                v(1.0,2.0,3.0)
+                v(2.0,4.0,6.0)
+                v(3.0,6.0,9.0)
+            }.element,
         )
     }
 }

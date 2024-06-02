@@ -1,5 +1,6 @@
 package komat
 
+import komat.Generator.Companion._e
 import komat.Generator.Companion.e
 import komat.Utility.Companion.EPSLION
 import komat.prop.Axis
@@ -644,7 +645,7 @@ class Mat {
 
     fun luDecompose(): Pair<Mat, Mat> {
 
-        var lowerMat = e(row)
+        var lowerMat = _e(row)
         val eromList = mutableListOf<Mat>()
 
         //Prop 3.
@@ -667,7 +668,7 @@ class Mat {
                 if (matCopy.element[j][token] != 0.0) {
                     val scale = -(matCopy.element[j][token] / matCopy.element[i][token])
                     matCopy.ero3(scale, i, j)
-                    val erom = e(row)
+                    val erom = _e(row)
                     erom[j, i] = scale
                     eromList.add(erom)
                 }

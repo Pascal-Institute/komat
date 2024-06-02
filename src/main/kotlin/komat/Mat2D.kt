@@ -1,8 +1,16 @@
 package komat
 
+import komat.Generator.Companion.e
 import kotlin.math.pow
 
 class Mat2D : Vect {
+
+    companion object {
+        operator fun Double.times(mat: Mat2D): Mat2D {
+            mat.element.replaceAll { this * it }
+            return mat
+        }
+    }
 
     var row: Int = 0
     var column: Int = 0
@@ -39,8 +47,16 @@ class Mat2D : Vect {
         return (srcRow == dstRow && srcColumn == dstColumn)
     }
 
+    fun isZero(): Boolean {
+        return (sum() == 0.0)
+    }
+
     fun isSquare(): Boolean {
         return (row == column)
+    }
+
+    fun isInvertible(): Boolean {
+        return (det() != 0.0)
     }
 
     operator fun get(i: Int, j: Int): Double {
@@ -128,6 +144,12 @@ class Mat2D : Vect {
         return this
     }
 
+    fun appendRow(elements: MutableList<Double>): Mat2D {
+        element.addAll(elements)
+
+        return this
+    }
+
     fun removeRowAt(index: Int): Mat2D {
 
         for (i: Int in 0..<column) {
@@ -140,7 +162,7 @@ class Mat2D : Vect {
 
     fun removeColumnAt(index: Int): Mat2D {
         for (i: Int in 0..<row) {
-            element.removeAt(index + (column-1) * i )
+            element.removeAt(index + (column - 1) * i)
         }
 
         column -= 1
@@ -149,6 +171,108 @@ class Mat2D : Vect {
 
     fun removeAt(row: Int, column: Int): Mat2D {
         return removeRowAt(row).removeColumnAt(column)
+    }
+
+    fun exchangeRow(src: Int, dst: Int): Mat2D {
+
+        val srcRow = mutableListOf<Double>()
+        srcRow.addAll(element.subList(src * column, (src + 1) * column))
+
+        for (i: Int in 0..<column) {
+            this[src, +i] = this[dst, +i]
+        }
+
+        for (i: Int in 0..<column) {
+            this[dst, +i] = srcRow[i]
+        }
+
+        return this
+    }
+
+    fun exchangeColumn(src: Int, dst: Int): Mat2D {
+
+        val srcRow = mutableListOf<Double>()
+
+        for (i: Int in 0..<row) {
+            srcRow.add(this[i * row + src])
+        }
+
+        for (i: Int in 0..<row) {
+            this[i * row + src] = this[i * row + dst]
+        }
+
+        for (i: Int in 0..<row) {
+            this[i * row + dst] = srcRow[i]
+        }
+        return this
+    }
+
+    private fun cleanMinusZero(): Mat2D {
+
+        for (i: Int in 0..<row) {
+            for (j: Int in 0..<column) {
+                if (this[i, j] == -0.0) {
+                    this[i, j] = 0.0
+                }
+            }
+        }
+        return this
+    }
+
+
+    /*
+   * ERO : Elementary Row Operation
+   * */
+    fun ero1(src: Int, dst: Int): Mat2D {
+        return exchangeRow(src, dst)
+    }
+
+    fun ero2(scale: Double, dst: Int): Mat2D {
+
+        for (i: Int in 0..<column) {
+            this[dst, i] *= scale
+        }
+
+        return this
+    }
+
+    fun ero3(scale: Double, src: Int, dst: Int): Mat2D {
+
+        val srcRow = copy().ero2(scale, src).element.subList(src * column, (src + 1) * column)
+
+        for (i: Int in 0..<this.column) {
+            this[dst, i] += srcRow[i]
+        }
+
+        return this
+    }
+
+    private fun getLeadingEntry(): Map<Int, Int> {
+        val leadingEntry = mutableMapOf<Int, Int>()
+
+        for (i: Int in 0..<row) {
+            for (j: Int in 0..<column) {
+                if (this[i, j] != 0.0) {
+                    leadingEntry[i] = j
+                    break
+                }
+            }
+        }
+        return leadingEntry.toList().sortedBy { (_, value) -> value }.toMap()
+    }
+
+    private fun getLeadingEntry(mat: Mat2D): Map<Int, Int> {
+        val leadingEntry = mutableMapOf<Int, Int>()
+
+        for (i: Int in 0..<mat.row) {
+            for (j: Int in 0..<mat.column) {
+                if (this[i, j] != 0.0) {
+                    leadingEntry[i] = j
+                    break
+                }
+            }
+        }
+        return leadingEntry.toList().sortedBy { (_, value) -> value }.toMap()
     }
 
     fun adjugate(): Mat2D {
@@ -189,9 +313,129 @@ class Mat2D : Vect {
         }
 
         for (j: Int in 0..<column) {
-            determinant +=  cofactor(0, j) * this[0, j]
+            determinant += cofactor(0, j) * this[0, j]
         }
 
         return determinant
+    }
+
+    fun inverse(): Mat2D {
+        if (!this.isInvertible()) {
+            throw IllegalArgumentException("Invalid matrix: matrix is not invertible")
+        }
+
+        val mat = (1.0 / det()) * adjugate()
+
+        return mat.cleanMinusZero()
+    }
+
+
+    /*
+    * Row Echelon Form
+    *
+    * Prop 1. If a column contains a leading entry then all entries below that leading entry are zero.
+    * Prop 2. In any two consecutive non-zero rows, the leading entry in the upper row occurs to the left of the leading entry in the lower row.
+    * Prop 3. All rows which consist entirely of zeroes appear at the bottom of the matrix.
+    *  */
+    fun ref(): Mat2D {
+
+        val leadingEntry = getLeadingEntry()
+
+        for ((i, key) in leadingEntry.keys.withIndex()) {
+            ero1(i, key)
+        }
+
+        var token = 0
+
+        for (i: Int in 0..<row) {
+            for (j: Int in i + 1..<row) {
+                if (this[j, token] != 0.0) {
+                    val coef = -(this[j, token] / this[i, token])
+                    ero3(coef, i, j)
+                }
+            }
+            token++
+        }
+
+        return this
+    }
+
+    /*
+    * Reduced Row Echelon Form
+    *
+    * Prop 1. All the leading entries in each of the rows of the matrix are 1.
+    * Prop 2. If a columnumn contains a leading entry then all entries upper and below that leading entry are zero.
+    *  */
+    fun rref(): Mat2D {
+
+        ref()
+
+        val leadingEntry = getLeadingEntry()
+
+        for (key in leadingEntry.keys) {
+            if (key != 0) {
+                for (j: Int in 0..<row) {
+                    if (j != key) {
+                        val coef = -(this[j, key] / this[key, leadingEntry[key]!!])
+                        ero3(coef, key, j)
+                    }
+
+                }
+            }
+        }
+
+        for (key in leadingEntry.keys) {
+            ero2(1 / this[key, leadingEntry[key]!!], key)
+        }
+
+        cleanMinusZero()
+
+        return this
+    }
+
+
+    fun luDecompose(): Pair<Mat2D, Mat2D> {
+
+        var lowerMat = e(row)
+        val eromList = mutableListOf<Mat2D>()
+
+        //Prop 3.
+        var matReference = copy()
+
+        val leadingEntry = getLeadingEntry(matReference)
+
+        val matCopy = Mat2D(matReference.row, matReference.column)
+
+        for ((i, key) in leadingEntry.keys.withIndex()) {
+
+            for (j: Int in 0..<column) {
+                matCopy[i, j] = matReference[key, j]
+            }
+        }
+
+        var token = 0
+
+        for (i: Int in 0..<matCopy.row) {
+
+            for (j: Int in i + 1..<matCopy.row) {
+                if (matCopy[j, token] != 0.0) {
+                    val scale = -(matCopy[j, token] / matCopy[i, token])
+                    matCopy.ero3(scale, i, j)
+                    val erom = e(row)
+                    erom[j, i] = scale
+                    eromList.add(erom)
+                }
+            }
+            token++
+        }
+
+        val upperMat = matCopy.copy()
+
+        eromList.reverse()
+        eromList.forEach {
+            lowerMat *= it.inverse()
+        }
+
+        return Pair(lowerMat, upperMat)
     }
 }

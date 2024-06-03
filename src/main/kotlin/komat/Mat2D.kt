@@ -1,6 +1,7 @@
 package komat
 
 import komat.Generator.Companion.e
+import komat.prop.Axis
 import kotlin.math.pow
 
 class Mat2D : Vect {
@@ -217,6 +218,29 @@ class Mat2D : Vect {
             }
         }
         return this
+    }
+
+    fun concat(mat: Mat2D, axis: Axis): Mat2D {
+        when (axis) {
+            Axis.HORIZONTAL -> {
+                mat.element.forEach {
+                    element.add(it)
+                }
+                row++
+            }
+
+            Axis.VERTICAL -> {
+                this.transpose()
+                mat.element.forEach {
+                    element.add(it)
+                }
+                row++
+                this.transpose()
+            }
+        }
+
+        return this
+
     }
 
 

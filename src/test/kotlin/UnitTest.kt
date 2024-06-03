@@ -741,4 +741,42 @@ class UnitTest {
             }.element,
         )
     }
+
+    @Test
+    fun `test mat2D concat`() {
+
+        val mat1 = mat2D {
+            v(1, 2)
+            v(3, 4)
+        }
+
+        val mat2 = mat2D {
+            v(4, 3)
+            v(2, 1)
+        }
+
+        assertEquals(
+            mat1.concat(
+                mat2D { v(5, 6) }, Axis.HORIZONTAL
+            ).element,
+            mat2D {
+                v(1, 2)
+                v(3, 4)
+                v(5, 6)
+            }.element
+        )
+
+        assertEquals(
+            mat2.concat(
+                mat2D {
+                    v(5)
+                    v(6)
+                }, Axis.VERTICAL
+            ).element,
+            mat2D {
+                v(4, 3, 5)
+                v(2, 1, 6)
+            }.element
+        )
+    }
 }

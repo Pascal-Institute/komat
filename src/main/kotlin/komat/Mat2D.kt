@@ -52,12 +52,29 @@ class Mat2D : Vect {
         return (sum() == 0.0)
     }
 
+    fun isZero(rowElement: MutableList<Double>): Boolean {
+        return (rowElement.sum() == 0.0)
+    }
+
     fun isSquare(): Boolean {
         return (row == column)
     }
 
     fun isInvertible(): Boolean {
         return (det() != 0.0)
+    }
+
+    fun hasZeroRow(): Boolean {
+        for(i : Int in 0..<row) {
+            if (isZero(element.subList(i*column, (i + 1)*column))) {
+                return true
+            }
+        }
+        return false
+    }
+
+    fun hasNoSolution(mat: Mat2D): Boolean {
+        return mat.hasZeroRow()
     }
 
     operator fun get(i: Int, j: Int): Double {
@@ -511,4 +528,30 @@ class Mat2D : Vect {
         return Pair(lowerMat, upperMat)
     }
 
+    /*
+    * solve x matrix
+    * Ax = B
+    * */
+    fun solve(matB: Mat2D): Mat2D {
+
+        val matSolution = Mat2D(matB.row, matB.column)
+
+        var matAB = this.concat(matB, Axis.VERTICAL)
+        matAB.rref()
+
+        if (hasNoSolution(getColumnsInRange(0, matAB.column - 1))) {
+            throw IllegalArgumentException("Invalid matrix: Rows must have the same length")
+        }
+
+        matAB.flip(Axis.HORIZONTAL)
+
+        for (i: Int in 0..<matSolution.row) {
+            matSolution[i,0] = matAB[i,column - 1]
+            for (j: Int in 0..<i) {
+                matSolution[i,0] -= matSolution[i - 1,0] * matAB[i,column - j - 2]
+            }
+        }
+
+        return matSolution.flip(Axis.HORIZONTAL)
+    }
 }

@@ -431,7 +431,6 @@ class UnitTest {
                 v(1)
                 v(1)
             })
-
     }
 
     @Test
@@ -825,5 +824,20 @@ class UnitTest {
                 v(4, 5)
             }.element
         )
+    }
+
+    @Test
+    fun `test mat2D solve`() {
+        mat2D {
+            v(1, 0, 0)
+            v(0, 1, 0)
+            v(0, 0, 1)
+        }.solve(
+            mat2D
+            {
+                v(1)
+                v(1)
+                v(1)
+            })
     }
 }

@@ -30,6 +30,11 @@ class Mat : Vect {
         if (column == 0) {
             column = elements.size
         }
+
+        if(elements.size != column){
+            throw IllegalArgumentException("Invalid matrix: Rows must have the same length")
+        }
+
         element.addAll(elements)
         row++
     }
@@ -38,6 +43,11 @@ class Mat : Vect {
         if (column == 0) {
             column = elements.size
         }
+
+        if(elements.size != column){
+            throw IllegalArgumentException("Invalid matrix: Rows must have the same length")
+        }
+
         element.addAll(elements.map(Number::toDouble).toMutableList())
         row++
     }

@@ -151,6 +151,28 @@ class Mat2D : Vect {
         return this
     }
 
+    fun getRowsInRange(start: Int, end: Int): Mat2D {
+        val mat = Mat2D(end - start, column)
+        for (i: Int in 0..< mat.row) {
+            for(j : Int in 0..<mat.column){
+                mat[i, j] = this[start + i, j]
+            }
+        }
+
+        return mat
+    }
+
+    fun getColumnsInRange(start: Int, end: Int): Mat2D {
+        val mat = Mat2D(row, end - start)
+        for (i: Int in 0..< mat.row) {
+            for(j : Int in 0..<mat.column){
+                mat[i, j] = this[i, start + j]
+            }
+        }
+
+        return mat
+    }
+
     fun removeRowAt(index: Int): Mat2D {
 
         for (i: Int in 0..<column) {
@@ -488,4 +510,5 @@ class Mat2D : Vect {
 
         return Pair(lowerMat, upperMat)
     }
+
 }

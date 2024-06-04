@@ -812,4 +812,18 @@ class UnitTest {
             }.element
         )
     }
+
+    @Test
+    fun `test mat2D getColumnsInRange`() {
+        assertEquals(
+            mat2D {
+                v(1, 2, 3)
+                v(4, 5, 6)
+            }.getColumnsInRange(0, 2).element,
+            mat2D {
+                v(1, 2)
+                v(4, 5)
+            }.element
+        )
+    }
 }

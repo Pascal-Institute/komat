@@ -6,7 +6,10 @@ class Converter {
     companion object{
 
         fun Array<Array<Double>>.toMat(): Mat {
-            return Mat(this.map { it.toMutableList() }.toMutableList())
+
+            val mat = Mat(this.size, this[0].size)
+            mat.element = this.flatten().toMutableList()
+            return mat
         }
 
         fun Array<Array<Number>>.toMat(): Mat {
@@ -22,9 +25,9 @@ class Converter {
         }
 
         fun MutableList<MutableList<Number>>.toMat(): Mat {
-            return Mat(this.map { row ->
-                row.map { it.toDouble() }.toMutableList()
-            }.toMutableList())
+            val mat = Mat(this.size, this[0].size)
+            mat.element = this.flatten().map { it.toDouble() }.toMutableList()
+            return mat
         }
 
         fun MutableList<Vect>.vectToMat() : Mat {
@@ -50,11 +53,20 @@ class Converter {
         }
 
         fun Mat.toArray() : Array<Array<Number>> {
-            return this.element.map { it.map { it as Number }.toTypedArray() }.toTypedArray()
+            val array2D: Array<Array<Number>> = Array(row) { i ->
+                val start = i * column
+                val end = Math.min(start + column, element.size)
+                element.subList(start, end).toTypedArray()
+            }
+            return array2D
         }
 
         fun Mat.toMutableList() : MutableList<MutableList<Number>> {
-            return this.element.map { it.map { it as Number }.toMutableList() }.toMutableList()
+            val list2D: MutableList<MutableList<Number>> = element
+                .chunked(column)
+                .map { it.toMutableList() as MutableList<Number> }
+                .toMutableList()
+            return list2D
         }
     }
 }

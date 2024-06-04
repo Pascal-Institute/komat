@@ -779,4 +779,37 @@ class UnitTest {
             }.element
         )
     }
+
+    @Test
+    fun `test mat2D flip`() {
+
+        val mat1 = mat2D {
+            v(1, 2)
+            v(3, 4)
+        }
+
+        val mat2 = mat2D {
+            v(4, 3)
+            v(2, 1)
+        }
+
+        assertEquals(
+            mat1.flip(Axis.HORIZONTAL).element,
+            mat2D {
+                v(3, 4)
+                v(1, 2)
+            }.element
+        )
+
+        assertEquals(
+            mat2D {
+                v(1, 2)
+                v(3, 4)
+            }.flip(Axis.VERTICAL).element,
+            mat2D {
+                v(2, 1)
+                v(4, 3)
+            }.element
+        )
+    }
 }

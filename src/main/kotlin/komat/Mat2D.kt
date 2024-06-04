@@ -243,6 +243,32 @@ class Mat2D : Vect {
 
     }
 
+    fun flip(axis: Axis): Mat2D {
+
+        val mat = Mat2D(row, column)
+
+        when (axis) {
+            Axis.HORIZONTAL -> {
+                for(i : Int in 0..<row){
+                    for(j : Int in 0 ..<column){
+                        mat[i, j] = this[row -i - 1, j]
+                    }
+                }
+            }
+
+            Axis.VERTICAL -> {
+                for(i : Int in 0..<row){
+                    for(j : Int in 0 ..<column){
+                        mat[i, j] = this[i, column - j - 1]
+                    }
+                }
+            }
+        }
+
+        this.element = mat.element
+
+        return this
+    }
 
     /*
    * ERO : Elementary Row Operation

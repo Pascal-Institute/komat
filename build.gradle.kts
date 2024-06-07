@@ -25,10 +25,10 @@ kotlin {
 publishing {
     publications {
         create<MavenPublication>("maven") {
-            groupId = "com.pascal.institute" //Navigate beyond computing oceans.
+            groupId = "Pascal-Institute" //Navigate beyond computing oceans.
             artifactId = "komat"
 
-            version = "1.7.1"
+            version = "1.8.0"
 
             from(components["java"])
         }

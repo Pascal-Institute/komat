@@ -15,7 +15,7 @@ open class Vect() {
         }
     }
 
-    var element = mutableListOf<Double>()
+    var element = DoubleArray(0)
 
     operator fun get(index: Int): Double {
         return element[index]
@@ -26,11 +26,14 @@ open class Vect() {
     }
 
     constructor(vararg elem: Number) : this() {
-        element.addAll(elem.map { it.toDouble() })
+       element = DoubleArray(elem.size)
+        elem.mapIndexed { index, number ->
+           element[index] = number.toDouble()
+       }
     }
 
     constructor(elem: MutableList<Double>) : this() {
-        element = elem
+        element = elem.toDoubleArray()
     }
 
     operator fun plus(vect: Vect): Vect {

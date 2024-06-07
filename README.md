@@ -1,6 +1,6 @@
 # komat
-[![](https://jitpack.io/v/volta2030/komat.svg)](https://jitpack.io/#volta2030/bumblebee)
-[![](https://jitpack.io/v/volta2030/komat/month.svg)](https://jitpack.io/#volta2030/bumblebee)
+[![](https://jitpack.io/v/Pascal-Institute/komat.svg)](https://jitpack.io/#Pascal-Institute/komat)
+[![](https://jitpack.io/v/Pascal-Institute/komat/month.svg)](https://jitpack.io/#Pascal-Institute/komat)
 
 ## 0. How to use? (Please Check Latest Version)
 

@@ -28,7 +28,7 @@ publishing {
             groupId = "com.pascal.institute" //Navigate beyond computing oceans.
             artifactId = "komat"
 
-            version = "1.8.1"
+            version = "1.8.2"
 
             from(components["java"])
         }

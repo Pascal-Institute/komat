@@ -56,7 +56,7 @@ open class Vect() {
 
     fun Double.times() : Vect{
 
-        for (i: Int in 0..<element.size) {
+        for (i: Int in element.indices) {
             element[i] = this * element[i]
         }
         return this@Vect

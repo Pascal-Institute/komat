@@ -8,6 +8,10 @@ class Cube : Vect {
     var row: Int = 0
     var column: Int = 0
 
+    operator fun Mat.unaryPlus() {
+        append(this)
+    }
+
     constructor(depth : Int, row: Int, column: Int) {
         this.depth = depth
         this.row = row

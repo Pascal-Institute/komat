@@ -131,4 +131,13 @@ open class Vect() {
         val vect = this - project(b)
         return vect
     }
+
+    open fun print(){
+        print("[")
+        for (i : Int in element.indices-1){
+            print("${element[i]}, ")
+        }
+        print(element.last())
+        println("]")
+    }
 }

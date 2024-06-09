@@ -9,6 +9,7 @@ class Cube : Vect {
     var column: Int = 0
 
     constructor(depth : Int, row: Int, column: Int) {
+        this.depth = depth
         this.row = row
         this.column = column
 

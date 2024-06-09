@@ -1,6 +1,6 @@
 package komat
 
-class Mat3D : Vect{
+class Cube : Vect {
 
     constructor()
 
@@ -31,7 +31,7 @@ class Mat3D : Vect{
         append(mat)
     }
 
-    fun append(mat : Mat) : Mat3D{
+    fun append(mat : Mat) : Cube{
         depth++
         val oldArray = element.clone()
         element = DoubleArray(depth * row * column)

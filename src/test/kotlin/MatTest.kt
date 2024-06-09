@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import kotlin.test.assertEquals
 
-class UnitTest {
+class MatTest {
 
     val mat1 = mat {
         v(1, 2)

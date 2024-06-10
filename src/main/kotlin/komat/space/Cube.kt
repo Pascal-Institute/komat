@@ -1,4 +1,4 @@
-package komat
+package komat.space
 
 class Cube : Vect {
 

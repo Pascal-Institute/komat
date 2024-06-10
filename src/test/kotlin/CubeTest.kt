@@ -1,6 +1,5 @@
 import komat.Generator.Companion.cube
 import komat.Generator.Companion.mat
-import komat.Mat.Companion.times
 import org.junit.jupiter.api.Test
 
 class CubeTest {

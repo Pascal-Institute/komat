@@ -1,6 +1,8 @@
 package komat
 
 import komat.Generator.Companion.mat
+import komat.space.Mat
+import komat.space.Vect
 
 class Converter {
     companion object {

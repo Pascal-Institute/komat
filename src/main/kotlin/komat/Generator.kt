@@ -1,5 +1,8 @@
 package komat
 
+import komat.space.Cube
+import komat.space.Mat
+
 class Generator {
     companion object {
 

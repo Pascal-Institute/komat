@@ -1,4 +1,4 @@
-package komat
+package komat.space
 
 import komat.Generator.Companion.e
 import komat.Utility.Companion.EPSLION

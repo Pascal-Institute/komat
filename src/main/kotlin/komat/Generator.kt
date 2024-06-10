@@ -2,6 +2,7 @@ package komat
 
 class Generator {
     companion object {
+
         fun mat(init: Mat.() -> Unit): Mat {
             val mat = Mat()
             mat.apply(init)
@@ -13,12 +14,6 @@ class Generator {
             cube.apply(init)
             return cube
         }
-
-/*        fun cube(init: Cube.() -> Unit): Cube {
-            val cube = Cube()
-            cube.apply(init)
-            return cube
-        }*/
 
         fun zero(size: Int): Mat {
             return Mat(size, size)

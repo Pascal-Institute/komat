@@ -1,4 +1,4 @@
-package komat
+package komat.space
 
 import komat.Generator.Companion.e
 import komat.Utility.Companion.EPSLION
@@ -163,7 +163,7 @@ class Mat : Vect {
         return newMat
     }
 
-    fun print() {
+    override fun print() {
         for (i: Int in 0..<row) {
             print("[")
             for (j: Int in 0..<column) {

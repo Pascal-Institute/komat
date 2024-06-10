@@ -1,4 +1,4 @@
-package komat
+package komat.space
 
 import kotlin.math.exp
 import kotlin.math.sqrt
@@ -54,9 +54,9 @@ open class Vect() {
         return this
     }
 
-    fun Double.times() : Vect{
+    fun Double.times() : Vect {
 
-        for (i: Int in 0..<element.size) {
+        for (i: Int in element.indices) {
             element[i] = this * element[i]
         }
         return this@Vect
@@ -106,7 +106,7 @@ open class Vect() {
         return sqrt(sum)
     }
 
-    fun softmax() : Vect{
+    fun softmax() : Vect {
         var denominator = 0.0
 
         element.forEach {
@@ -122,13 +122,22 @@ open class Vect() {
     }
 
     //projection from this to u
-    fun project(u : Vect) : Vect{
+    fun project(u : Vect) : Vect {
         return (u.dot(this) / u.dot(u))*u
     }
 
     //gramSchmidt for b
-    fun gramSchmidt(b : Vect) : Vect{
+    fun gramSchmidt(b : Vect) : Vect {
         val vect = this - project(b)
         return vect
+    }
+
+    open fun print(){
+        print("[")
+        for (i : Int in element.indices-1){
+            print("${element[i]}, ")
+        }
+        print(element.last())
+        println("]")
     }
 }

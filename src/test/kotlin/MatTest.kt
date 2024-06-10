@@ -1,15 +1,15 @@
 import komat.Converter.Companion.toVect
 import komat.Converter.Companion.vectToMat
 import komat.Generator.Companion.mat
-import komat.Mat.Companion.times
-import komat.Vect
+import komat.space.Mat.Companion.times
+import komat.space.Vect
 import komat.prop.Axis
 import org.junit.jupiter.api.Assertions.assertNotEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import kotlin.test.assertEquals
 
-class UnitTest {
+class MatTest {
 
     val mat1 = mat {
         v(1, 2)

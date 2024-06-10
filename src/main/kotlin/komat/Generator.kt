@@ -1,17 +1,21 @@
 package komat
 
+import komat.space.Cube
+import komat.space.Mat
+
 class Generator {
     companion object {
+
         fun mat(init: Mat.() -> Unit): Mat {
             val mat = Mat()
             mat.apply(init)
             return mat
         }
 
-        fun mat2D(init: Mat.() -> Unit): Mat {
-            val mat2d = Mat()
-            mat2d.apply(init)
-            return mat2d
+        fun cube(init: Cube.() -> Unit): Cube {
+            val cube = Cube()
+            cube.apply(init)
+            return cube
         }
 
         fun zero(size: Int): Mat {

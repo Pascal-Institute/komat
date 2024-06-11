@@ -124,6 +124,16 @@ open class Vect() {
         return sqrt(sum)
     }
 
+    fun l3norm() : Double{
+        var sum = 0.0
+
+        element.forEach {
+            sum += (it * it * it)
+        }
+
+        return cbrt(sum)
+    }
+
     fun softmax() : Vect {
         var denominator = 0.0
 

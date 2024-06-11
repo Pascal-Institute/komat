@@ -1,9 +1,6 @@
 package komat.space
 
-import kotlin.math.exp
-import kotlin.math.pow
-import kotlin.math.round
-import kotlin.math.sqrt
+import kotlin.math.*
 
 open class Vect() {
     companion object {
@@ -17,6 +14,17 @@ open class Vect() {
         }
     }
 
+    constructor(vararg elem: Number) : this() {
+        element = DoubleArray(elem.size)
+        elem.mapIndexed { index, number ->
+            element[index] = number.toDouble()
+        }
+    }
+
+    constructor(elem: MutableList<Double>) : this() {
+        element = elem.toDoubleArray()
+    }
+
     var element = DoubleArray(0)
 
     operator fun get(index: Int): Double {
@@ -25,17 +33,6 @@ open class Vect() {
 
     operator fun set(index: Int, value: Double) {
         element[index] = value
-    }
-
-    constructor(vararg elem: Number) : this() {
-       element = DoubleArray(elem.size)
-        elem.mapIndexed { index, number ->
-           element[index] = number.toDouble()
-       }
-    }
-
-    constructor(elem: MutableList<Double>) : this() {
-        element = elem.toDoubleArray()
     }
 
     operator fun plus(vect: Vect): Vect {
@@ -103,6 +100,17 @@ open class Vect() {
             scalar += it * vect.element[index]
         }
         return scalar
+    }
+
+    fun l1norm() : Double{
+
+        var sum = 0.0
+
+        element.forEach {
+            sum += abs(it)
+        }
+
+        return sum
     }
 
     fun l2norm(): Double {

@@ -1,6 +1,8 @@
 package komat.space
 
 import kotlin.math.exp
+import kotlin.math.pow
+import kotlin.math.round
 import kotlin.math.sqrt
 
 open class Vect() {
@@ -38,7 +40,7 @@ open class Vect() {
 
     operator fun plus(vect: Vect): Vect {
 
-        for (i: Int in 0..<element.size) {
+        for (i: Int in element.indices) {
                 element[i] += vect.element[i]
         }
 
@@ -47,7 +49,7 @@ open class Vect() {
 
     operator fun minus(vect: Vect): Vect {
 
-        for (i: Int in 0..<element.size) {
+        for (i: Int in element.indices) {
             element[i] -= vect.element[i]
         }
 
@@ -86,6 +88,14 @@ open class Vect() {
         return element.minOrNull() ?: Double.NaN
     }
 
+    fun roundUp(decimalPlaces : Int) : Vect{
+        val factor = 10.0.pow(decimalPlaces)
+        for(i : Int in element.indices){
+            element[i] = round(element[i] * factor) / factor
+        }
+        return this
+    }
+
     fun dot(vect: Vect): Double {
         var scalar = 0.0
 
@@ -113,7 +123,7 @@ open class Vect() {
             denominator += exp(it)
         }
 
-        for(i : Int in 0..<element.size){
+        for(i : Int in element.indices){
             val numerator = exp(element[i])
             element[i] = numerator/denominator
         }

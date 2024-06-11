@@ -1,5 +1,7 @@
 package komat
 
+import kotlin.reflect.KType
+
 class Utility {
     companion object {
         //IEEE 754

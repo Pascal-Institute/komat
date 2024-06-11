@@ -217,11 +217,6 @@ class Mat : Vect {
         return this
     }
 
-    fun append(vect: Vect): Mat {
-        appendRow(vect.element)
-        return this
-    }
-
     fun appendRow(elements: MutableList<Double>): Mat {
         row++
         val oldArray = element.clone()

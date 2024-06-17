@@ -4,6 +4,14 @@ class Cube : Vect {
 
     constructor()
 
+    constructor(depth: Int, row: Int, column: Int) {
+        this.depth = depth
+        this.row = row
+        this.column = column
+
+        element = DoubleArray(depth * row * column) { 0.0 }
+    }
+
     var depth: Int = 0
     var row: Int = 0
     var column: Int = 0
@@ -24,14 +32,6 @@ class Cube : Vect {
 
     operator fun Mat.unaryPlus() {
         append(this)
-    }
-
-    constructor(depth: Int, row: Int, column: Int) {
-        this.depth = depth
-        this.row = row
-        this.column = column
-
-        element = DoubleArray(depth * row * column) { 0.0 }
     }
 
     fun append(mat: Mat): Cube {

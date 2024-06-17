@@ -65,6 +65,32 @@ open class Vect() {
         return (dot(vect) == 0.0)
     }
 
+    open fun print(){
+        print("[")
+        for (i : Int in element.indices-1){
+            print("${element[i]}, ")
+        }
+        print(element.last())
+        println("]")
+    }
+
+    open fun convolve(vect : Vect, stride : Int) : Vect{
+        if(element.size < vect.element.size + stride){
+            throw IllegalArgumentException("Size Invalid")
+        }
+
+        val size : Int = (element.size - vect.element.size) / stride + 1
+        val convolutionVect = Vect(size)
+
+        for(i in convolutionVect.element.indices){
+            for(j in vect.element.indices){
+                convolutionVect[i] += vect[j] * element[i * stride + j]
+            }
+        }
+
+        return convolutionVect
+    }
+
     fun sum(): Double {
         var sum = 0.0
         for (value in element) {
@@ -158,14 +184,5 @@ open class Vect() {
     fun gramSchmidt(b : Vect) : Vect {
         val vect = this - project(b)
         return vect
-    }
-
-    open fun print(){
-        print("[")
-        for (i : Int in element.indices-1){
-            print("${element[i]}, ")
-        }
-        print(element.last())
-        println("]")
     }
 }

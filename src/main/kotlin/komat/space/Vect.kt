@@ -190,6 +190,13 @@ open class Vect() {
         return cbrt(sum)
     }
 
+    fun sigmoid() : Vect {
+        element.forEachIndexed{ index, value->
+            element[index] = 1 / (1 + exp(-value))
+        }
+        return this
+    }
+
     fun softmax() : Vect {
         var denominator = 0.0
 

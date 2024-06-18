@@ -3,7 +3,7 @@ import komat.Converter.Companion.vectToMat
 import komat.Generator.Companion.mat
 import komat.space.Mat.Companion.times
 import komat.space.Vect
-import komat.prop.Axis
+import komat.type.Axis
 import org.junit.jupiter.api.Assertions.assertNotEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows

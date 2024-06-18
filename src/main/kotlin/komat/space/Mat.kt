@@ -2,7 +2,7 @@ package komat.space
 
 import komat.Generator.Companion.e
 import komat.Utility.Companion.EPSLION
-import komat.prop.Axis
+import komat.type.Axis
 import kotlin.math.abs
 import kotlin.math.pow
 

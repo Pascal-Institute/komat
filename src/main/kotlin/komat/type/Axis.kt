@@ -1,4 +1,4 @@
-package komat.prop
+package komat.type
 
 enum class Axis {
     HORIZONTAL, VERTICAL

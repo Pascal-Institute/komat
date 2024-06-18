@@ -80,29 +80,20 @@ open class Vect() {
         println("]")
     }
 
-/*    fun pad(padding : Padding, size : Int ) : Vect{
+    fun pad(padding : Padding, size : Int ) : Vect{
 
-        val paddedVect = Vect(element.size + size)
         var bias = 0.0
 
-
-
         when(padding){
-            Padding.ZERO->{
-
-            }
-            Padding.MEAN->{
-
-            }
-            Padding.MIN->{
-
-            }
-            Padding.MAX->{
-
-            }
+            Padding.ZERO ->{}
+            Padding.MEAN -> bias = mean()
+            Padding.MIN -> bias = min()
+            Padding.MAX -> bias = max()
         }
 
-    }*/
+        val vect = Vect(DoubleArray(size){bias})
+        return concat(vect)
+    }
 
     fun concat(vect : Vect) : Vect{
         return Vect(element + vect.element)

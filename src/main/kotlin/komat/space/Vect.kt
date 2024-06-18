@@ -1,8 +1,12 @@
 package komat.space
 
+import komat.type.Padding
 import kotlin.math.*
 
 open class Vect() {
+
+    var element = DoubleArray(0)
+
     companion object {
         operator fun Double.times(vect: Vect): Vect {
 
@@ -12,6 +16,10 @@ open class Vect() {
 
             return vect
         }
+    }
+
+    constructor(element : DoubleArray) : this(){
+        this.element = element.copyOf()
     }
 
     constructor(vararg elem: Number) : this() {
@@ -24,8 +32,6 @@ open class Vect() {
     constructor(elem: MutableList<Double>) : this() {
         element = elem.toDoubleArray()
     }
-
-    var element = DoubleArray(0)
 
     operator fun get(index: Int): Double {
         return element[index]
@@ -74,7 +80,35 @@ open class Vect() {
         println("]")
     }
 
-    open fun convolve(vect : Vect, stride : Int) : Vect{
+/*    fun pad(padding : Padding, size : Int ) : Vect{
+
+        val paddedVect = Vect(element.size + size)
+        var bias = 0.0
+
+
+
+        when(padding){
+            Padding.ZERO->{
+
+            }
+            Padding.MEAN->{
+
+            }
+            Padding.MIN->{
+
+            }
+            Padding.MAX->{
+
+            }
+        }
+
+    }*/
+
+    fun concat(vect : Vect) : Vect{
+        return Vect(element + vect.element)
+    }
+
+    fun convolve(vect : Vect, stride : Int) : Vect{
         if(element.size < vect.element.size + stride){
             throw IllegalArgumentException("Size Invalid")
         }

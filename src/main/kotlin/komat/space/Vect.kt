@@ -116,6 +116,11 @@ open class Vect() {
         return convolutionVect
     }
 
+    fun convolve(vect : Vect, stride : Int, padding: Padding, padSize: Int) : Vect {
+        val newVect = pad(padding, padSize)
+        return convolve(vect, stride)
+    }
+
     fun sum(): Double {
         var sum = 0.0
         for (value in element) {

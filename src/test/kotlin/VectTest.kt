@@ -6,6 +6,15 @@ class VectTest {
     val vect2 = Vect(3.0,2.0)
 
     @Test
+    fun `test concat`() {
+
+        vect1.concat(vect2).element.contentEquals(
+            Vect(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 3.0, 2.0).element
+        )
+
+    }
+
+    @Test
     fun `test convolve`() {
 
         vect1.convolve(vect2, 2).element.contentEquals(

@@ -1,5 +1,7 @@
 package komat.space
 
+import komat.type.Padding
+
 open class Cube : Mat {
 
     var depth: Int = 0

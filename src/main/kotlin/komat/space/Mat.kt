@@ -9,7 +9,7 @@ import kotlin.math.pow
 
 open class Mat : Vect {
 
-    var row: Int = 0
+    var row : Int = 0
 
     companion object {
         operator fun Double.times(mat: Mat): Mat {
@@ -192,18 +192,23 @@ open class Mat : Vect {
         }
     }
 
-    override fun pad(padding: Padding, size: Int) : Mat {
+    override fun pad(padding: Padding, size: Int): Mat {
+        return pad(padding, size, 0.0)
+    }
 
-        var bias = 0.0
+    override fun pad(padding: Padding, size: Int, bias : Double ) : Mat {
+
+        var newBias = bias
 
         when (padding) {
             Padding.ZERO -> {}
-            Padding.MEAN -> bias = mean()
-            Padding.MIN -> bias = min()
-            Padding.MAX -> bias = max()
+            Padding.MEAN -> newBias = mean()
+            Padding.MIN -> newBias = min()
+            Padding.MAX -> newBias = max()
+            Padding.BIAS ->{}
         }
 
-        val mat = Mat(size + row + size, size + column + size, bias)
+        val mat = Mat(size + row + size, size + column + size, newBias)
 
         System.arraycopy(this.element, 0, mat.element, size + column + size + size, this.element.size)
 

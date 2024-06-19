@@ -1,11 +1,8 @@
 package komat.space
 
-class Hyper : Vect {
+class Hyper : Cube {
 
     var group : Int = 0
-    var depth : Int = 0
-    var row : Int = 0
-    var column : Int = 0
 
     constructor()
 

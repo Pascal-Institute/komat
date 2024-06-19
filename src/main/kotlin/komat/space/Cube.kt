@@ -1,6 +1,8 @@
 package komat.space
 
-class Cube : Vect {
+open class Cube : Mat {
+
+    var depth: Int = 0
 
     constructor()
 
@@ -11,10 +13,6 @@ class Cube : Vect {
 
         element = DoubleArray(depth * row * column) { 0.0 }
     }
-
-    var depth: Int = 0
-    var row: Int = 0
-    var column: Int = 0
 
     operator fun get(h: Int, i: Int, j: Int): Double {
         if (i >= row || j >= column || h >= depth) {
@@ -31,10 +29,16 @@ class Cube : Vect {
     }
 
     operator fun Mat.unaryPlus() {
-        append(this)
+        val oldArray = this@Cube.element.clone()
+        depth++
+        this@Cube.row = this.row
+        this@Cube.column = this.column
+        this@Cube.element = DoubleArray(depth * row * column)
+        System.arraycopy(oldArray, 0, this@Cube.element, 0, oldArray.size)
+        System.arraycopy(this.element, 0, this@Cube.element, (depth - 1) * row * column, this.element.size)
     }
 
-    fun append(mat: Mat): Cube {
+    fun appendMat(mat: Mat): Cube {
 
         depth++
 

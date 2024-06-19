@@ -8,6 +8,10 @@ class CubeTest {
         v(1,2)
         v(3,4)
     }
+    val mat2 = mat{
+        v(5,6)
+        v(7,8)
+    }
 
     @Test
     fun `test generator`() {
@@ -19,7 +23,7 @@ class CubeTest {
 
         val cube2 = cube{
             +mat1
-            +mat1
+            +mat2
         }
 
         val cube3= cube{
@@ -35,6 +39,7 @@ class CubeTest {
 
         }
 
+        cube2.sum()
         cube2.print()
         cube3.print()
 

@@ -6,7 +6,9 @@ import komat.type.Axis
 import kotlin.math.abs
 import kotlin.math.pow
 
-class Mat : Vect {
+open class Mat : Vect {
+
+    var row: Int = 0
 
     companion object {
         operator fun Double.times(mat: Mat): Mat {
@@ -17,9 +19,6 @@ class Mat : Vect {
             return mat
         }
     }
-
-    var row: Int = 0
-    var column: Int = 0
 
     constructor()
 

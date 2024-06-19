@@ -5,6 +5,7 @@ import kotlin.math.*
 
 open class Vect() {
 
+    var column: Int = 0
     var element = DoubleArray(0)
 
     companion object {
@@ -19,10 +20,12 @@ open class Vect() {
     }
 
     constructor(element : DoubleArray) : this(){
+        this.column = element.size
         this.element = element.copyOf()
     }
 
     constructor(vararg elem: Number) : this() {
+        this.column = elem.size
         element = DoubleArray(elem.size)
         elem.mapIndexed { index, number ->
             element[index] = number.toDouble()

@@ -151,7 +151,7 @@ open class Mat : Vect {
         element[i * column + j] = value.toDouble()
     }
 
-    operator fun times(mat: Mat): Mat {
+     operator fun times(mat: Mat): Mat {
 
         if (!isValid(column, mat.row)) {
             throw IllegalArgumentException("Invalid matrix: A's column & B's row must be the same")

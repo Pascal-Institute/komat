@@ -19,6 +19,11 @@ open class Vect() {
         }
     }
 
+    constructor(column : Int) : this(){
+        this.column = column
+        this.element = DoubleArray(column) {0.0}
+    }
+
     constructor(element: DoubleArray) : this() {
         this.column = element.size
         this.element = element.copyOf()
@@ -60,6 +65,17 @@ open class Vect() {
         }
 
         return this
+    }
+
+     operator fun times(vect: Vect): Vect {
+
+        val newVect = Vect(column)
+
+        for (i: Int in 0..<column) {
+            newVect.element[i] += element[i] * vect.element[i]
+        }
+
+        return newVect
     }
 
     fun Double.times(): Vect {

@@ -83,7 +83,7 @@ open class Vect() {
         println("]")
     }
 
-    fun pad(padding : Padding, size : Int ) : Vect{
+    open fun pad(padding : Padding, size : Int ) : Vect{
 
         var bias = 0.0
 

@@ -4,6 +4,7 @@ import komat.Generator.Companion.mat
 import komat.space.Mat.Companion.times
 import komat.space.Vect
 import komat.type.Axis
+import komat.type.Padding
 import org.junit.jupiter.api.Assertions.assertNotEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -177,6 +178,19 @@ class MatTest {
         }.element)
 
 
+    }
+
+    @Test
+    fun `test pad`(){
+        mat9.pad(Padding.ZERO, 1).element.contentEquals(
+            mat{
+                v(0.0,0.0,0.0,0.0,0.0)
+                v(0.0,1.0,2.0,3.0,0.0)
+                v(0.0,4.0,5.0,6.0,0.0)
+                v(0.0,7.0,8.0,9.0,0.0)
+                v(0.0,0.0,0.0,0.0,0.0)
+            }.element
+        )
     }
 
     @Test

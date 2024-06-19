@@ -3,6 +3,7 @@ package komat.space
 import komat.Generator.Companion.e
 import komat.Utility.Companion.EPSLION
 import komat.type.Axis
+import komat.type.Padding
 import kotlin.math.abs
 import kotlin.math.pow
 
@@ -27,6 +28,13 @@ open class Mat : Vect {
         this.column = column
 
         element = DoubleArray(row * column) { 0.0 }
+    }
+
+    constructor(row: Int, column: Int, bias : Double) {
+        this.row = row
+        this.column = column
+
+        element = DoubleArray(row * column) { bias }
     }
 
     fun v(elements: DoubleArray) {
@@ -182,6 +190,28 @@ open class Mat : Vect {
             }
             println("]")
         }
+    }
+
+    override fun pad(padding: Padding, size: Int) : Mat {
+
+        var bias = 0.0
+
+        when (padding) {
+            Padding.ZERO -> {}
+            Padding.MEAN -> bias = mean()
+            Padding.MIN -> bias = min()
+            Padding.MAX -> bias = max()
+        }
+
+        val mat = Mat(size + row + size, size + column + size, bias)
+
+        System.arraycopy(this.element, 0, mat.element, size + column + size + size, this.element.size)
+
+        this.row = mat.row
+        this.column = mat.column
+        this.element = mat.element.clone()
+
+        return this
     }
 
     fun copy(): Mat {

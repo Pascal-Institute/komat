@@ -9,7 +9,7 @@ import kotlin.math.pow
 
 open class Mat : Vect {
 
-    var row : Int = 0
+    var row: Int = 0
 
     companion object {
         operator fun Double.times(mat: Mat): Mat {
@@ -30,7 +30,7 @@ open class Mat : Vect {
         element = DoubleArray(row * column) { 0.0 }
     }
 
-    constructor(row: Int, column: Int, bias : Double) {
+    constructor(row: Int, column: Int, bias: Double) {
         this.row = row
         this.column = column
 
@@ -196,7 +196,7 @@ open class Mat : Vect {
         return pad(padding, size, 0.0)
     }
 
-    override fun pad(padding: Padding, size: Int, bias : Double ) : Mat {
+    override fun pad(padding: Padding, size: Int, bias: Double): Mat {
 
         var newBias = bias
 
@@ -205,7 +205,7 @@ open class Mat : Vect {
             Padding.MEAN -> newBias = mean()
             Padding.MIN -> newBias = min()
             Padding.MAX -> newBias = max()
-            Padding.BIAS ->{}
+            Padding.BIAS -> {}
         }
 
         val mat = Mat(size + row + size, size + column + size, newBias)
@@ -298,9 +298,9 @@ open class Mat : Vect {
     fun removeRowAt(rowToRemove: Int): Mat {
 
 
-            element =
-                element.filterIndexed { index, _ -> index < rowToRemove * column || index >= (rowToRemove + 1) * column }
-                    .toDoubleArray()
+        element =
+            element.filterIndexed { index, _ -> index < rowToRemove * column || index >= (rowToRemove + 1) * column }
+                .toDoubleArray()
 
 
         row -= 1
@@ -365,16 +365,16 @@ open class Mat : Vect {
     fun concat(mat: Mat, axis: Axis): Mat {
         when (axis) {
             Axis.HORIZONTAL -> {
-                for(i : Int in 0..<mat.row){
-                    appendRow(mat.element.copyOfRange(i * mat.row , i * mat.row + mat.column))
+                for (i: Int in 0..<mat.row) {
+                    appendRow(mat.element.copyOfRange(i * mat.row, i * mat.row + mat.column))
                 }
             }
 
             Axis.VERTICAL -> {
                 this.transpose()
                 mat.transpose()
-                for(i : Int in 0..<mat.row){
-                    appendRow(mat.element.copyOfRange(i * mat.row , i * mat.row + mat.column))
+                for (i: Int in 0..<mat.row) {
+                    appendRow(mat.element.copyOfRange(i * mat.row, i * mat.row + mat.column))
                 }
                 this.transpose()
             }

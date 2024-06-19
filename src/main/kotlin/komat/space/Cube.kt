@@ -85,7 +85,7 @@ open class Cube : Mat {
                 }
                 println("]")
             }
-            if(h <depth-1){
+            if (h < depth - 1) {
                 println()
             }
         }

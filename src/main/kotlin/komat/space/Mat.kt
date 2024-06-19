@@ -2,11 +2,14 @@ package komat.space
 
 import komat.Generator.Companion.e
 import komat.Utility.Companion.EPSLION
-import komat.prop.Axis
+import komat.type.Axis
+import komat.type.Padding
 import kotlin.math.abs
 import kotlin.math.pow
 
-class Mat : Vect {
+open class Mat : Vect {
+
+    var row: Int = 0
 
     companion object {
         operator fun Double.times(mat: Mat): Mat {
@@ -18,9 +21,6 @@ class Mat : Vect {
         }
     }
 
-    var row: Int = 0
-    var column: Int = 0
-
     constructor()
 
     constructor(row: Int, column: Int) {
@@ -28,6 +28,13 @@ class Mat : Vect {
         this.column = column
 
         element = DoubleArray(row * column) { 0.0 }
+    }
+
+    constructor(row: Int, column: Int, bias: Double) {
+        this.row = row
+        this.column = column
+
+        element = DoubleArray(row * column) { bias }
     }
 
     fun v(elements: DoubleArray) {
@@ -185,6 +192,33 @@ class Mat : Vect {
         }
     }
 
+    override fun pad(padding: Padding, size: Int): Mat {
+        return pad(padding, size, 0.0)
+    }
+
+    override fun pad(padding: Padding, size: Int, bias: Double): Mat {
+
+        var newBias = bias
+
+        when (padding) {
+            Padding.ZERO -> {}
+            Padding.MEAN -> newBias = mean()
+            Padding.MIN -> newBias = min()
+            Padding.MAX -> newBias = max()
+            Padding.BIAS -> {}
+        }
+
+        val mat = Mat(size + row + size, size + column + size, newBias)
+
+        System.arraycopy(this.element, 0, mat.element, size + column + size + size, this.element.size)
+
+        this.row = mat.row
+        this.column = mat.column
+        this.element = mat.element.clone()
+
+        return this
+    }
+
     fun copy(): Mat {
         val copyMat2D = Mat(row, column)
         copyMat2D.element = element.copyOf()
@@ -259,9 +293,9 @@ class Mat : Vect {
     fun removeRowAt(rowToRemove: Int): Mat {
 
 
-            element =
-                element.filterIndexed { index, _ -> index < rowToRemove * column || index >= (rowToRemove + 1) * column }
-                    .toDoubleArray()
+        element =
+            element.filterIndexed { index, _ -> index < rowToRemove * column || index >= (rowToRemove + 1) * column }
+                .toDoubleArray()
 
 
         row -= 1
@@ -326,16 +360,16 @@ class Mat : Vect {
     fun concat(mat: Mat, axis: Axis): Mat {
         when (axis) {
             Axis.HORIZONTAL -> {
-                for(i : Int in 0..<mat.row){
-                    appendRow(mat.element.copyOfRange(i * mat.row , i * mat.row + mat.column))
+                for (i: Int in 0..<mat.row) {
+                    appendRow(mat.element.copyOfRange(i * mat.row, i * mat.row + mat.column))
                 }
             }
 
             Axis.VERTICAL -> {
                 this.transpose()
                 mat.transpose()
-                for(i : Int in 0..<mat.row){
-                    appendRow(mat.element.copyOfRange(i * mat.row , i * mat.row + mat.column))
+                for (i: Int in 0..<mat.row) {
+                    appendRow(mat.element.copyOfRange(i * mat.row, i * mat.row + mat.column))
                 }
                 this.transpose()
             }

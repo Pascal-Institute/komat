@@ -3,7 +3,8 @@ import komat.Converter.Companion.vectToMat
 import komat.Generator.Companion.mat
 import komat.space.Mat.Companion.times
 import komat.space.Vect
-import komat.prop.Axis
+import komat.type.Axis
+import komat.type.Padding
 import org.junit.jupiter.api.Assertions.assertNotEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -81,7 +82,7 @@ class MatTest {
         mutablelistVect.add(Vect(2, 2, 2, 2, 2))
         mutablelistVect.add(Vect(3, 3, 3, 3, 3))
 
-            mutablelistVect.vectToMat().element.contentEquals(
+        mutablelistVect.vectToMat().element.contentEquals(
             mat {
                 v(1, 1, 1, 1, 1)
                 v(2, 2, 2, 2, 2)
@@ -102,9 +103,9 @@ class MatTest {
         val b = Vect(1, 0, 0)
 
 
-            a.project(b).element.contentEquals(
+        a.project(b).element.contentEquals(
             Vect(2, 0, 0).element
-            )
+        )
 
     }
 
@@ -177,6 +178,19 @@ class MatTest {
         }.element)
 
 
+    }
+
+    @Test
+    fun `test pad`() {
+        mat9.pad(Padding.ZERO, 1).element.contentEquals(
+            mat {
+                v(0.0, 0.0, 0.0, 0.0, 0.0)
+                v(0.0, 1.0, 2.0, 3.0, 0.0)
+                v(0.0, 4.0, 5.0, 6.0, 0.0)
+                v(0.0, 7.0, 8.0, 9.0, 0.0)
+                v(0.0, 0.0, 0.0, 0.0, 0.0)
+            }.element
+        )
     }
 
     @Test
@@ -420,7 +434,7 @@ class MatTest {
     fun `test appendCol`() {
         var mat4 = mat1.copy()
         mat4.appendColumn(mutableListOf(3.0, 5.0))
-        mat4.element.contentEquals( mat {
+        mat4.element.contentEquals(mat {
             v(1, 2, 3)
             v(3, 4, 5)
         }.element)

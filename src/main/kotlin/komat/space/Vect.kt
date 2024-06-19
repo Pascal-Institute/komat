@@ -1,8 +1,13 @@
 package komat.space
 
+import komat.type.Padding
 import kotlin.math.*
 
 open class Vect() {
+
+    var column: Int = 0
+    var element = DoubleArray(0)
+
     companion object {
         operator fun Double.times(vect: Vect): Vect {
 
@@ -14,7 +19,13 @@ open class Vect() {
         }
     }
 
+    constructor(element: DoubleArray) : this() {
+        this.column = element.size
+        this.element = element.copyOf()
+    }
+
     constructor(vararg elem: Number) : this() {
+        this.column = elem.size
         element = DoubleArray(elem.size)
         elem.mapIndexed { index, number ->
             element[index] = number.toDouble()
@@ -24,8 +35,6 @@ open class Vect() {
     constructor(elem: MutableList<Double>) : this() {
         element = elem.toDoubleArray()
     }
-
-    var element = DoubleArray(0)
 
     operator fun get(index: Int): Double {
         return element[index]
@@ -38,7 +47,7 @@ open class Vect() {
     operator fun plus(vect: Vect): Vect {
 
         for (i: Int in element.indices) {
-                element[i] += vect.element[i]
+            element[i] += vect.element[i]
         }
 
         return this
@@ -53,7 +62,7 @@ open class Vect() {
         return this
     }
 
-    fun Double.times() : Vect {
+    fun Double.times(): Vect {
 
         for (i: Int in element.indices) {
             element[i] = this * element[i]
@@ -61,34 +70,63 @@ open class Vect() {
         return this@Vect
     }
 
-    open fun isOrthogonal(vect: Vect) : Boolean {
+    open fun isOrthogonal(vect: Vect): Boolean {
         return (dot(vect) == 0.0)
     }
 
-    open fun print(){
+    open fun print() {
         print("[")
-        for (i : Int in element.indices-1){
+        for (i: Int in element.indices - 1) {
             print("${element[i]}, ")
         }
         print(element.last())
         println("]")
     }
 
-    open fun convolve(vect : Vect, stride : Int) : Vect{
-        if(element.size < vect.element.size + stride){
+    open fun pad(padding: Padding, size: Int): Vect {
+        return pad(padding, size, 0.0)
+    }
+
+    open fun pad(padding: Padding, size: Int, bias: Double): Vect {
+
+        var newBias = bias
+
+        when (padding) {
+            Padding.ZERO -> {}
+            Padding.MEAN -> newBias = mean()
+            Padding.MIN -> newBias = min()
+            Padding.MAX -> newBias = max()
+            Padding.BIAS -> {}
+        }
+
+        val vect = Vect(DoubleArray(size) { newBias })
+        return concat(vect)
+    }
+
+    fun concat(vect: Vect): Vect {
+        return Vect(element + vect.element)
+    }
+
+    fun convolve(vect: Vect, stride: Int): Vect {
+        if (element.size < vect.element.size + stride) {
             throw IllegalArgumentException("Size Invalid")
         }
 
-        val size : Int = (element.size - vect.element.size) / stride + 1
+        val size: Int = (element.size - vect.element.size) / stride + 1
         val convolutionVect = Vect(size)
 
-        for(i in convolutionVect.element.indices){
-            for(j in vect.element.indices){
+        for (i in convolutionVect.element.indices) {
+            for (j in vect.element.indices) {
                 convolutionVect[i] += vect[j] * element[i * stride + j]
             }
         }
 
         return convolutionVect
+    }
+
+    fun convolve(vect: Vect, stride: Int, padding: Padding, padSize: Int): Vect {
+        val newVect = pad(padding, padSize)
+        return convolve(vect, stride)
     }
 
     fun sum(): Double {
@@ -111,9 +149,9 @@ open class Vect() {
         return element.minOrNull() ?: Double.NaN
     }
 
-    fun roundUp(decimalPlaces : Int) : Vect{
+    fun roundUp(decimalPlaces: Int): Vect {
         val factor = 10.0.pow(decimalPlaces)
-        for(i : Int in element.indices){
+        for (i: Int in element.indices) {
             element[i] = round(element[i] * factor) / factor
         }
         return this
@@ -128,7 +166,7 @@ open class Vect() {
         return scalar
     }
 
-    fun l1norm() : Double{
+    fun l1norm(): Double {
 
         var sum = 0.0
 
@@ -150,7 +188,7 @@ open class Vect() {
         return sqrt(sum)
     }
 
-    fun l3norm() : Double{
+    fun l3norm(): Double {
         var sum = 0.0
 
         element.forEach {
@@ -160,28 +198,35 @@ open class Vect() {
         return cbrt(sum)
     }
 
-    fun softmax() : Vect {
+    fun sigmoid(): Vect {
+        element.forEachIndexed { index, value ->
+            element[index] = 1 / (1 + exp(-value))
+        }
+        return this
+    }
+
+    fun softmax(): Vect {
         var denominator = 0.0
 
         element.forEach {
             denominator += exp(it)
         }
 
-        for(i : Int in element.indices){
+        for (i: Int in element.indices) {
             val numerator = exp(element[i])
-            element[i] = numerator/denominator
+            element[i] = numerator / denominator
         }
 
         return this
     }
 
     //projection from this to u
-    fun project(u : Vect) : Vect {
-        return (u.dot(this) / u.dot(u))*u
+    fun project(u: Vect): Vect {
+        return (u.dot(this) / u.dot(u)) * u
     }
 
     //gramSchmidt for b
-    fun gramSchmidt(b : Vect) : Vect {
+    fun gramSchmidt(b: Vect): Vect {
         val vect = this - project(b)
         return vect
     }

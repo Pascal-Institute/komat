@@ -7,6 +7,13 @@ class VectTest {
     val vect2 = Vect(3.0,2.0)
 
     @Test
+    fun `test flip`(){
+        vect2.flip().element.contentEquals(
+            Vect(6, 5, 4, 3, 2, 1).element
+        )
+    }
+
+    @Test
     fun `test pad`(){
         vect2.pad(Padding.MAX,3).element.contentEquals(
             Vect(3.0,2.0,3.0,3.0,3.0).element

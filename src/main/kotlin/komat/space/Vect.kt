@@ -103,6 +103,11 @@ open class Vect() {
         return concat(vect)
     }
 
+    fun flip() : Vect{
+        element.reverse()
+        return this
+    }
+
     fun concat(vect: Vect): Vect {
         return Vect(element + vect.element)
     }

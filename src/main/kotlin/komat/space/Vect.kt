@@ -176,6 +176,15 @@ open class Vect() {
         return this
     }
 
+    fun tanh() : Vect {
+
+        for(i : Int in element.indices){
+            element[i] = (exp(element[i])-exp(-element[i]))/(exp(element[i]) + exp(-element[i]))
+        }
+
+        return this
+    }
+
     //projection from this to u
     fun project(u : Vect) : Vect {
         return (u.dot(this) / u.dot(u))*u

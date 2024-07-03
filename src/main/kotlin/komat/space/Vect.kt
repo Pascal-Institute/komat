@@ -203,9 +203,29 @@ open class Vect() {
         return cbrt(sum)
     }
 
-    fun sigmoid(): Vect {
-        element.forEachIndexed { index, value ->
-            element[index] = 1 / (1 + exp(-value))
+    fun hat() : Vect{
+
+        val l2norm = l2norm()
+
+        for(i : Int in element.indices){
+            element[i] /= l2norm
+        }
+
+        return this
+    }
+
+    fun relu() : Vect{
+        for(i : Int in element.indices){
+            element[i] = if (element[i] > 0) element[i] else 0.0
+        }
+
+        return this
+    }
+
+    fun sigmoid() : Vect{
+        for(i : Int in element.indices){
+
+            element[i] = 1 / (1 + exp(-element[i]))
         }
         return this
     }

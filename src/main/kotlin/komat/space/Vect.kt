@@ -139,12 +139,20 @@ open class Vect() {
         val l2norm = l2norm()
 
         for(i : Int in element.indices){
-            val numerator = exp(element[i])
-            element[i] = numerator/l2norm()
+            element[i] /= l2norm
         }
 
         return this
     }
+
+/*    fun relu() : Vect{
+        for(i : Int in element.indices){
+            val numerator = exp(element[i])
+            element[i] = numerator/l2norm
+        }
+
+        return
+    }*/
 
     fun softmax() : Vect {
         var denominator = 0.0

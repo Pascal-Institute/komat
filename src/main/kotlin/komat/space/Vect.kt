@@ -145,14 +145,14 @@ open class Vect() {
         return this
     }
 
-/*    fun relu() : Vect{
+    fun relu() : Vect{
         for(i : Int in element.indices){
             val numerator = exp(element[i])
-            element[i] = numerator/l2norm
+            element[i] = if (element[i] > 0) element[i] else 0.0
         }
 
-        return
-    }*/
+        return this
+    }
 
     fun softmax() : Vect {
         var denominator = 0.0

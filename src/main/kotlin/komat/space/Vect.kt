@@ -134,6 +134,18 @@ open class Vect() {
         return cbrt(sum)
     }
 
+    fun hat() : Vect{
+
+        val l2norm = l2norm()
+
+        for(i : Int in element.indices){
+            val numerator = exp(element[i])
+            element[i] = numerator/l2norm()
+        }
+
+        return this
+    }
+
     fun softmax() : Vect {
         var denominator = 0.0
 

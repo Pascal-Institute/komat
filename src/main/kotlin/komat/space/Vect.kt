@@ -153,13 +153,13 @@ open class Vect() {
         return this
     }
 
-/*    fun sigmoid() : Vect{
+    fun sigmoid() : Vect{
         for(i : Int in element.indices){
-            val numerator = exp(element[i])
-            element[i] = if (element[i] > 0) element[i] else 0.0
+
+            element[i] = 1 / (1 + exp(-element[i]))
         }
-        return 1 / (1 + exp(-x))
-    }*/
+        return this
+    }
 
     fun softmax() : Vect {
         var denominator = 0.0

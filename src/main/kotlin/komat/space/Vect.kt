@@ -214,37 +214,6 @@ open class Vect() {
         return this
     }
 
-    fun relu() : Vect{
-        for(i : Int in element.indices){
-            element[i] = if (element[i] > 0) element[i] else 0.0
-        }
-
-        return this
-    }
-
-    fun sigmoid() : Vect{
-        for(i : Int in element.indices){
-
-            element[i] = 1 / (1 + exp(-element[i]))
-        }
-        return this
-    }
-
-    fun softmax(): Vect {
-        var denominator = 0.0
-
-        element.forEach {
-            denominator += exp(it)
-        }
-
-        for (i: Int in element.indices) {
-            val numerator = exp(element[i])
-            element[i] = numerator / denominator
-        }
-
-        return this
-    }
-
     //projection from this to u
     fun project(u: Vect): Vect {
         return (u.dot(this) / u.dot(u)) * u

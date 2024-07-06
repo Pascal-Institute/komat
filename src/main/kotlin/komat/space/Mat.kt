@@ -162,7 +162,7 @@ open class Mat : Vect {
         for (i: Int in 0..<newMat.row) {
             for (j: Int in 0..<newMat.column) {
                 for (k: Int in 0..<column) {
-                    newMat.element[i * newMat.column + j] += element[i * column + k] * mat.element[k * mat.column + j]
+                    newMat[i, j] += this[i, k] * mat[k, j]
                 }
             }
         }

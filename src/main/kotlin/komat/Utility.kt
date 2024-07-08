@@ -1,10 +1,61 @@
 package komat
 
+import komat.space.Vect
+import kotlin.math.exp
 import kotlin.reflect.KType
 
 class Utility {
     companion object {
         //IEEE 754
         val EPSLION: Double = 1e-10
+
+        //Activate
+        fun relu(vect : Vect) : Vect {
+            for(i : Int in vect.element.indices){
+                vect.element[i] = if (vect.element[i] > 0) vect.element[i] else 0.0
+            }
+
+            return vect
+        }
+
+        fun tanh(vect : Vect) : Vect {
+            for(i : Int in vect.element.indices){
+                vect[i] = (exp(vect[i]) - exp(-vect[i])) / (exp(vect[i]) + exp(-vect[i]))
+            }
+            return vect
+        }
+
+        fun sigmoid(vect: Vect) : Vect {
+            for(i : Int in vect.element.indices){
+                vect[i] = 1 / (1 + exp(vect[i]))
+            }
+            return vect
+        }
+
+        fun softmax(vect : Vect): Vect {
+            var denominator = 0.0
+
+            vect.element.forEach {
+                denominator += exp(it)
+            }
+
+            for (i: Int in vect.element.indices) {
+                val numerator = exp(vect[i])
+                vect[i] = numerator / denominator
+            }
+
+            return vect
+        }
+
+        fun swish(vect : Vect): Vect {
+
+            val softmaxVect = softmax(vect)
+
+            for (i: Int in vect.element.indices) {
+                vect[i] = vect[i] * softmaxVect[i]
+            }
+
+            return vect
+        }
     }
 }

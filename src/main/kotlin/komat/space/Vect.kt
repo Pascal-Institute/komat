@@ -3,6 +3,7 @@ package komat.space
 import komat.type.Padding
 import kotlin.math.*
 
+//1-Dimensional
 open class Vect() {
 
     var column: Int = 0
@@ -17,11 +18,6 @@ open class Vect() {
 
             return vect
         }
-    }
-
-    constructor(column : Int) : this(){
-        this.column = column
-        this.element = DoubleArray(column) {0.0}
     }
 
     constructor(element: DoubleArray) : this() {
@@ -67,16 +63,6 @@ open class Vect() {
         return this
     }
 
-     operator fun times(vect: Vect): Vect {
-
-        val newVect = Vect(column)
-
-        for (i: Int in 0..<column) {
-            newVect.element[i] += element[i] * vect.element[i]
-        }
-
-        return newVect
-    }
 
     fun Double.times(): Vect {
 
@@ -225,37 +211,6 @@ open class Vect() {
 
         for(i : Int in element.indices){
             element[i] /= l2norm
-        }
-
-        return this
-    }
-
-    fun relu() : Vect{
-        for(i : Int in element.indices){
-            element[i] = if (element[i] > 0) element[i] else 0.0
-        }
-
-        return this
-    }
-
-    fun sigmoid() : Vect{
-        for(i : Int in element.indices){
-
-            element[i] = 1 / (1 + exp(-element[i]))
-        }
-        return this
-    }
-
-    fun softmax(): Vect {
-        var denominator = 0.0
-
-        element.forEach {
-            denominator += exp(it)
-        }
-
-        for (i: Int in element.indices) {
-            val numerator = exp(element[i])
-            element[i] = numerator / denominator
         }
 
         return this

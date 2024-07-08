@@ -1,5 +1,6 @@
 package komat.space
 
+//4-Dimensional
 class Hyper : Cube {
 
     var group: Int = 0

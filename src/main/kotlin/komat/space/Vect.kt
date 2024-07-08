@@ -3,6 +3,7 @@ package komat.space
 import komat.type.Padding
 import kotlin.math.*
 
+//1-Dimensional
 open class Vect() {
 
     var column: Int = 0
@@ -61,6 +62,7 @@ open class Vect() {
 
         return this
     }
+
 
     fun Double.times(): Vect {
 

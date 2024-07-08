@@ -7,6 +7,7 @@ import komat.type.Padding
 import kotlin.math.abs
 import kotlin.math.pow
 
+//2-Dimensional
 open class Mat : Vect {
 
     var row: Int = 0
@@ -167,7 +168,12 @@ open class Mat : Vect {
             }
         }
 
-        return newMat
+        element = newMat.element
+
+        row = newMat.row
+        column = newMat.column
+
+        return this
     }
 
     override fun print() {

@@ -10,36 +10,41 @@ class Utility {
         val EPSLION: Double = 1e-10
 
         //Activate
-        fun Vect.relu() : Vect {
-            for(i : Int in element.indices){
-                element[i] = if (element[i] > 0) element[i] else 0.0
+        fun relu(vect : Vect) : Vect {
+            for(i : Int in vect.element.indices){
+                vect.element[i] = if (vect.element[i] > 0) vect.element[i] else 0.0
             }
 
-            return this
+            return vect
         }
 
-        fun Vect.sigmoid() : Vect {
-            for(i : Int in element.indices){
-
-                element[i] = 1 / (1 + exp(-element[i]))
+        fun tanh(vect : Vect) : Vect {
+            for(i : Int in vect.element.indices){
+                vect.element[i] = (exp(vect.element[i]) - exp(-vect.element[i])) / (exp(vect.element[i]) + exp(-vect.element[i]))
             }
-            return this
+            return vect
         }
 
-        fun Vect.softmax(): Vect {
+        fun sigmoid(vect: Vect) : Vect {
+            for(i : Int in vect.element.indices){
+                vect.element[i] = 1 / (1 + exp(vect.element[i]))
+            }
+            return vect
+        }
+
+        fun softmax(vect : Vect): Vect {
             var denominator = 0.0
 
-            element.forEach {
+            vect.element.forEach {
                 denominator += exp(it)
             }
 
-            for (i: Int in element.indices) {
-                val numerator = exp(element[i])
-                element[i] = numerator / denominator
+            for (i: Int in vect.element.indices) {
+                val numerator = exp(vect.element[i])
+                vect.element[i] = numerator / denominator
             }
 
-            return this
+            return vect
         }
-
     }
 }

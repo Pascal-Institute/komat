@@ -20,14 +20,14 @@ class Utility {
 
         fun tanh(vect : Vect) : Vect {
             for(i : Int in vect.element.indices){
-                vect.element[i] = (exp(vect.element[i]) - exp(-vect.element[i])) / (exp(vect.element[i]) + exp(-vect.element[i]))
+                vect[i] = (exp(vect[i]) - exp(-vect[i])) / (exp(vect[i]) + exp(-vect[i]))
             }
             return vect
         }
 
         fun sigmoid(vect: Vect) : Vect {
             for(i : Int in vect.element.indices){
-                vect.element[i] = 1 / (1 + exp(vect.element[i]))
+                vect[i] = 1 / (1 + exp(vect[i]))
             }
             return vect
         }
@@ -40,8 +40,19 @@ class Utility {
             }
 
             for (i: Int in vect.element.indices) {
-                val numerator = exp(vect.element[i])
-                vect.element[i] = numerator / denominator
+                val numerator = exp(vect[i])
+                vect[i] = numerator / denominator
+            }
+
+            return vect
+        }
+
+        fun swish(vect : Vect): Vect {
+
+            val softmaxVect = softmax(vect)
+
+            for (i: Int in vect.element.indices) {
+                vect[i] = vect[i] * softmaxVect[i]
             }
 
             return vect

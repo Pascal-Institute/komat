@@ -18,10 +18,6 @@ class CubeTest {
     @Test
     fun `test generator`() {
 
-        /*val cube1 = cube {
-            m(mat1)
-            m(mat1)
-        }*/
 
         val cube2 = cube {
             +mat1
@@ -40,17 +36,13 @@ class CubeTest {
             }
 
         }
-
-        cube2.sum()
-        cube2.print()
-        cube3.print()
-
     }
 
     @Test
     fun `test times`() {
 
-       /* val cube1 = cube{
+        //1-1
+        val cube1 = cube{
             +mat{
                 v(1,2)
                 v(3,4)
@@ -60,7 +52,6 @@ class CubeTest {
                 v(7,8)
             }
         }
-
 
         val cube2 = cube{
             +mat{
@@ -84,11 +75,10 @@ class CubeTest {
             }
 
         }
-        (cube1 * cube2).print()
-        cube3.print()
 
-        (cube1 * cube2).element.contentEquals(cube3.element)*/
-        // Define the first 3D matrix (Cube A)
+        (cube1 * cube2).element.contentEquals(cube3.element)
+
+        //1-2
         val cubeA = Cube(2, 2, 2)
         cubeA[0, 0, 0] = 1.0
         cubeA[0, 0, 1] = 2.0
@@ -112,12 +102,18 @@ class CubeTest {
 
         // Perform matrix multiplication
         val resultCube = cubeA * cubeB
-
-        cubeA.print()
-        cubeB.print()
-        // Print the result
-        println("Result of Cube A * Cube B:")
-        resultCube.print()
+        (resultCube).element.contentEquals(
+            cube{
+                +mat{
+                    v(3,2)
+                    v(4,7)
+                }
+                +mat{
+                    v(11,6)
+                    v(8,15)
+                }
+            }.element
+        )
     }
 
 }

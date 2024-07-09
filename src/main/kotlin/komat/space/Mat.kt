@@ -384,6 +384,8 @@ open class Mat : Vect {
                 }
                 this.transpose()
             }
+
+            Axis.FRONTAL ->{/*Do Nothing*/}
         }
 
         return this
@@ -410,6 +412,8 @@ open class Mat : Vect {
                     }
                 }
             }
+
+            Axis.FRONTAL ->{/*Do Nothing*/}
         }
 
         this.element = mat.element

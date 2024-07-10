@@ -1,5 +1,7 @@
 package komat.space
 
+import komat.type.Axis
+
 //3-Dimensional
 open class Cube : Mat {
 
@@ -86,6 +88,75 @@ open class Cube : Mat {
 
         return this
     }
+
+    override fun flip(axis: Axis): Cube {
+
+        val cube = Cube(depth, row, column)
+
+        when (axis) {
+            Axis.HORIZONTAL -> {
+                for (d: Int in 0..<depth) {
+                    for (r: Int in 0..<row) {
+                        for(i : Int in 0..<cube.column){
+                            for (c in 0..<column) {
+                                cube[d, r, c] = this[d, r, column - c - 1]
+                            }
+                        }
+                    }
+                }
+            }
+
+            Axis.VERTICAL -> {
+                for (d: Int in 0..<depth) {
+                    for (r: Int in 0..<row) {
+                        for(i : Int in 0..<cube.column){
+                            for (c in 0..<column) {
+                                cube[d, r, c] = this[depth - d - 1, row, column]
+                            }
+                        }
+                    }
+                }
+            }
+
+            Axis.FRONTAL -> {
+                for (d: Int in 0..<depth) {
+                    for (r: Int in 0..<row) {
+                        for(i : Int in 0..<cube.column){
+                            for (c in 0..<column) {
+                                cube[d, r, c] = this[d, row - r - 1, column]
+                            }
+                        }
+                    }
+                }
+            }
+
+        }
+
+        this.element = cube.element
+
+        return this
+    }
+
+    override fun transpose(): Cube {
+        val newCube = Cube(column, row, depth)
+
+        for (d in 0..<newCube.depth) {
+            for (r in 0..<newCube.row) {
+                for(c in 0..<newCube.column){
+                    newCube[d, r, c] = this[c, r, d]
+                }
+            }
+        }
+
+        element = newCube.element.clone()
+
+        depth = newCube.depth
+        row = newCube.row
+        column = newCube.column
+
+        return this
+    }
+
 
     override fun print() {
         println("[")

@@ -392,7 +392,7 @@ open class Mat : Vect {
 
     }
 
-    fun flip(axis: Axis): Mat {
+    open fun flip(axis: Axis): Mat {
 
         val mat = Mat(row, column)
 

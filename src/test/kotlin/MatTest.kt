@@ -164,7 +164,7 @@ class MatTest {
 
     @Test
     fun `test flip`() {
-        mat1.flip(Axis.HORIZONTAL).element.contentEquals(mat {
+        mat1.flip(Axis.VERTICAL).element.contentEquals(mat {
             v(3, 4)
             v(1, 2)
         }.element)
@@ -172,7 +172,7 @@ class MatTest {
         mat {
             v(1, 2)
             v(3, 4)
-        }.flip(Axis.VERTICAL).element.contentEquals(mat {
+        }.flip(Axis.HORIZONTAL).element.contentEquals(mat {
             v(2, 1)
             v(4, 3)
         }.element)

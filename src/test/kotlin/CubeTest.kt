@@ -16,6 +16,20 @@ class CubeTest {
     }
 
     @Test
+    fun `test transpose`() {
+        val cube = cube {
+            +mat1
+            +mat2
+        }
+
+        val cube1 = cube.copy()
+
+        cube.transpose().transpose().element.contentEquals(
+            cube1.element
+        )
+    }
+
+    @Test
     fun `test generator`() {
 
 
@@ -42,34 +56,34 @@ class CubeTest {
     fun `test times`() {
 
         //1-1
-        val cube1 = cube{
-            +mat{
-                v(1,2)
-                v(3,4)
+        val cube1 = cube {
+            +mat {
+                v(1, 2)
+                v(3, 4)
             }
-            +mat{
-                v(5,6)
-                v(7,8)
+            +mat {
+                v(5, 6)
+                v(7, 8)
             }
         }
 
-        val cube2 = cube{
-            +mat{
-                v(9,8)
-                v(7,6)
+        val cube2 = cube {
+            +mat {
+                v(9, 8)
+                v(7, 6)
             }
-            +mat{
-                v(5,4)
-                v(3,2)
+            +mat {
+                v(5, 4)
+                v(3, 2)
             }
         }
 
         val cube3 = cube {
-            +mat{
+            +mat {
                 v(23, 20)
                 v(55, 48)
             }
-            +mat{
+            +mat {
                 v(43, 32)
                 v(99, 74)
             }
@@ -103,14 +117,14 @@ class CubeTest {
         // Perform matrix multiplication
         val resultCube = cubeA * cubeB
         (resultCube).element.contentEquals(
-            cube{
-                +mat{
-                    v(3,2)
-                    v(4,7)
+            cube {
+                +mat {
+                    v(3, 2)
+                    v(4, 7)
                 }
-                +mat{
-                    v(11,6)
-                    v(8,15)
+                +mat {
+                    v(11, 6)
+                    v(8, 15)
                 }
             }.element
         )

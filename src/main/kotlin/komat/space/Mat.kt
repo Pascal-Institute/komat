@@ -225,13 +225,7 @@ open class Mat : Vect {
         return this
     }
 
-    fun copy(): Mat {
-        val copyMat2D = Mat(row, column)
-        copyMat2D.element = element.copyOf()
-        return copyMat2D
-    }
-
-    fun transpose(): Mat {
+    open fun transpose(): Mat {
 
         val newMat = Mat(this.column, this.row)
 
@@ -246,6 +240,12 @@ open class Mat : Vect {
         this.element = newMat.element
 
         return this
+    }
+
+    fun copy(): Mat {
+        val copyMat2D = Mat(row, column)
+        copyMat2D.element = element.copyOf()
+        return copyMat2D
     }
 
     fun appendRow(elements: DoubleArray): Mat {
@@ -379,13 +379,16 @@ open class Mat : Vect {
                 }
                 this.transpose()
             }
+
+            Axis.FRONTAL -> {/*Do Nothing*/
+            }
         }
 
         return this
 
     }
 
-    fun flip(axis: Axis): Mat {
+    open fun flip(axis: Axis): Mat {
 
         val mat = Mat(row, column)
 
@@ -393,7 +396,7 @@ open class Mat : Vect {
             Axis.HORIZONTAL -> {
                 for (i: Int in 0..<row) {
                     for (j: Int in 0..<column) {
-                        mat[i, j] = this[row - i - 1, j]
+                        mat[i, j] = this[i, column - j - 1]
                     }
                 }
             }
@@ -401,9 +404,12 @@ open class Mat : Vect {
             Axis.VERTICAL -> {
                 for (i: Int in 0..<row) {
                     for (j: Int in 0..<column) {
-                        mat[i, j] = this[i, column - j - 1]
+                        mat[i, j] = this[row - i - 1, j]
                     }
                 }
+            }
+
+            else -> {/*Do Nothing*/
             }
         }
 

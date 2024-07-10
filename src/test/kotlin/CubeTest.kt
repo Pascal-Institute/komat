@@ -16,6 +16,20 @@ class CubeTest {
     }
 
     @Test
+    fun `test transpose`(){
+        val cube = cube{
+            +mat1
+            +mat2
+        }
+
+        val cube1 = cube.copy()
+
+        cube.transpose().transpose().element.contentEquals(
+            cube1.element
+        )
+    }
+
+    @Test
     fun `test generator`() {
 
 

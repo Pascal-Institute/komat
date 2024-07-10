@@ -105,7 +105,7 @@ open class Vect() {
         return concat(vect)
     }
 
-    fun flip() : Vect{
+    fun flip(): Vect {
         element.reverse()
         return this
     }
@@ -205,11 +205,11 @@ open class Vect() {
         return cbrt(sum)
     }
 
-    fun hat() : Vect{
+    fun hat(): Vect {
 
         val l2norm = l2norm()
 
-        for(i : Int in element.indices){
+        for (i: Int in element.indices) {
             element[i] /= l2norm
         }
 

@@ -2,7 +2,6 @@ package komat
 
 import komat.space.Vect
 import kotlin.math.exp
-import kotlin.reflect.KType
 
 class Utility {
     companion object {

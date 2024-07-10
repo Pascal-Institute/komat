@@ -33,7 +33,7 @@ open class Cube : Mat {
 
     operator fun times(cube: Cube): Cube {
 
-        if (this.column!=cube.depth) {
+        if (this.column != cube.depth) {
             throw IllegalArgumentException("Invalid matrix: A's column & B's depth must be the same")
         }
 
@@ -41,10 +41,10 @@ open class Cube : Mat {
 
         for (d: Int in 0..<depth) {
             for (r: Int in 0..<row) {
-                for(i : Int in 0..<cube.column){
-                        for (c in 0..<column) {
-                            newCube[d, r, c] += this[d, r, i] * cube[i, r, c]
-                        }
+                for (i: Int in 0..<cube.column) {
+                    for (c in 0..<column) {
+                        newCube[d, r, c] += this[d, r, i] * cube[i, r, c]
+                    }
                 }
             }
         }
@@ -97,7 +97,7 @@ open class Cube : Mat {
             Axis.HORIZONTAL -> {
                 for (d: Int in 0..<depth) {
                     for (r: Int in 0..<row) {
-                        for(i : Int in 0..<cube.column){
+                        for (i: Int in 0..<cube.column) {
                             for (c in 0..<column) {
                                 cube[d, r, c] = this[d, r, column - c - 1]
                             }
@@ -109,7 +109,7 @@ open class Cube : Mat {
             Axis.VERTICAL -> {
                 for (d: Int in 0..<depth) {
                     for (r: Int in 0..<row) {
-                        for(i : Int in 0..<cube.column){
+                        for (i: Int in 0..<cube.column) {
                             for (c in 0..<column) {
                                 cube[d, r, c] = this[depth - d - 1, row, column]
                             }
@@ -121,7 +121,7 @@ open class Cube : Mat {
             Axis.FRONTAL -> {
                 for (d: Int in 0..<depth) {
                     for (r: Int in 0..<row) {
-                        for(i : Int in 0..<cube.column){
+                        for (i: Int in 0..<cube.column) {
                             for (c in 0..<column) {
                                 cube[d, r, c] = this[d, row - r - 1, column]
                             }
@@ -142,7 +142,7 @@ open class Cube : Mat {
 
         for (d in 0..<newCube.depth) {
             for (r in 0..<newCube.row) {
-                for(c in 0..<newCube.column){
+                for (c in 0..<newCube.column) {
                     newCube[d, r, c] = this[c, r, d]
                 }
             }

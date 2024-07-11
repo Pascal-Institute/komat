@@ -130,6 +130,8 @@ open class Cube : Mat {
                 }
             }
 
+            else->{/*Do Nothing*/}
+
         }
 
         this.element = cube.element

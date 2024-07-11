@@ -385,7 +385,7 @@ open class Mat : Vect {
                 this.transpose()
             }
 
-            Axis.FRONTAL -> {/*Do Nothing*/
+            else -> {/*Do Nothing*/
             }
         }
 

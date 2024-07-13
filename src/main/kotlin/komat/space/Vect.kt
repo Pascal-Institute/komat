@@ -137,11 +137,11 @@ open class Vect() {
     }
 
     fun convolve(vect: Vect, stride: Int): Vect {
-        if (elements.size < vect.elements.size + stride) {
+        if (column < vect.column + stride) {
             throw IllegalArgumentException("Size Invalid")
         }
 
-        val size: Int = (elements.size - vect.elements.size) / stride + 1
+        val size: Int = (column - vect.column) / stride + 1
         val convolutionVect = Vect(Array(size) { Element(0.0) })
 
         for (i in convolutionVect.elements.indices) {
@@ -167,7 +167,7 @@ open class Vect() {
     }
 
     fun mean(): Double {
-        return sum() / (elements.size)
+        return sum() / column
     }
 
     fun max(): Double {

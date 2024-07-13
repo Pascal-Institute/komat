@@ -1,5 +1,8 @@
 package komat.space
 
+import komat.Converter.Companion.toDoubleArray
+import komat.Converter.Companion.toNumberArray
+import komat.Element
 import komat.type.Padding
 import kotlin.math.*
 
@@ -20,21 +23,40 @@ open class Vect() {
         }
     }
 
+/*    constructor(vararg values: Double) : this() {
+        this.element = values.map { Element(it) }.toTypedArray().toDoubleArray()
+        this.column = element.size
+    }*/
+
+    constructor(vararg values: Number) : this() {
+        this.element = values.map { Element(it) }.toTypedArray().toNumberArray().toDoubleArray()
+        this.column = element.size
+    }
+
+/*    constructor(vararg elements: Element) : this() {
+        this.element = arrayOf(*elements).toDoubleArray()
+    }*/
+
     constructor(element: DoubleArray) : this() {
         this.column = element.size
         this.element = element.copyOf()
     }
 
-    constructor(vararg elem: Number) : this() {
+/*    constructor(vararg elem: Number) : this() {
         this.column = elem.size
         element = DoubleArray(elem.size)
         elem.mapIndexed { index, number ->
             element[index] = number.toDouble()
         }
-    }
+    }*/
 
-    constructor(elem: MutableList<Double>) : this() {
+/*    constructor(elem: MutableList<Double>) : this() {
         element = elem.toDoubleArray()
+    }*/
+
+    constructor(elem: Array<Element>) : this() {
+        element = elem.toDoubleArray()
+        this.column = element.size
     }
 
     operator fun get(index: Int): Double {
@@ -120,7 +142,7 @@ open class Vect() {
         }
 
         val size: Int = (element.size - vect.element.size) / stride + 1
-        val convolutionVect = Vect(size)
+        val convolutionVect = Vect(Array(size) { Element(0.0) })
 
         for (i in convolutionVect.element.indices) {
             for (j in vect.element.indices) {

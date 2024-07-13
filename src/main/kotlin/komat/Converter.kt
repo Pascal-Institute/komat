@@ -43,6 +43,22 @@ class Converter {
             }
         }
 
+        fun Array<Element>.toDoubleArray(): DoubleArray {
+            return DoubleArray(this.size) { index ->
+                (this[index] as Element.DoubleElement).value
+            }
+        }
+
+        fun Array<Element>.toNumberArray(): Array<Number> {
+            return Array<Number>(this.size) { index ->
+                (this[index] as Element.NumberElement).value
+            }
+        }
+
+        fun Array<Number>.toDoubleArray() : DoubleArray {
+            return this.map { it.toDouble() }.toDoubleArray()
+        }
+
         fun Mat.toVect(): MutableList<Vect> {
 
             val vectList = mutableListOf<Vect>()

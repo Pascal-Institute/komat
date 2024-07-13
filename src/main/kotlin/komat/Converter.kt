@@ -10,7 +10,7 @@ class Converter {
         fun Array<Array<Double>>.toMat(): Mat {
 
             val mat = Mat(this.size, this[0].size)
-            mat.element = this.flatten().toDoubleArray()
+            mat.elements = this.flatten().toDoubleArray()
             return mat
         }
 
@@ -28,7 +28,7 @@ class Converter {
 
         fun MutableList<MutableList<Number>>.toMat(): Mat {
             val mat = Mat(this.size, this[0].size)
-            mat.element = this.flatten().map { it.toDouble() }.toDoubleArray()
+            mat.elements = this.flatten().map { it.toDouble() }.toDoubleArray()
             return mat
         }
 
@@ -38,7 +38,7 @@ class Converter {
 
             return mat {
                 for (i: Int in 0..<mutableListVect.size) {
-                    v(mutableListVect[i].element)
+                    v(mutableListVect[i].elements)
                 }
             }
         }
@@ -63,7 +63,7 @@ class Converter {
 
             val vectList = mutableListOf<Vect>()
 
-            element.forEach {
+            elements.forEach {
                 vectList.add(Vect(it));
             }
 
@@ -73,8 +73,8 @@ class Converter {
         fun Mat.toArray(): Array<Array<Number>> {
             val array2D: Array<Array<Number>> = Array(row) { i ->
                 val start = i * column
-                val end = Math.min(start + column, element.size)
-                element.copyOfRange(start, end).map { it as Number }.toTypedArray()
+                val end = Math.min(start + column, elements.size)
+                elements.copyOfRange(start, end).map { it as Number }.toTypedArray()
             }
             return array2D
         }
@@ -83,11 +83,11 @@ class Converter {
             val list2D: MutableList<MutableList<Number>> = mutableListOf()
             var rowIndex = 0
             var columnIndex = 0
-            while (rowIndex < element.size) {
+            while (rowIndex < elements.size) {
                 val row: MutableList<Number> = mutableListOf()
                 columnIndex = 0
-                while (columnIndex < column && rowIndex < element.size) {
-                    row.add(element[rowIndex])
+                while (columnIndex < column && rowIndex < elements.size) {
+                    row.add(elements[rowIndex])
                     rowIndex++
                     columnIndex++
                 }

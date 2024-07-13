@@ -10,22 +10,22 @@ class Utility {
 
         //Activate
         fun relu(vect : Vect) : Vect {
-            for(i : Int in vect.element.indices){
-                vect.element[i] = if (vect.element[i] > 0) vect.element[i] else 0.0
+            for(i : Int in vect.elements.indices){
+                vect.elements[i] = if (vect.elements[i] > 0) vect.elements[i] else 0.0
             }
 
             return vect
         }
 
         fun tanh(vect : Vect) : Vect {
-            for(i : Int in vect.element.indices){
+            for(i : Int in vect.elements.indices){
                 vect[i] = (exp(vect[i]) - exp(-vect[i])) / (exp(vect[i]) + exp(-vect[i]))
             }
             return vect
         }
 
         fun sigmoid(vect: Vect) : Vect {
-            for(i : Int in vect.element.indices){
+            for(i : Int in vect.elements.indices){
                 vect[i] = 1 / (1 + exp(vect[i]))
             }
             return vect
@@ -34,11 +34,11 @@ class Utility {
         fun softmax(vect : Vect): Vect {
             var denominator = 0.0
 
-            vect.element.forEach {
+            vect.elements.forEach {
                 denominator += exp(it)
             }
 
-            for (i: Int in vect.element.indices) {
+            for (i: Int in vect.elements.indices) {
                 val numerator = exp(vect[i])
                 vect[i] = numerator / denominator
             }
@@ -50,7 +50,7 @@ class Utility {
 
             val softmaxVect = softmax(vect)
 
-            for (i: Int in vect.element.indices) {
+            for (i: Int in vect.elements.indices) {
                 vect[i] = vect[i] * softmaxVect[i]
             }
 

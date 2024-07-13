@@ -82,12 +82,12 @@ class MatTest {
         mutablelistVect.add(Vect(2, 2, 2, 2, 2))
         mutablelistVect.add(Vect(3, 3, 3, 3, 3))
 
-        mutablelistVect.vectToMat().element.contentEquals(
+        mutablelistVect.vectToMat().elements.contentEquals(
             mat {
                 v(1, 1, 1, 1, 1)
                 v(2, 2, 2, 2, 2)
                 v(3, 3, 3, 3, 3)
-            }.element
+            }.elements
         )
     }
 
@@ -103,8 +103,8 @@ class MatTest {
         val b = Vect(1, 0, 0)
 
 
-        a.project(b).element.contentEquals(
-            Vect(2, 0, 0).element
+        a.project(b).elements.contentEquals(
+            Vect(2, 0, 0).elements
         )
 
     }
@@ -114,8 +114,8 @@ class MatTest {
         /* val u1 = Vect(3,1)
          val u2 = Vect(2,2)
 
-         assertEquals( u2.gramSchmidt(u1).element,
-             Vect(-0.4, 1.2).element)*/
+         assertEquals( u2.gramSchmidt(u1).elements,
+             Vect(-0.4, 1.2).elements)*/
     }
 
     @Test
@@ -128,7 +128,7 @@ class MatTest {
             mat1
         )
 
-        mat1.element.contentEquals(copy.element)
+        mat1.elements.contentEquals(copy.elements)
     }
 
     @Test
@@ -151,7 +151,7 @@ class MatTest {
         mat {
             v(5, 5)
             v(5, 5)
-        }.element.contentEquals(mat1.plus(mat2).element)
+        }.elements.contentEquals(mat1.plus(mat2).elements)
     }
 
     @Test
@@ -159,57 +159,57 @@ class MatTest {
         mat {
             v(-3, -1)
             v(1, 3)
-        }.element.contentEquals(mat1.minus(mat2).element)
+        }.elements.contentEquals(mat1.minus(mat2).elements)
     }
 
     @Test
     fun `test flip`() {
-        mat1.flip(Axis.VERTICAL).element.contentEquals(mat {
+        mat1.flip(Axis.VERTICAL).elements.contentEquals(mat {
             v(3, 4)
             v(1, 2)
-        }.element)
+        }.elements)
 
         mat {
             v(1, 2)
             v(3, 4)
-        }.flip(Axis.HORIZONTAL).element.contentEquals(mat {
+        }.flip(Axis.HORIZONTAL).elements.contentEquals(mat {
             v(2, 1)
             v(4, 3)
-        }.element)
+        }.elements)
 
 
     }
 
     @Test
     fun `test pad`() {
-        mat9.pad(Padding.ZERO, 1).element.contentEquals(
+        mat9.pad(Padding.ZERO, 1).elements.contentEquals(
             mat {
                 v(0.0, 0.0, 0.0, 0.0, 0.0)
                 v(0.0, 1.0, 2.0, 3.0, 0.0)
                 v(0.0, 4.0, 5.0, 6.0, 0.0)
                 v(0.0, 7.0, 8.0, 9.0, 0.0)
                 v(0.0, 0.0, 0.0, 0.0, 0.0)
-            }.element
+            }.elements
         )
     }
 
     @Test
     fun `test scalar multiplication`() {
 
-        (3.0 * mat1).element.contentEquals(mat {
+        (3.0 * mat1).elements.contentEquals(mat {
             v(3.0, 6.0)
             v(9.0, 12.0)
-        }.element)
+        }.elements)
 
     }
 
     @Test
     fun `test exchange column`() {
 
-        mat1.exchangeColumn(0, 1).element.contentEquals(mat {
+        mat1.exchangeColumn(0, 1).elements.contentEquals(mat {
             v(2, 1)
             v(4, 3)
-        }.element)
+        }.elements)
 
     }
 
@@ -218,28 +218,28 @@ class MatTest {
         mat {
             v(3, 4)
             v(1, 2)
-        }.element.contentEquals(
-            mat1.exchangeRow(0, 1).element
+        }.elements.contentEquals(
+            mat1.exchangeRow(0, 1).elements
         )
     }
 
     @Test
     fun `test adjugate`() {
-        mat6.adjugate().element.contentEquals(mat {
+        mat6.adjugate().elements.contentEquals(mat {
             v(-6, 8, 2)
             v(9, -10, -7)
             v(-3, -2, 1)
-        }.element)
+        }.elements)
     }
 
     @Test
     fun `test inverse`() {
-        mat7.inverse().element.contentEquals(mat {
+        mat7.inverse().elements.contentEquals(mat {
             v(-1, -1, 0, 1)
             v(-1, 2, -1, 0)
             v(0, -1, 2, -1)
             v(1, 0, -1, 0.5)
-        }.element)
+        }.elements)
 
     }
 
@@ -249,10 +249,10 @@ class MatTest {
             v(1, 2)
             v(3, 4)
             v(5, 6)
-        }.transpose().element.contentEquals(mat {
+        }.transpose().elements.contentEquals(mat {
             v(1, 3, 5)
             v(2, 4, 6)
-        }.element)
+        }.elements)
     }
 
     @Test
@@ -262,54 +262,54 @@ class MatTest {
             v(1, 2)
             v(3, 4)
             v(5, 6)
-        }.transpose().transpose().element.contentEquals(
+        }.transpose().transpose().elements.contentEquals(
             mat {
                 v(1, 2)
                 v(3, 4)
                 v(5, 6)
-            }.element
+            }.elements
         )
     }
 
     @Test
     fun `test removeColumnAt`() {
 
-        mat4.removeColumnAt(1).element.contentEquals(mat {
+        mat4.removeColumnAt(1).elements.contentEquals(mat {
             v(1, 0, 0)
             v(0, 3, 0)
             v(1, 3, 1)
             v(0, 0, 4)
-        }.element)
+        }.elements)
     }
 
     @Test
     fun `test removeRowAt`() {
-        mat4.removeRowAt(2).element.contentEquals(mat {
+        mat4.removeRowAt(2).elements.contentEquals(mat {
             v(1, 0, 0, 0)
             v(0, 2, 3, 0)
             v(0, 2, 0, 4)
-        }.element)
+        }.elements)
     }
 
     @Test
     fun `test removeAt`() {
-        mat4.removeAt(2, 1).element.contentEquals(mat {
+        mat4.removeAt(2, 1).elements.contentEquals(mat {
             v(1, 0, 0)
             v(0, 3, 0)
             v(0, 0, 4)
-        }.element)
+        }.elements)
     }
 
     @Test
     fun `test concat`() {
         mat1.concat(
             mat { v(5, 6) }, Axis.HORIZONTAL
-        ).element.contentEquals(
+        ).elements.contentEquals(
             mat {
                 v(1, 2)
                 v(3, 4)
                 v(5, 6)
-            }.element
+            }.elements
         )
 
         mat2.concat(
@@ -317,11 +317,11 @@ class MatTest {
                 v(5)
                 v(6)
             }, Axis.VERTICAL
-        ).element.contentEquals(
+        ).elements.contentEquals(
             mat {
                 v(4, 3, 5)
                 v(2, 1, 6)
-            }.element
+            }.elements
         )
     }
 
@@ -330,11 +330,11 @@ class MatTest {
         mat {
             v(1, 2, 3)
             v(4, 5, 6)
-        }.getColumnsInRange(0, 2).element.contentEquals(
+        }.getColumnsInRange(0, 2).elements.contentEquals(
             mat {
                 v(1, 2)
                 v(4, 5)
-            }.element
+            }.elements
         )
     }
 
@@ -353,7 +353,7 @@ class MatTest {
             v(0, 2, 3, 0, 1)
             v(0, 0, -3, 0, -1)
             v(0, 0, 0, 0, 0)
-        }.element.contentEquals(mat3.ref().element)
+        }.elements.contentEquals(mat3.ref().elements)
 
 
     }
@@ -365,7 +365,7 @@ class MatTest {
             v(0, 1, 0, 0, 0)
             v(0, 0, 1, 0, 1.0 / 3)
             v(0, 0, 0, 0, 0)
-        }.element.contentEquals(mat3.rref().element)
+        }.elements.contentEquals(mat3.rref().elements)
     }
 
     @Test
@@ -374,25 +374,25 @@ class MatTest {
         val copy = mat9.copy()
 
         val luDecomposeValue = copy.luDecompose()
-        luDecomposeValue.first.element.contentEquals(mat {
+        luDecomposeValue.first.elements.contentEquals(mat {
             v(1, 0, 0)
             v(2, 1, 0)
             v(3, 0, 1)
-        }.element)
+        }.elements)
 
-        luDecomposeValue.second.element.contentEquals(mat {
+        luDecomposeValue.second.elements.contentEquals(mat {
             v(1, 2, 3)
             v(0, 0, 0)
             v(0, 0, 0)
-        }.element)
+        }.elements)
 
         val restore = (luDecomposeValue.first * luDecomposeValue.second)
 
-        restore.element.contentEquals(mat {
+        restore.elements.contentEquals(mat {
             v(1.0, 2.0, 3.0)
             v(2.0, 4.0, 6.0)
             v(3.0, 6.0, 9.0)
-        }.element)
+        }.elements)
     }
 
     @Test
@@ -434,10 +434,10 @@ class MatTest {
     fun `test appendCol`() {
         var mat4 = mat1.copy()
         mat4.appendColumn(mutableListOf(3.0, 5.0))
-        mat4.element.contentEquals(mat {
+        mat4.elements.contentEquals(mat {
             v(1, 2, 3)
             v(3, 4, 5)
-        }.element)
+        }.elements)
     }
 
     @Test

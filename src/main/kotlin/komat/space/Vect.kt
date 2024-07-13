@@ -10,13 +10,13 @@ import kotlin.math.*
 open class Vect() {
 
     var column: Int = 0
-    var element = DoubleArray(0)
+    var elements = DoubleArray(0)
 
     companion object {
         operator fun Double.times(vect: Vect): Vect {
 
-            for (i: Int in 0..<vect.element.size) {
-                vect.element[i] = this * vect.element[i]
+            for (i: Int in 0..<vect.elements.size) {
+                vect.elements[i] = this * vect.elements[i]
             }
 
             return vect
@@ -24,53 +24,53 @@ open class Vect() {
     }
 
 /*    constructor(vararg values: Double) : this() {
-        this.element = values.map { Element(it) }.toTypedArray().toDoubleArray()
-        this.column = element.size
+        this.elements = values.map { Element(it) }.toTypedArray().toDoubleArray()
+        this.column = elements.size
     }*/
 
     constructor(vararg values: Number) : this() {
-        this.element = values.map { Element(it) }.toTypedArray().toNumberArray().toDoubleArray()
-        this.column = element.size
+        this.elements = values.map { Element(it) }.toTypedArray().toNumberArray().toDoubleArray()
+        this.column = elements.size
     }
 
-/*    constructor(vararg elements: Element) : this() {
-        this.element = arrayOf(*elements).toDoubleArray()
+/*    constructor(vararg elementss: Element) : this() {
+        this.elements = arrayOf(*elementss).toDoubleArray()
     }*/
 
-    constructor(element: DoubleArray) : this() {
-        this.column = element.size
-        this.element = element.copyOf()
+    constructor(elements: DoubleArray) : this() {
+        this.column = elements.size
+        this.elements = elements.copyOf()
     }
 
 /*    constructor(vararg elem: Number) : this() {
         this.column = elem.size
-        element = DoubleArray(elem.size)
+        elements = DoubleArray(elem.size)
         elem.mapIndexed { index, number ->
-            element[index] = number.toDouble()
+            elements[index] = number.toDouble()
         }
     }*/
 
 /*    constructor(elem: MutableList<Double>) : this() {
-        element = elem.toDoubleArray()
+        elements = elem.toDoubleArray()
     }*/
 
     constructor(elem: Array<Element>) : this() {
-        element = elem.toDoubleArray()
-        this.column = element.size
+        elements = elem.toDoubleArray()
+        this.column = elements.size
     }
 
     operator fun get(index: Int): Double {
-        return element[index]
+        return elements[index]
     }
 
     operator fun set(index: Int, value: Double) {
-        element[index] = value
+        elements[index] = value
     }
 
     operator fun plus(vect: Vect): Vect {
 
-        for (i: Int in element.indices) {
-            element[i] += vect.element[i]
+        for (i: Int in elements.indices) {
+            elements[i] += vect.elements[i]
         }
 
         return this
@@ -78,8 +78,8 @@ open class Vect() {
 
     operator fun minus(vect: Vect): Vect {
 
-        for (i: Int in element.indices) {
-            element[i] -= vect.element[i]
+        for (i: Int in elements.indices) {
+            elements[i] -= vect.elements[i]
         }
 
         return this
@@ -88,8 +88,8 @@ open class Vect() {
 
     fun Double.times(): Vect {
 
-        for (i: Int in element.indices) {
-            element[i] = this * element[i]
+        for (i: Int in elements.indices) {
+            elements[i] = this * elements[i]
         }
         return this@Vect
     }
@@ -100,10 +100,10 @@ open class Vect() {
 
     open fun print() {
         print("[")
-        for (i: Int in element.indices - 1) {
-            print("${element[i]}, ")
+        for (i: Int in elements.indices - 1) {
+            print("${elements[i]}, ")
         }
-        print(element.last())
+        print(elements.last())
         println("]")
     }
 
@@ -128,25 +128,25 @@ open class Vect() {
     }
 
     fun flip(): Vect {
-        element.reverse()
+        elements.reverse()
         return this
     }
 
     fun concat(vect: Vect): Vect {
-        return Vect(element + vect.element)
+        return Vect(elements + vect.elements)
     }
 
     fun convolve(vect: Vect, stride: Int): Vect {
-        if (element.size < vect.element.size + stride) {
+        if (elements.size < vect.elements.size + stride) {
             throw IllegalArgumentException("Size Invalid")
         }
 
-        val size: Int = (element.size - vect.element.size) / stride + 1
+        val size: Int = (elements.size - vect.elements.size) / stride + 1
         val convolutionVect = Vect(Array(size) { Element(0.0) })
 
-        for (i in convolutionVect.element.indices) {
-            for (j in vect.element.indices) {
-                convolutionVect[i] += vect[j] * element[i * stride + j]
+        for (i in convolutionVect.elements.indices) {
+            for (j in vect.elements.indices) {
+                convolutionVect[i] += vect[j] * elements[i * stride + j]
             }
         }
 
@@ -160,28 +160,28 @@ open class Vect() {
 
     fun sum(): Double {
         var sum = 0.0
-        for (value in element) {
+        for (value in elements) {
             sum += value
         }
         return sum
     }
 
     fun mean(): Double {
-        return sum() / (element.size)
+        return sum() / (elements.size)
     }
 
     fun max(): Double {
-        return element.maxOrNull() ?: Double.NaN
+        return elements.maxOrNull() ?: Double.NaN
     }
 
     fun min(): Double {
-        return element.minOrNull() ?: Double.NaN
+        return elements.minOrNull() ?: Double.NaN
     }
 
     fun roundUp(decimalPlaces: Int): Vect {
         val factor = 10.0.pow(decimalPlaces)
-        for (i: Int in element.indices) {
-            element[i] = round(element[i] * factor) / factor
+        for (i: Int in elements.indices) {
+            elements[i] = round(elements[i] * factor) / factor
         }
         return this
     }
@@ -189,8 +189,8 @@ open class Vect() {
     fun dot(vect: Vect): Double {
         var scalar = 0.0
 
-        element.forEachIndexed { index, it ->
-            scalar += it * vect.element[index]
+        elements.forEachIndexed { index, it ->
+            scalar += it * vect.elements[index]
         }
         return scalar
     }
@@ -199,7 +199,7 @@ open class Vect() {
 
         var sum = 0.0
 
-        element.forEach {
+        elements.forEach {
             sum += abs(it)
         }
 
@@ -210,7 +210,7 @@ open class Vect() {
 
         var sum = 0.0
 
-        element.forEach {
+        elements.forEach {
             sum += (it * it)
         }
 
@@ -220,7 +220,7 @@ open class Vect() {
     fun l3norm(): Double {
         var sum = 0.0
 
-        element.forEach {
+        elements.forEach {
             sum += (it * it * it)
         }
 
@@ -231,8 +231,8 @@ open class Vect() {
 
         val l2norm = l2norm()
 
-        for (i: Int in element.indices) {
-            element[i] /= l2norm
+        for (i: Int in elements.indices) {
+            elements[i] /= l2norm
         }
 
         return this

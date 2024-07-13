@@ -18,7 +18,6 @@ sealed class Element {
         }
     }
 
-    // getValue()를 여기서 정의하지 않음
     abstract fun getValue(): Any
 
     override fun toString(): String {

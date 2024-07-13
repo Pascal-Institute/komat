@@ -15,8 +15,8 @@ open class Vect() {
     companion object {
         operator fun Double.times(vect: Vect): Vect {
 
-            for (i: Int in 0..<vect.elements.size) {
-                vect.elements[i] = this * vect.elements[i]
+            for (i: Int in 0..<vect.column) {
+                vect[i] = this * vect[i]
             }
 
             return vect
@@ -38,8 +38,9 @@ open class Vect() {
     }*/
 
     constructor(elements: DoubleArray) : this() {
-        this.column = elements.size
         this.elements = elements.copyOf()
+        this.column = this.elements.size
+
     }
 
 /*    constructor(vararg elem: Number) : this() {
@@ -137,11 +138,11 @@ open class Vect() {
     }
 
     fun convolve(vect: Vect, stride: Int): Vect {
-        if (column < vect.column + stride) {
+        if (elements.size < vect.elements.size + stride) {
             throw IllegalArgumentException("Size Invalid")
         }
 
-        val size: Int = (column - vect.column) / stride + 1
+        val size: Int = (elements.size - vect.elements.size) / stride + 1
         val convolutionVect = Vect(Array(size) { Element(0.0) })
 
         for (i in convolutionVect.elements.indices) {
@@ -167,7 +168,7 @@ open class Vect() {
     }
 
     fun mean(): Double {
-        return sum() / column
+        return sum() / elements.size
     }
 
     fun max(): Double {

@@ -2,7 +2,6 @@ import komat.Generator.Companion.cube
 import komat.Generator.Companion.mat
 import komat.space.Cube
 import org.junit.jupiter.api.Test
-import kotlin.math.cbrt
 
 class CubeTest {
 
@@ -31,7 +30,6 @@ class CubeTest {
 
     @Test
     fun `test generator`() {
-
 
         val cube2 = cube {
             +mat1

@@ -25,7 +25,7 @@ class Generator {
         fun e(size: Int): Mat {
             val mat = Mat(size, size)
             (0..<size).forEach { index ->
-                mat[index, index] = 1.0
+                mat[index, index] = Element(1.0)
             }
             return mat
         }
@@ -33,7 +33,7 @@ class Generator {
         fun diagonal(mutableList: MutableList<Double>): Mat {
             val mat = zero(mutableList.size)
             mutableList.forEachIndexed { idx, value ->
-                mat[idx, idx] = value
+                mat[idx, idx] = Element(value)
             }
             return mat
         }

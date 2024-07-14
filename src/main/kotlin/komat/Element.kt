@@ -1,7 +1,5 @@
 package komat
 
-import komat.space.Mat
-
 sealed class Element {
     data class DoubleElement(var value: Double) : Element() {
         override fun getValue(): Any = value

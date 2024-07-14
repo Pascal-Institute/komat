@@ -8,7 +8,6 @@ class Utility {
         //IEEE 754
         val EPSLION: Double = 1e-10
 
-        //TODO Need To Fix
         //Activate
         fun relu(vect : Vect) : Vect {
             for(i : Int in vect.elements.indices){

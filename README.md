@@ -13,15 +13,25 @@ repositories {
 }
 
 dependencies {
-    implementation ("com.github.Pascal-Institute:komat:1.8.10")
+    implementation ("com.github.Pascal-Institute:komat:1.9.0")
 }
 
 ```
 
 ## 1. How to use?
-```kotlin
 
+### what is 'Element'?
+
+'Element' is a data class for contains various data types to apply komat matrix system.
+
+It aims that it is possible to calculate other data type into matrix system as well as double.
+
+### komat DSL
+
+```kotlin
 //Vect : 1D
+val vect = Vect(1.0, 2.0, 3.0)
+
 //Mat : 2D 
 val mat = mat{
     v(1,2,3)
@@ -35,5 +45,4 @@ val cube = cube{
     +mat
 }
 
-//Hyper : 4D
 ```

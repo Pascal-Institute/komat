@@ -9,12 +9,12 @@ import kotlin.math.*
 open class Vect() {
 
     var column: Int = 0
-    var elements = Array(0) {Element(0.0)}
+    var elements = Array(0) { Element(0.0) }
 
     companion object {
 
         operator fun Double.times(vect: Vect): Vect {
-            return Element(this)*vect
+            return Element(this) * vect
         }
 
         operator fun Element.times(vect: Vect): Vect {
@@ -46,15 +46,15 @@ open class Vect() {
         return elements[index]
     }
 
-    operator fun set(index: Int, value : Element) {
+    operator fun set(index: Int, value: Element) {
         elements[index] = value
     }
 
-    operator fun set(index: Int, value : Number) {
+    operator fun set(index: Int, value: Number) {
         elements[index] = Element(value)
     }
 
-    operator fun set(index: Int, value : Double) {
+    operator fun set(index: Int, value: Double) {
         elements[index] = Element(value)
     }
 
@@ -157,7 +157,7 @@ open class Vect() {
         var max = elements.first()
 
         elements.forEach {
-            if((it.getValue() as Double) > max.getValue() as Double){
+            if ((it.getValue() as Double) > max.getValue() as Double) {
                 max = it
             }
         }
@@ -170,7 +170,7 @@ open class Vect() {
         var min = elements.first()
 
         elements.forEach {
-            if((it.getValue() as Double) < min.getValue() as Double){
+            if ((it.getValue() as Double) < min.getValue() as Double) {
                 min = it
             }
         }
@@ -233,7 +233,7 @@ open class Vect() {
         val l2norm = l2norm()
 
         for (i: Int in elements.indices) {
-            this[i] =  this[i] / l2norm
+            this[i] = this[i] / l2norm
         }
 
         return this

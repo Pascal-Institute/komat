@@ -113,11 +113,12 @@ class MatTest {
 
     @Test
     fun `test gramSchmidt`() {
-         val u1 = Vect(3.0,1.0)
-         val u2 = Vect(2.0,2.0)
+        val u1 = Vect(3.0, 1.0)
+        val u2 = Vect(2.0, 2.0)
 
-      u2.gramSchmidt(u1).elements.contentEquals(
-             Vect(-0.4, 1.2).elements)
+        u2.gramSchmidt(u1).elements.contentEquals(
+            Vect(-0.4, 1.2).elements
+        )
 
     }
 

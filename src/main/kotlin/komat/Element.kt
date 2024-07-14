@@ -4,11 +4,11 @@ sealed class Element {
     data class DoubleElement(var value: Double) : Element() {
         override fun getValue(): Any = value
         override fun div(value: Element): Element {
-            return Element( getValue() as Double / value.getValue() as Double)
+            return Element(getValue() as Double / value.getValue() as Double)
         }
 
         override fun times(value: Element): Element {
-            return Element( (getValue() as Double) * value.getValue() as Double)
+            return Element((getValue() as Double) * value.getValue() as Double)
         }
 
         override fun plusAssign(value: Element) {
@@ -24,7 +24,7 @@ sealed class Element {
         }
 
         override fun unaryMinus(): Element {
-           return Element(-(getValue() as Double))
+            return Element(-(getValue() as Double))
         }
     }
 

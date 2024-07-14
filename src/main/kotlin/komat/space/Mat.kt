@@ -2,8 +2,6 @@ package komat.space
 
 import komat.Element
 import komat.Generator.Companion.e
-//TODO Need To Fix
-//import komat.Generator.Companion.e
 import komat.Utility.Companion.EPSLION
 import komat.Utility.Companion.eq
 import komat.type.Axis

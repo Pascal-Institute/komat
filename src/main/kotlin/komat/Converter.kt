@@ -55,7 +55,7 @@ class Converter {
             }
         }
 
-        fun Array<Number>.toDoubleArray() : DoubleArray {
+        fun Array<Number>.toDoubleArray(): DoubleArray {
             return this.map { it.toDouble() }.toDoubleArray()
         }
 
@@ -63,7 +63,7 @@ class Converter {
 
             val vectList = mutableListOf<Vect>()
 
-            for(index : Int in elements.indices step row ){
+            for (index: Int in elements.indices step row) {
                 vectList.add(Vect(elements.copyOfRange(index, index + row)));
             }
 

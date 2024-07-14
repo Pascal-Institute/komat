@@ -12,29 +12,32 @@ class Utility {
         infix fun Element.eq(other: Double): Boolean = this.getValue() as Double == other
 
         //Activate
-        fun relu(vect : Vect) : Vect {
-            for(i : Int in vect.elements.indices){
+        fun relu(vect: Vect): Vect {
+            for (i: Int in vect.elements.indices) {
                 vect.elements[i] = if ((vect[i] as Double) > 0) vect[i] else Element(0.0)
             }
 
             return vect
         }
 
-        fun tanh(vect : Vect) : Vect {
-            for(i : Int in vect.elements.indices){
-                vect[i] = (exp(vect[i].getValue() as Double) - exp(-(vect[i].getValue() as Double))) / (exp(vect[i].getValue() as Double) + exp(-(vect[i].getValue() as Double)))
+        fun tanh(vect: Vect): Vect {
+            for (i: Int in vect.elements.indices) {
+                vect[i] =
+                    (exp(vect[i].getValue() as Double) - exp(-(vect[i].getValue() as Double))) / (exp(vect[i].getValue() as Double) + exp(
+                        -(vect[i].getValue() as Double)
+                    ))
             }
             return vect
         }
 
-        fun sigmoid(vect: Vect) : Vect {
-            for(i : Int in vect.elements.indices){
+        fun sigmoid(vect: Vect): Vect {
+            for (i: Int in vect.elements.indices) {
                 vect[i] = 1 / (1 + exp(vect[i].getValue() as Double))
             }
             return vect
         }
 
-        fun softmax(vect : Vect): Vect {
+        fun softmax(vect: Vect): Vect {
             var denominator = Element(0.0)
 
             vect.elements.forEach {
@@ -49,7 +52,7 @@ class Utility {
             return vect
         }
 
-        fun swish(vect : Vect): Vect {
+        fun swish(vect: Vect): Vect {
 
             val softmaxVect = softmax(vect)
 

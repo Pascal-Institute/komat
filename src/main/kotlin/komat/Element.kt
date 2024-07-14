@@ -29,32 +29,6 @@ sealed class Element {
            return Element(-(getValue() as Double))
         }
     }
-    data class NumberElement(val value: Number) : Element(){
-        override fun getValue(): Any = value
-        override fun div(value: Element): Element {
-            TODO("Not yet implemented")
-        }
-
-        override fun times(value: Element): Element {
-            TODO("Not yet implemented")
-        }
-
-        override fun plusAssign(value: Element) {
-            TODO("Not yet implemented")
-        }
-
-        override fun minusAssign(value: Element) {
-            TODO("Not yet implemented")
-        }
-
-        override fun divAssign(value: Element) {
-            TODO("Not yet implemented")
-        }
-
-        override fun unaryMinus(): Element {
-            TODO("Not yet implemented")
-        }
-    }
 
     companion object {
         operator fun invoke(value: Double): Element {
@@ -62,7 +36,7 @@ sealed class Element {
         }
 
         operator fun invoke(value: Number): Element {
-            return NumberElement(value)
+            return DoubleElement(value.toDouble())
         }
     }
 
@@ -71,7 +45,6 @@ sealed class Element {
     override fun toString(): String {
         return when (this) {
             is DoubleElement -> "DoubleElement(value=$value)"
-            is NumberElement -> "NumberElement(value=$value)"
         }
     }
 

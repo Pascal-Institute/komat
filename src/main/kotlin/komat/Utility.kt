@@ -8,10 +8,11 @@ class Utility {
         //IEEE 754
         val EPSLION: Double = 1e-10
 
+        //TODO Need To Fix
         //Activate
         fun relu(vect : Vect) : Vect {
             for(i : Int in vect.elements.indices){
-                vect.elements[i] = if (vect.elements[i] > 0) vect.elements[i] else 0.0
+                vect.elements[i] = if ((vect[i] as Double) > 0) vect[i] else Element(0.0)
             }
 
             return vect
@@ -19,27 +20,27 @@ class Utility {
 
         fun tanh(vect : Vect) : Vect {
             for(i : Int in vect.elements.indices){
-                vect[i] = (exp(vect[i]) - exp(-vect[i])) / (exp(vect[i]) + exp(-vect[i]))
+                vect[i] = (exp(vect[i].getValue() as Double) - exp(-(vect[i].getValue() as Double))) / (exp(vect[i].getValue() as Double) + exp(-(vect[i].getValue() as Double)))
             }
             return vect
         }
 
         fun sigmoid(vect: Vect) : Vect {
             for(i : Int in vect.elements.indices){
-                vect[i] = 1 / (1 + exp(vect[i]))
+                vect[i] = 1 / (1 + exp(vect[i].getValue() as Double))
             }
             return vect
         }
 
         fun softmax(vect : Vect): Vect {
-            var denominator = 0.0
+            var denominator = Element(0.0)
 
             vect.elements.forEach {
-                denominator += exp(it)
+                denominator += Element(exp(it.getValue() as Double))
             }
 
             for (i: Int in vect.elements.indices) {
-                val numerator = exp(vect[i])
+                val numerator = Element(exp(vect[i].getValue() as Double))
                 vect[i] = numerator / denominator
             }
 
@@ -51,7 +52,7 @@ class Utility {
             val softmaxVect = softmax(vect)
 
             for (i: Int in vect.elements.indices) {
-                vect[i] = vect[i] * softmaxVect[i]
+                vect[i] = (vect[i].getValue() as Double) * (softmaxVect[i].getValue() as Double)
             }
 
             return vect

@@ -1,11 +1,59 @@
 package komat
 
+import komat.space.Mat
+
 sealed class Element {
-    data class DoubleElement(val value: Double) : Element() {
+    data class DoubleElement(var value: Double) : Element() {
         override fun getValue(): Any = value
+        override fun div(value: Element): Element {
+            return Element( getValue() as Double / value.getValue() as Double)
+        }
+
+        override fun times(value: Element): Element {
+            return Element( (getValue() as Double) * value.getValue() as Double)
+        }
+
+        override fun plusAssign(value: Element) {
+            this.value += value.getValue() as Double
+        }
+
+        override fun minusAssign(value: Element) {
+            this.value -= value.getValue() as Double
+        }
+
+        override fun divAssign(value: Element) {
+            this.value /= value.getValue() as Double
+        }
+
+        override fun unaryMinus(): Element {
+           return Element(-(getValue() as Double))
+        }
     }
     data class NumberElement(val value: Number) : Element(){
         override fun getValue(): Any = value
+        override fun div(value: Element): Element {
+            TODO("Not yet implemented")
+        }
+
+        override fun times(value: Element): Element {
+            TODO("Not yet implemented")
+        }
+
+        override fun plusAssign(value: Element) {
+            TODO("Not yet implemented")
+        }
+
+        override fun minusAssign(value: Element) {
+            TODO("Not yet implemented")
+        }
+
+        override fun divAssign(value: Element) {
+            TODO("Not yet implemented")
+        }
+
+        override fun unaryMinus(): Element {
+            TODO("Not yet implemented")
+        }
     }
 
     companion object {
@@ -26,4 +74,11 @@ sealed class Element {
             is NumberElement -> "NumberElement(value=$value)"
         }
     }
+
+    abstract operator fun div(value: Element): Element
+    abstract operator fun times(value: Element): Element
+    abstract operator fun plusAssign(value: Element)
+    abstract operator fun minusAssign(value: Element)
+    abstract operator fun divAssign(value: Element)
+    abstract operator fun unaryMinus(): Element
 }

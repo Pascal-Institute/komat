@@ -27,6 +27,8 @@ class VectTest {
             Vect(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 3.0, 2.0).elements
         )
 
+        vect1.print()
+
     }
 
     @Test

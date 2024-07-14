@@ -2,6 +2,8 @@ package komat.space
 
 import komat.Element
 import komat.Generator.Companion.e
+//TODO Need To Fix
+//import komat.Generator.Companion.e
 import komat.Utility.Companion.EPSLION
 import komat.type.Axis
 import komat.type.Padding
@@ -14,10 +16,15 @@ open class Mat : Vect {
     var row: Int = 0
 
     companion object {
+
         operator fun Double.times(mat: Mat): Mat {
+            return Element(this)*mat
+        }
+
+        operator fun Element.times(mat: Mat): Mat {
             val scalar = this
             for (i in mat.elements.indices) {
-                mat.elements[i] *= scalar
+                mat[i] *= scalar
             }
             return mat
         }
@@ -29,60 +36,56 @@ open class Mat : Vect {
         this.row = row
         this.column = column
 
-        elements = DoubleArray(row * column) { 0.0 }
+        elements = Array(row * column) { Element(0.0) }
     }
 
-    constructor(row: Int, column: Int, bias: Double) {
+    constructor(row: Int, column: Int, bias: Element) {
         this.row = row
         this.column = column
 
-        elements = DoubleArray(row * column) { bias }
+        elements = Array(row * column) { bias }
     }
 
-    fun v(elementss: DoubleArray) {
+    fun v(vararg elements: Double) {
         if (column == 0) {
-            column = elementss.size
+            column = elements.size
         }
 
-        if (elementss.size != column) {
+        if (elements.size != column) {
             throw IllegalArgumentException("Invalid matrix: Rows must have the same length")
         }
 
-        appendRow(elementss)
+        appendRow(elements.map { Element(it) }.toTypedArray())
     }
 
-    fun v(elementss: MutableList<Double>) {
+    fun v(elements: MutableList<Double>) {
         if (column == 0) {
-            column = elementss.size
+            column = elements.size
         }
 
-        if (elementss.size != column) {
+        if (elements.size != column) {
             throw IllegalArgumentException("Invalid matrix: Rows must have the same length")
         }
 
-        appendRow(elementss)
+        appendRow(elements)
     }
 
-    fun v(vararg elementss : Element){
-
-    }
-
-    fun v(vararg elementss: Number) {
+    fun v(vararg elements: Number) {
         if (column == 0) {
-            column = elementss.size
+            column = elements.size
         }
 
-        if (elementss.size != column) {
+        if (elements.size != column) {
             throw IllegalArgumentException("Invalid matrix: Rows must have the same length")
         }
 
         row++
 
-        val oldArray = elements.clone()
-        elements = DoubleArray(row * column)
-        System.arraycopy(oldArray, 0, elements, 0, oldArray.size)
-        val newArray = elementss.map(Number::toDouble).toDoubleArray()
-        System.arraycopy(newArray, 0, elements, (row - 1) * column, newArray.size)
+        val oldArray = this.elements.clone()
+        this.elements = Array(row * column) { Element(0.0) }
+        System.arraycopy(oldArray, 0, this.elements, 0, oldArray.size)
+        val newArray = elements.map { Element(it) }.toTypedArray()
+        System.arraycopy(newArray, 0, this.elements, (row - 1) * column, newArray.size)
     }
 
     private fun isValid(srcColumn: Int, dstRow: Int): Boolean {
@@ -94,11 +97,18 @@ open class Mat : Vect {
     }
 
     fun isZero(): Boolean {
-        return (sum() == 0.0)
+        return (sum() == Element(0.0))
     }
 
-    fun isZero(rowElement: DoubleArray): Boolean {
-        return (rowElement.sum() == 0.0)
+    fun isZero(rowElement: Array<Element>): Boolean {
+
+        var sum = Element(0.0)
+
+        for(i : Int in rowElement.indices){
+            sum += rowElement[i]
+        }
+
+        return (sum == Element(0.0))
     }
 
     fun isSquare(): Boolean {
@@ -106,7 +116,7 @@ open class Mat : Vect {
     }
 
     fun isInvertible(): Boolean {
-        return (det() != 0.0)
+        return (det() != Element(0.0))
     }
 
     fun isOrthogonal(): Boolean {
@@ -117,11 +127,11 @@ open class Mat : Vect {
         for (i in 0..<row) {
             for (j in 0..<row) {
                 if (i == j) {
-                    if (abs(identityMat[i, j] - 1.0) > EPSLION) {
+                    if (abs(identityMat[i, j].getValue() as Double - 1.0) > EPSLION) {
                         return false
                     }
                 } else {
-                    if (abs(identityMat[i, j]) > EPSLION) {
+                    if (abs(identityMat[i, j].getValue() as Double) > EPSLION) {
                         return false
                     }
                 }
@@ -143,18 +153,18 @@ open class Mat : Vect {
         return mat.hasZeroRow()
     }
 
-    operator fun get(i: Int, j: Int): Double {
+    operator fun get(i: Int, j: Int): Element {
         if (i >= row || j >= column) {
             throw IndexOutOfBoundsException("Index out of bounds: [$i, $j]")
         }
         return elements[i * column + j]
     }
 
-    operator fun set(i: Int, j: Int, value: Number) {
+    operator fun set(i: Int, j: Int, value: Element) {
         if (i >= row || j >= column) {
             throw IndexOutOfBoundsException("Index out of bounds: [$i, $j]")
         }
-        elements[i * column + j] = value.toDouble()
+        elements[i * column + j] = value
     }
 
     operator fun times(mat: Mat): Mat {
@@ -209,7 +219,7 @@ open class Mat : Vect {
 
     override fun pad(padding: Padding, size: Int, bias: Double): Mat {
 
-        var newBias = bias
+        var newBias = Element(bias)
 
         when (padding) {
             Padding.ZERO -> {}
@@ -253,12 +263,12 @@ open class Mat : Vect {
         return copyMat2D
     }
 
-    fun appendRow(elementss: DoubleArray): Mat {
+    fun appendRow(elements: Array<Element>): Mat {
         row++
-        val oldArray = elements.clone()
-        elements = DoubleArray(row * column)
-        System.arraycopy(oldArray, 0, elements, 0, oldArray.size)
-        System.arraycopy(elementss, 0, elements, (row - 1) * column, elementss.size)
+        val oldArray = this.elements.clone()
+        this.elements = Array(row * column) { Element(0.0)}
+        System.arraycopy(oldArray, 0, this.elements, 0, oldArray.size)
+        System.arraycopy(elements, 0, this.elements, (row - 1) * column, elements.size)
         return this
     }
 
@@ -267,19 +277,19 @@ open class Mat : Vect {
         return this
     }
 
-    fun appendRow(elementss: MutableList<Double>): Mat {
+    fun appendRow(elements: MutableList<Double>): Mat {
         row++
-        val oldArray = elements.clone()
-        elements = DoubleArray(row * column)
-        System.arraycopy(oldArray, 0, elements, 0, oldArray.size)
-        val newArray = elementss.map(Number::toDouble).toDoubleArray()
-        System.arraycopy(newArray, 0, elements, (row - 1) * column, newArray.size)
+        val oldArray = this.elements.clone()
+        this.elements = Array(row * column) {Element(0.0)}
+        System.arraycopy(oldArray, 0, this.elements, 0, oldArray.size)
+        val newArray = elements.map { Element(it) }.toTypedArray()
+        System.arraycopy(newArray, 0, this.elements, (row - 1) * column, newArray.size)
         return this
     }
 
-    fun appendColumn(elementss: MutableList<Double>): Mat {
+    fun appendColumn(elements: MutableList<Double>): Mat {
         transpose()
-        appendRow(elementss)
+        appendRow(elements)
         transpose()
         return this
     }
@@ -311,7 +321,7 @@ open class Mat : Vect {
 
         elements =
             elements.filterIndexed { index, _ -> index < rowToRemove * column || index >= (rowToRemove + 1) * column }
-                .toDoubleArray()
+                .toTypedArray()
 
 
         row -= 1
@@ -319,7 +329,7 @@ open class Mat : Vect {
     }
 
     fun removeColumnAt(removeToColumn: Int): Mat {
-        elements = elements.filterIndexed { index, _ -> index % column != removeToColumn }.toDoubleArray()
+        elements = elements.filterIndexed { index, _ -> index % column != removeToColumn }.toTypedArray()
         column -= 1
         return this
     }
@@ -345,7 +355,7 @@ open class Mat : Vect {
 
     fun exchangeColumn(src: Int, dst: Int): Mat {
 
-        val srcRow = mutableListOf<Double>()
+        val srcRow = mutableListOf<Element>()
 
         for (i: Int in 0..<row) {
             srcRow.add(this[i * row + src])
@@ -365,8 +375,8 @@ open class Mat : Vect {
 
         for (i: Int in 0..<row) {
             for (j: Int in 0..<column) {
-                if (this[i, j] == -0.0) {
-                    this[i, j] = 0.0
+                if (this[i, j] == Element(-0.0)) {
+                    this[i, j] = Element(0.0)
                 }
             }
         }
@@ -390,7 +400,7 @@ open class Mat : Vect {
                 this.transpose()
             }
 
-            else -> {/*Do Nothing*/
+            else -> {//Do Nothing//
             }
         }
 
@@ -419,7 +429,7 @@ open class Mat : Vect {
                 }
             }
 
-            else -> {/*Do Nothing*/
+            else -> {//Do Nothing//
             }
         }
 
@@ -428,14 +438,14 @@ open class Mat : Vect {
         return this
     }
 
-    /*
-   * ERO : Elementary Row Operation
-   * */
+
+   //ERO : Elementary Row Operation
+
     fun ero1(src: Int, dst: Int): Mat {
         return exchangeRow(src, dst)
     }
 
-    fun ero2(scale: Double, dst: Int): Mat {
+    fun ero2(scale: Element, dst: Int): Mat {
 
         for (i: Int in 0..<column) {
             this[dst, i] *= scale
@@ -444,7 +454,7 @@ open class Mat : Vect {
         return this
     }
 
-    fun ero3(scale: Double, src: Int, dst: Int): Mat {
+    fun ero3(scale: Element, src: Int, dst: Int): Mat {
 
         val srcRow = copy().ero2(scale, src).elements.copyOfRange(src * column, (src + 1) * column)
 
@@ -460,7 +470,7 @@ open class Mat : Vect {
 
         for (i: Int in 0..<row) {
             for (j: Int in 0..<column) {
-                if (this[i, j] != 0.0) {
+                if (this[i, j] != Element(0.0)) {
                     leadingEntry[i] = j
                     break
                 }
@@ -474,7 +484,7 @@ open class Mat : Vect {
 
         for (i: Int in 0..<mat.row) {
             for (j: Int in 0..<mat.column) {
-                if (this[i, j] != 0.0) {
+                if (this[i, j] != Element(0.0)) {
                     leadingEntry[i] = j
                     break
                 }
@@ -500,24 +510,24 @@ open class Mat : Vect {
         return mat2D.transpose()
     }
 
-    fun cofactor(row: Int, column: Int): Double {
+    fun cofactor(row: Int, column: Int): Element {
         if (!this.isSquare()) {
             throw IllegalArgumentException("Invalid matrix: matrix must be square")
         }
 
-        return (-1).toDouble().pow(row + column) * copy().removeAt(row, column).det()
+        return Element((-1).toDouble().pow(row + column)) * copy().removeAt(row, column).det()
     }
 
-    fun det(): Double {
+    fun det(): Element {
 
-        var determinant = 0.0
+        var determinant = Element(0.0)
 
         if (row != column) {
             throw IllegalArgumentException("Invalid matrix: Rows must have the same length")
         }
 
         if (row == 2 && column == 2) {
-            return (this[0, 0] * this[1, 1] - this[0, 1] * this[1, 0])
+            return Element(this[0, 0].getValue() as Double * this[1, 1].getValue() as Double - this[0, 1].getValue() as Double * this[1, 0].getValue() as Double)
         }
 
         for (j: Int in 0..<column) {
@@ -532,19 +542,19 @@ open class Mat : Vect {
             throw IllegalArgumentException("Invalid matrix: matrix is not invertible")
         }
 
-        val mat = (1.0 / det()) * adjugate()
+        val mat = (Element(1.0) / det()) * adjugate()
 
         return mat.cleanMinusZero()
     }
 
 
-    /*
-    * Row Echelon Form
+
+    /* Row Echelon Form
     *
     * Prop 1. If a column contains a leading entry then all entries below that leading entry are zero.
     * Prop 2. In any two consecutive non-zero rows, the leading entry in the upper row occurs to the left of the leading entry in the lower row.
     * Prop 3. All rows which consist entirely of zeroes appear at the bottom of the matrix.
-    *  */
+    */
     fun ref(): Mat {
 
         val leadingEntry = getLeadingEntry()
@@ -557,7 +567,7 @@ open class Mat : Vect {
 
         for (i: Int in 0..<row) {
             for (j: Int in i + 1..<row) {
-                if (this[j, token] != 0.0) {
+                if (this[j, token] != Element(0.0)) {
                     val coef = -(this[j, token] / this[i, token])
                     ero3(coef, i, j)
                 }
@@ -568,12 +578,12 @@ open class Mat : Vect {
         return this
     }
 
-    /*
-    * Reduced Row Echelon Form
+
+    /* Reduced Row Echelon Form
     *
     * Prop 1. All the leading entries in each of the rows of the matrix are 1.
     * Prop 2. If a columnumn contains a leading entry then all entries upper and below that leading entry are zero.
-    *  */
+    */
     fun rref(): Mat {
 
         ref()
@@ -593,7 +603,7 @@ open class Mat : Vect {
         }
 
         for (key in leadingEntry.keys) {
-            ero2(1 / this[key, leadingEntry[key]!!], key)
+            ero2(Element(1.0) / this[key, leadingEntry[key]!!], key)
         }
 
         cleanMinusZero()
@@ -626,7 +636,7 @@ open class Mat : Vect {
         for (i: Int in 0..<matCopy.row) {
 
             for (j: Int in i + 1..<matCopy.row) {
-                if (matCopy[j, token] != 0.0) {
+                if (matCopy[j, token] != Element(0.0)) {
                     val scale = -(matCopy[j, token] / matCopy[i, token])
                     matCopy.ero3(scale, i, j)
                     val erom = e(row)
@@ -647,10 +657,10 @@ open class Mat : Vect {
         return Pair(lowerMat, upperMat)
     }
 
-    /*
-    * solve x matrix
+
+    /* solve x matrix
     * Ax = B
-    * */
+    */
     fun solve(matB: Mat): Mat {
 
         val matSolution = Mat(matB.row, matB.column)

@@ -1,10 +1,9 @@
 package komat.space
 
 import komat.Element
-import komat.space.Mat.Companion.times
+import komat.Utility.Companion.eq
 import komat.type.Padding
 import kotlin.math.*
-import kotlin.time.times
 
 //1-Dimensional
 open class Vect() {
@@ -78,7 +77,7 @@ open class Vect() {
     }
 
     open fun isOrthogonal(vect: Vect): Boolean {
-        return (dot(vect) == Element(0.0))
+        return dot(vect) eq 0.0
     }
 
     open fun print() {

@@ -8,6 +8,9 @@ class Utility {
         //IEEE 754
         val EPSLION: Double = 1e-10
 
+        //please use eq instead of ==
+        infix fun Element.eq(other: Double): Boolean = this.getValue() as Double == other
+
         //Activate
         fun relu(vect : Vect) : Vect {
             for(i : Int in vect.elements.indices){

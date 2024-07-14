@@ -5,6 +5,7 @@ import komat.Generator.Companion.e
 //TODO Need To Fix
 //import komat.Generator.Companion.e
 import komat.Utility.Companion.EPSLION
+import komat.Utility.Companion.eq
 import komat.type.Axis
 import komat.type.Padding
 import kotlin.math.abs
@@ -109,7 +110,7 @@ open class Mat : Vect {
     }
 
     fun isZero(): Boolean {
-        return (sum() == Element(0.0))
+        return (sum() eq 0.0)
     }
 
     fun isZero(rowElement: Array<Element>): Boolean {
@@ -120,7 +121,7 @@ open class Mat : Vect {
             sum += rowElement[i]
         }
 
-        return (sum == Element(0.0))
+        return (sum eq 0.0)
     }
 
     fun isSquare(): Boolean {
@@ -387,7 +388,7 @@ open class Mat : Vect {
 
         for (i: Int in 0..<row) {
             for (j: Int in 0..<column) {
-                if (this[i, j] == Element(-0.0)) {
+                if (this[i, j] eq (-0.0)) {
                     this[i, j] = Element(0.0)
                 }
             }

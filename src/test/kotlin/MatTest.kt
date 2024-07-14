@@ -1,3 +1,5 @@
+import komat.Converter.Companion.toVect
+import komat.Converter.Companion.vectToMat
 import komat.Generator.Companion.mat
 import komat.space.Mat.Companion.times
 import komat.Element
@@ -73,8 +75,7 @@ class MatTest {
         v(2.0 / 7, 6.0 / 7, -3.0 / 7)
     }
 
-    //TODO
-/*    @Test
+    @Test
     fun `test toMat`() {
         val mutablelistVect = mutableListOf<Vect>()
 
@@ -89,14 +90,14 @@ class MatTest {
                 v(3, 3, 3, 3, 3)
             }.elements
         )
-    }*/
+    }
 
     //TODO
-/*    @Test
+    @Test
     fun `test toVect`() {
         val list = mat3.toVect()
         println(list)
-    }*/
+    }
 
     @Test
     fun `test project`() {

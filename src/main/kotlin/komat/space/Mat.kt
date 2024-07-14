@@ -70,6 +70,18 @@ open class Mat : Vect {
         appendRow(elements)
     }
 
+    fun v(elements: Array<Element>) {
+        if (column == 0) {
+            column = elements.size
+        }
+
+        if (elements.size != column) {
+            throw IllegalArgumentException("Invalid matrix: Rows must have the same length")
+        }
+
+        appendRow(elements)
+    }
+
     fun v(vararg elements: Number) {
         if (column == 0) {
             column = elements.size
@@ -196,7 +208,7 @@ open class Mat : Vect {
             print("[")
             for (j: Int in 0..<column) {
 
-                print(this[i, j])
+                print(this[i, j].getValue())
 
                 when {
                     (j + 1) % column == 0 -> {

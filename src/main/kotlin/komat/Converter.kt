@@ -1,16 +1,16 @@
 package komat
 
+import komat.Converter.Companion.toDoubleArray
 import komat.Generator.Companion.mat
 import komat.space.Mat
 import komat.space.Vect
 
 class Converter {
     companion object {
-
         fun Array<Array<Double>>.toMat(): Mat {
 
             val mat = Mat(this.size, this[0].size)
-            mat.elements = this.flatten().toDoubleArray()
+            mat.elements = this.flatten().toDoubleArray().map { Element(it) }.toTypedArray()
             return mat
         }
 
@@ -28,7 +28,7 @@ class Converter {
 
         fun MutableList<MutableList<Number>>.toMat(): Mat {
             val mat = Mat(this.size, this[0].size)
-            mat.elements = this.flatten().map { it.toDouble() }.toDoubleArray()
+            mat.elements = this.flatten().map { Element(it) }.toTypedArray()
             return mat
         }
 
@@ -51,7 +51,7 @@ class Converter {
 
         fun Array<Element>.toNumberArray(): Array<Number> {
             return Array<Number>(this.size) { index ->
-                (this[index] as Element.NumberElement).value
+                (this[index] as Element.DoubleElement).value
             }
         }
 
@@ -63,8 +63,8 @@ class Converter {
 
             val vectList = mutableListOf<Vect>()
 
-            elements.forEach {
-                vectList.add(Vect(it));
+            for(index : Int in elements.indices step row ){
+                vectList.add(Vect(elements.copyOfRange(index, index + row)));
             }
 
             return vectList;
@@ -87,7 +87,7 @@ class Converter {
                 val row: MutableList<Number> = mutableListOf()
                 columnIndex = 0
                 while (columnIndex < column && rowIndex < elements.size) {
-                    row.add(elements[rowIndex])
+                    row.add(elements[rowIndex].getValue() as Number)
                     rowIndex++
                     columnIndex++
                 }

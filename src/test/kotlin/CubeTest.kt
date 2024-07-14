@@ -2,7 +2,6 @@ import komat.Generator.Companion.cube
 import komat.Generator.Companion.mat
 import komat.space.Cube
 import org.junit.jupiter.api.Test
-import kotlin.math.cbrt
 
 class CubeTest {
 
@@ -24,14 +23,13 @@ class CubeTest {
 
         val cube1 = cube.copy()
 
-        cube.transpose().transpose().element.contentEquals(
-            cube1.element
+        cube.transpose().transpose().elements.contentEquals(
+            cube1.elements
         )
     }
 
     @Test
     fun `test generator`() {
-
 
         val cube2 = cube {
             +mat1
@@ -90,7 +88,7 @@ class CubeTest {
 
         }
 
-        (cube1 * cube2).element.contentEquals(cube3.element)
+        (cube1 * cube2).elements.contentEquals(cube3.elements)
 
         //1-2
         val cubeA = Cube(2, 2, 2)
@@ -116,7 +114,7 @@ class CubeTest {
 
         // Perform matrix multiplication
         val resultCube = cubeA * cubeB
-        (resultCube).element.contentEquals(
+        (resultCube).elements.contentEquals(
             cube {
                 +mat {
                     v(3, 2)
@@ -126,7 +124,7 @@ class CubeTest {
                     v(11, 6)
                     v(8, 15)
                 }
-            }.element
+            }.elements
         )
     }
 

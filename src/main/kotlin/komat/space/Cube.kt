@@ -1,5 +1,6 @@
 package komat.space
 
+import komat.Element
 import komat.type.Axis
 
 //3-Dimensional
@@ -14,22 +15,37 @@ open class Cube : Mat {
         this.row = row
         this.column = column
 
-        element = DoubleArray(depth * row * column) { 0.0 }
+        elements = Array(depth * row * column) { Element(0.0) }
     }
 
-    operator fun get(d: Int, r: Int, c: Int): Double {
+    operator fun get(d: Int, r: Int, c: Int): Element {
         if (d >= depth || r >= row || c >= column) {
             throw IndexOutOfBoundsException("Index out of bounds: [$d, $r, $c]")
         }
-        return element[d * row * column + r * column + c]
+        return elements[d * row * column + r * column + c]
+    }
+
+    operator fun set(d: Int, r: Int, c: Int, value: Double) {
+        if (d >= depth || r >= row || c >= column) {
+            throw IndexOutOfBoundsException("Index out of bounds: [$d, $r, $c]")
+        }
+        elements[d * row * column + r * column + c] = Element(value)
     }
 
     operator fun set(d: Int, r: Int, c: Int, value: Number) {
         if (d >= depth || r >= row || c >= column) {
             throw IndexOutOfBoundsException("Index out of bounds: [$d, $r, $c]")
         }
-        element[d * row * column + r * column + c] = value.toDouble()
+        elements[d * row * column + r * column + c] = Element(value)
     }
+
+    operator fun set(d: Int, r: Int, c: Int, value: Element) {
+        if (d >= depth || r >= row || c >= column) {
+            throw IndexOutOfBoundsException("Index out of bounds: [$d, $r, $c]")
+        }
+        elements[d * row * column + r * column + c] = value
+    }
+
 
     operator fun times(cube: Cube): Cube {
 
@@ -49,7 +65,7 @@ open class Cube : Mat {
             }
         }
 
-        element = newCube.element.clone()
+        elements = newCube.elements.clone()
 
         depth = newCube.depth
         row = newCube.row
@@ -59,13 +75,13 @@ open class Cube : Mat {
     }
 
     operator fun Mat.unaryPlus() {
-        val oldArray = this@Cube.element.clone()
+        val oldArray = this@Cube.elements.clone()
         depth++
         this@Cube.row = this.row
         this@Cube.column = this.column
-        this@Cube.element = DoubleArray(depth * row * column)
-        System.arraycopy(oldArray, 0, this@Cube.element, 0, oldArray.size)
-        System.arraycopy(this.element, 0, this@Cube.element, (depth - 1) * row * column, this.element.size)
+        this@Cube.elements = Array(depth * row * column) { Element(0.0) }
+        System.arraycopy(oldArray, 0, this@Cube.elements, 0, oldArray.size)
+        System.arraycopy(this.elements, 0, this@Cube.elements, (depth - 1) * row * column, this.elements.size)
     }
 
     fun appendMat(mat: Mat): Cube {
@@ -80,10 +96,10 @@ open class Cube : Mat {
             column = mat.column
         }
 
-        val oldArray = element.clone()
-        element = DoubleArray(depth * row * column)
-        System.arraycopy(oldArray, 0, element, 0, oldArray.size)
-        System.arraycopy(mat.element, 0, element, (depth - 1) * row * column, mat.element.size)
+        val oldArray = elements.clone()
+        elements = Array(depth * row * column) { Element(0.0) }
+        System.arraycopy(oldArray, 0, elements, 0, oldArray.size)
+        System.arraycopy(mat.elements, 0, elements, (depth - 1) * row * column, mat.elements.size)
 
 
         return this
@@ -130,9 +146,13 @@ open class Cube : Mat {
                 }
             }
 
+            else -> {
+                // Do Nothing
+            }
+
         }
 
-        this.element = cube.element
+        this.elements = cube.elements
 
         return this
     }
@@ -148,7 +168,7 @@ open class Cube : Mat {
             }
         }
 
-        element = newCube.element.clone()
+        elements = newCube.elements.clone()
 
         depth = newCube.depth
         row = newCube.row
@@ -167,7 +187,7 @@ open class Cube : Mat {
                 print("[")
                 for (j: Int in 0..<column) {
 
-                    print(this[h, i, j])
+                    print(this[h, i, j].getValue())
 
                     when {
                         (j + 1) % column == 0 -> {

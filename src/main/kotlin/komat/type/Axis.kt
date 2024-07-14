@@ -1,5 +1,5 @@
 package komat.type
 
 enum class Axis {
-    HORIZONTAL, VERTICAL, FRONTAL
+    HORIZONTAL, VERTICAL, FRONTAL, IMAGINARY
 }

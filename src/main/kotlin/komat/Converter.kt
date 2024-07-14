@@ -1,16 +1,16 @@
 package komat
 
+import komat.Converter.Companion.toDoubleArray
 import komat.Generator.Companion.mat
 import komat.space.Mat
 import komat.space.Vect
 
 class Converter {
     companion object {
-
         fun Array<Array<Double>>.toMat(): Mat {
 
             val mat = Mat(this.size, this[0].size)
-            mat.element = this.flatten().toDoubleArray()
+            mat.elements = this.flatten().toDoubleArray().map { Element(it) }.toTypedArray()
             return mat
         }
 
@@ -28,7 +28,7 @@ class Converter {
 
         fun MutableList<MutableList<Number>>.toMat(): Mat {
             val mat = Mat(this.size, this[0].size)
-            mat.element = this.flatten().map { it.toDouble() }.toDoubleArray()
+            mat.elements = this.flatten().map { Element(it) }.toTypedArray()
             return mat
         }
 
@@ -38,17 +38,33 @@ class Converter {
 
             return mat {
                 for (i: Int in 0..<mutableListVect.size) {
-                    v(mutableListVect[i].element)
+                    v(mutableListVect[i].elements)
                 }
             }
+        }
+
+        fun Array<Element>.toDoubleArray(): DoubleArray {
+            return DoubleArray(this.size) { index ->
+                (this[index] as Element.DoubleElement).value
+            }
+        }
+
+        fun Array<Element>.toNumberArray(): Array<Number> {
+            return Array<Number>(this.size) { index ->
+                (this[index] as Element.DoubleElement).value
+            }
+        }
+
+        fun Array<Number>.toDoubleArray(): DoubleArray {
+            return this.map { it.toDouble() }.toDoubleArray()
         }
 
         fun Mat.toVect(): MutableList<Vect> {
 
             val vectList = mutableListOf<Vect>()
 
-            element.forEach {
-                vectList.add(Vect(it));
+            for (index: Int in elements.indices step row) {
+                vectList.add(Vect(elements.copyOfRange(index, index + row)));
             }
 
             return vectList;
@@ -57,8 +73,8 @@ class Converter {
         fun Mat.toArray(): Array<Array<Number>> {
             val array2D: Array<Array<Number>> = Array(row) { i ->
                 val start = i * column
-                val end = Math.min(start + column, element.size)
-                element.copyOfRange(start, end).map { it as Number }.toTypedArray()
+                val end = Math.min(start + column, elements.size)
+                elements.copyOfRange(start, end).map { it as Number }.toTypedArray()
             }
             return array2D
         }
@@ -67,11 +83,11 @@ class Converter {
             val list2D: MutableList<MutableList<Number>> = mutableListOf()
             var rowIndex = 0
             var columnIndex = 0
-            while (rowIndex < element.size) {
+            while (rowIndex < elements.size) {
                 val row: MutableList<Number> = mutableListOf()
                 columnIndex = 0
-                while (columnIndex < column && rowIndex < element.size) {
-                    row.add(element[rowIndex])
+                while (columnIndex < column && rowIndex < elements.size) {
+                    row.add(elements[rowIndex].getValue() as Number)
                     rowIndex++
                     columnIndex++
                 }

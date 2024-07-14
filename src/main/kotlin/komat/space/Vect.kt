@@ -1,5 +1,7 @@
 package komat.space
 
+import komat.Element
+import komat.Utility.Companion.eq
 import komat.type.Padding
 import kotlin.math.*
 
@@ -7,48 +9,59 @@ import kotlin.math.*
 open class Vect() {
 
     var column: Int = 0
-    var element = DoubleArray(0)
+    var elements = Array(0) { Element(0.0) }
 
     companion object {
-        operator fun Double.times(vect: Vect): Vect {
 
-            for (i: Int in 0..<vect.element.size) {
-                vect.element[i] = this * vect.element[i]
+        operator fun Double.times(vect: Vect): Vect {
+            return Element(this) * vect
+        }
+
+        operator fun Element.times(vect: Vect): Vect {
+
+            for (i: Int in 0..<vect.column) {
+                vect[i] = this.getValue() as Double * (vect[i].getValue() as Double)
             }
 
             return vect
         }
     }
 
-    constructor(element: DoubleArray) : this() {
-        this.column = element.size
-        this.element = element.copyOf()
+    constructor(vararg values: Number) : this() {
+        this.elements = values.map { Element(it) }.toTypedArray()
+        this.column = elements.size
     }
 
-    constructor(vararg elem: Number) : this() {
-        this.column = elem.size
-        element = DoubleArray(elem.size)
-        elem.mapIndexed { index, number ->
-            element[index] = number.toDouble()
-        }
+    constructor(vararg values: Double) : this() {
+        this.elements = values.map { Element(it) }.toTypedArray()
+        this.column = this.elements.size
     }
 
-    constructor(elem: MutableList<Double>) : this() {
-        element = elem.toDoubleArray()
+    constructor(values: Array<Element>) : this() {
+        elements = values
+        this.column = elements.size
     }
 
-    operator fun get(index: Int): Double {
-        return element[index]
+    operator fun get(index: Int): Element {
+        return elements[index]
+    }
+
+    operator fun set(index: Int, value: Element) {
+        elements[index] = value
+    }
+
+    operator fun set(index: Int, value: Number) {
+        elements[index] = Element(value)
     }
 
     operator fun set(index: Int, value: Double) {
-        element[index] = value
+        elements[index] = Element(value)
     }
 
     operator fun plus(vect: Vect): Vect {
 
-        for (i: Int in element.indices) {
-            element[i] += vect.element[i]
+        for (i: Int in elements.indices) {
+            this[i] += vect[i]
         }
 
         return this
@@ -56,32 +69,23 @@ open class Vect() {
 
     operator fun minus(vect: Vect): Vect {
 
-        for (i: Int in element.indices) {
-            element[i] -= vect.element[i]
+        for (i: Int in elements.indices) {
+            this[i] -= vect[i]
         }
 
         return this
     }
 
-
-    fun Double.times(): Vect {
-
-        for (i: Int in element.indices) {
-            element[i] = this * element[i]
-        }
-        return this@Vect
-    }
-
     open fun isOrthogonal(vect: Vect): Boolean {
-        return (dot(vect) == 0.0)
+        return dot(vect) eq 0.0
     }
 
     open fun print() {
         print("[")
-        for (i: Int in element.indices - 1) {
-            print("${element[i]}, ")
+        for (i: Int in elements.indices - 1) {
+            print("${this[i].getValue()}, ")
         }
-        print(element.last())
+        print(elements.last().getValue())
         println("]")
     }
 
@@ -91,7 +95,7 @@ open class Vect() {
 
     open fun pad(padding: Padding, size: Int, bias: Double): Vect {
 
-        var newBias = bias
+        var newBias = Element(bias)
 
         when (padding) {
             Padding.ZERO -> {}
@@ -101,30 +105,30 @@ open class Vect() {
             Padding.BIAS -> {}
         }
 
-        val vect = Vect(DoubleArray(size) { newBias })
+        val vect = Vect(Array(size) { newBias })
         return concat(vect)
     }
 
     fun flip(): Vect {
-        element.reverse()
+        elements.reverse()
         return this
     }
 
     fun concat(vect: Vect): Vect {
-        return Vect(element + vect.element)
+        return Vect(elements + vect.elements)
     }
 
     fun convolve(vect: Vect, stride: Int): Vect {
-        if (element.size < vect.element.size + stride) {
+        if (elements.size < vect.elements.size + stride) {
             throw IllegalArgumentException("Size Invalid")
         }
 
-        val size: Int = (element.size - vect.element.size) / stride + 1
-        val convolutionVect = Vect(size)
+        val size: Int = (elements.size - vect.elements.size) / stride + 1
+        val convolutionVect = Vect(Array(size) { Element(0.0) })
 
-        for (i in convolutionVect.element.indices) {
-            for (j in vect.element.indices) {
-                convolutionVect[i] += vect[j] * element[i * stride + j]
+        for (i in convolutionVect.elements.indices) {
+            for (j in vect.elements.indices) {
+                convolutionVect[i] += vect[j] * this[i * stride + j]
             }
         }
 
@@ -133,84 +137,103 @@ open class Vect() {
 
     fun convolve(vect: Vect, stride: Int, padding: Padding, padSize: Int): Vect {
         val newVect = pad(padding, padSize)
-        return convolve(vect, stride)
+        return convolve(newVect, stride)
     }
 
-    fun sum(): Double {
-        var sum = 0.0
-        for (value in element) {
+    fun sum(): Element {
+        var sum = Element(0.0)
+        for (value in elements) {
             sum += value
         }
         return sum
     }
 
-    fun mean(): Double {
-        return sum() / (element.size)
+    fun mean(): Element {
+        return sum() / Element(elements.size.toDouble())
     }
 
-    fun max(): Double {
-        return element.maxOrNull() ?: Double.NaN
+    fun max(): Element {
+
+        var max = elements.first()
+
+        elements.forEach {
+            if ((it.getValue() as Double) > max.getValue() as Double) {
+                max = it
+            }
+        }
+
+        return max
     }
 
-    fun min(): Double {
-        return element.minOrNull() ?: Double.NaN
+    fun min(): Element {
+
+        var min = elements.first()
+
+        elements.forEach {
+            if ((it.getValue() as Double) < min.getValue() as Double) {
+                min = it
+            }
+        }
+
+        return min
     }
 
     fun roundUp(decimalPlaces: Int): Vect {
-        val factor = 10.0.pow(decimalPlaces)
-        for (i: Int in element.indices) {
-            element[i] = round(element[i] * factor) / factor
+        val factor = Element(10.0.pow(decimalPlaces))
+        for (i: Int in elements.indices) {
+            this[i] = Element(round((this[i] as Double) * (factor as Double))) / factor
         }
         return this
     }
 
-    fun dot(vect: Vect): Double {
-        var scalar = 0.0
+    fun dot(vect: Vect): Element {
+        var scalar = Element(0.0)
 
-        element.forEachIndexed { index, it ->
-            scalar += it * vect.element[index]
+        elements.forEachIndexed { index, it ->
+            scalar += it * vect[index]
         }
         return scalar
     }
 
-    fun l1norm(): Double {
+    //TODO This is Temporary. Need To Fix
+    fun l1norm(): Element {
 
-        var sum = 0.0
+        var sum = Element(0.0)
 
-        element.forEach {
-            sum += abs(it)
+        elements.forEach {
+            sum += Element(abs(it as Double))
         }
 
         return sum
     }
 
-    fun l2norm(): Double {
+    fun l2norm(): Element {
 
-        var sum = 0.0
+        var sum = Element(0.0)
 
-        element.forEach {
+        elements.forEach {
             sum += (it * it)
         }
 
-        return sqrt(sum)
+        return Element(sqrt(sum as Double))
     }
 
-    fun l3norm(): Double {
-        var sum = 0.0
+    fun l3norm(): Element {
+        var sum = Element(0.0)
 
-        element.forEach {
+        elements.forEach {
             sum += (it * it * it)
         }
 
-        return cbrt(sum)
+        return Element(cbrt(sum as Double))
     }
 
     fun hat(): Vect {
 
         val l2norm = l2norm()
 
-        for (i: Int in element.indices) {
-            element[i] /= l2norm
+        for (i: Int in elements.indices) {
+            this[i] = this[i] / l2norm
         }
 
         return this

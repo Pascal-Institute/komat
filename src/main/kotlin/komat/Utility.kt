@@ -8,50 +8,56 @@ class Utility {
         //IEEE 754
         val EPSLION: Double = 1e-10
 
+        //please use eq instead of ==
+        infix fun Element.eq(other: Double): Boolean = this.getValue() as Double == other
+
         //Activate
-        fun relu(vect : Vect) : Vect {
-            for(i : Int in vect.element.indices){
-                vect.element[i] = if (vect.element[i] > 0) vect.element[i] else 0.0
+        fun relu(vect: Vect): Vect {
+            for (i: Int in vect.elements.indices) {
+                vect.elements[i] = if ((vect[i] as Double) > 0) vect[i] else Element(0.0)
             }
 
             return vect
         }
 
-        fun tanh(vect : Vect) : Vect {
-            for(i : Int in vect.element.indices){
-                vect[i] = (exp(vect[i]) - exp(-vect[i])) / (exp(vect[i]) + exp(-vect[i]))
+        fun tanh(vect: Vect): Vect {
+            for (i: Int in vect.elements.indices) {
+                vect[i] =
+                    (exp(vect[i].getValue() as Double) - exp(-(vect[i].getValue() as Double))) / (exp(vect[i].getValue() as Double) + exp(
+                        -(vect[i].getValue() as Double)
+                    ))
             }
             return vect
         }
 
-        fun sigmoid(vect: Vect) : Vect {
-            for(i : Int in vect.element.indices){
-                vect[i] = 1 / (1 + exp(vect[i]))
+        fun sigmoid(vect: Vect): Vect {
+            for (i: Int in vect.elements.indices) {
+                vect[i] = 1 / (1 + exp(vect[i].getValue() as Double))
             }
             return vect
         }
 
-        fun softmax(vect : Vect): Vect {
-            var denominator = 0.0
+        fun softmax(vect: Vect): Vect {
+            var denominator = Element(0.0)
 
-            vect.element.forEach {
-                denominator += exp(it)
+            vect.elements.forEach {
+                denominator += Element(exp(it.getValue() as Double))
             }
 
-            for (i: Int in vect.element.indices) {
-                val numerator = exp(vect[i])
+            for (i: Int in vect.elements.indices) {
+                val numerator = Element(exp(vect[i].getValue() as Double))
                 vect[i] = numerator / denominator
             }
 
             return vect
         }
 
-        fun swish(vect : Vect): Vect {
+        fun swish(vect: Vect): Vect {
 
             val softmaxVect = softmax(vect)
 
-            for (i: Int in vect.element.indices) {
-                vect[i] = vect[i] * softmaxVect[i]
+            for (i: Int in vect.elements.indices) {
+                vect[i] = (vect[i].getValue() as Double) * (softmaxVect[i].getValue() as Double)
             }
 
             return vect

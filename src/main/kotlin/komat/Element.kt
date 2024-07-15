@@ -61,6 +61,10 @@ sealed class Element {
             return DoubleElement(value)
         }
 
+        operator fun invoke(value: Byte): Element {
+            return ByteElement(value)
+        }
+
         operator fun invoke(value: Number): Element {
             return DoubleElement(value.toDouble())
         }

@@ -46,7 +46,7 @@ open class Vect() {
         this.column = this.elements.size
     }
 
-    constructor(vararg values: Byte) : this() {
+    constructor(values: ByteArray) : this() {
         this.elementType = ElementType.BYTE
         this.elements = values.map { Element(it) }.toTypedArray()
         this.column = this.elements.size

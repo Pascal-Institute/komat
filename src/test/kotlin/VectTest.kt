@@ -5,14 +5,14 @@ import kotlin.test.Test
 class VectTest {
     val vect1 = Vect(1.0, 2.0, 3.0, 4.0, 5.0, 6.0)
     val vect2 = Vect(3.0, 2.0)
-    val vect3 = Vect(0.toByte() ,1.toByte() ,2.toByte() ,3.toByte())
-    val vect4 = Vect(255.toByte() ,254.toByte() ,253.toByte() ,252.toByte())
+    val vect3 = Vect(byteArrayOf(0,1,2,3))
+    val vect4 = Vect(byteArrayOf(127,126,125,124))
 
     @Test
     fun `test plus`(){
         (vect3 + vect4).print()
         (vect3 + vect4).elements.contentEquals(
-            Vect(255.toByte(), 255.toByte(), 255.toByte(), 255.toByte()).elements
+            Vect(127.toByte(), 127.toByte(), 127.toByte(), 127.toByte()).elements
         )
     }
 

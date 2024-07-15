@@ -5,6 +5,16 @@ import kotlin.test.Test
 class VectTest {
     val vect1 = Vect(1.0, 2.0, 3.0, 4.0, 5.0, 6.0)
     val vect2 = Vect(3.0, 2.0)
+    val vect3 = Vect(0.toByte() ,1.toByte() ,2.toByte() ,3.toByte())
+    val vect4 = Vect(255.toByte() ,254.toByte() ,253.toByte() ,252.toByte())
+
+    @Test
+    fun `test plus`(){
+        (vect3 + vect4).print()
+        (vect3 + vect4).elements.contentEquals(
+            Vect(255.toByte(), 255.toByte(), 255.toByte(), 255.toByte()).elements
+        )
+    }
 
     @Test
     fun `test flip`() {

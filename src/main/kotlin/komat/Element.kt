@@ -28,6 +28,34 @@ sealed class Element {
         }
     }
 
+    data class ByteElement(var value: Byte) : Element() {
+        override fun getValue(): Any = value
+        override fun div(value: Element): Element {
+            return Element(getValue() as Byte / value.getValue() as Byte)
+        }
+
+        override fun times(value: Element): Element {
+          return Element((getValue() as Byte) * value.getValue() as Byte)
+        }
+
+        override fun plusAssign(value: Element) {
+            this.value = (getValue() as Byte + value.getValue() as Byte).toByte()
+        }
+
+        override fun minusAssign(value: Element) {
+            this.value = (getValue() as Byte - value.getValue() as Byte).toByte()
+        }
+
+        override fun divAssign(value: Element) {
+            this.value = (getValue() as Byte / value.getValue() as Byte).toByte()
+        }
+
+        override fun unaryMinus(): Element {
+            return Element(-(getValue() as Byte))
+        }
+
+    }
+
     companion object {
         operator fun invoke(value: Double): Element {
             return DoubleElement(value)
@@ -43,6 +71,7 @@ sealed class Element {
     override fun toString(): String {
         return when (this) {
             is DoubleElement -> "DoubleElement(value=$value)"
+            is ByteElement -> "ByteElement(value=$value)"
         }
     }
 

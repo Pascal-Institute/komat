@@ -5,6 +5,7 @@ import komat.Generator.Companion.e
 import komat.Utility.Companion.EPSLION
 import komat.Utility.Companion.eq
 import komat.type.Axis
+import komat.type.ElementType
 import komat.type.Padding
 import kotlin.math.abs
 import kotlin.math.pow
@@ -228,9 +229,15 @@ open class Mat : Vect {
         return pad(padding, size, 0.0)
     }
 
-    override fun pad(padding: Padding, size: Int, bias: Double): Mat {
+    override fun pad(padding: Padding, size: Int, bias: Any): Mat {
 
-        var newBias = Element(bias)
+        var newBias = Element(0.0)
+
+        when(elementType){
+            ElementType.DOUBLE ->{ newBias = Element(bias as Double) }
+            ElementType.BYTE->{ newBias = Element(bias as Byte) }
+            else->{}
+        }
 
         when (padding) {
             Padding.ZERO -> {}

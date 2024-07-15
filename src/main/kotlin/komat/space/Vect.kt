@@ -2,12 +2,14 @@ package komat.space
 
 import komat.Element
 import komat.Utility.Companion.eq
+import komat.type.ElementType
 import komat.type.Padding
 import kotlin.math.*
 
 //1-Dimensional
 open class Vect() {
 
+    var elementType = ElementType.ANY
     var column: Int = 0
     var elements = Array(0) { Element(0.0) }
 
@@ -27,19 +29,27 @@ open class Vect() {
         }
     }
 
+    constructor(values: Array<Element>) : this() {
+        elements = values
+        this.column = elements.size
+    }
+
     constructor(vararg values: Number) : this() {
+        this.elementType = ElementType.DOUBLE
         this.elements = values.map { Element(it) }.toTypedArray()
         this.column = elements.size
     }
 
     constructor(vararg values: Double) : this() {
+        this.elementType = ElementType.DOUBLE
         this.elements = values.map { Element(it) }.toTypedArray()
         this.column = this.elements.size
     }
 
-    constructor(values: Array<Element>) : this() {
-        elements = values
-        this.column = elements.size
+    constructor(vararg values: Byte) : this() {
+        this.elementType = ElementType.BYTE
+        this.elements = values.map { Element(it) }.toTypedArray()
+        this.column = this.elements.size
     }
 
     operator fun get(index: Int): Element {
@@ -55,6 +65,10 @@ open class Vect() {
     }
 
     operator fun set(index: Int, value: Double) {
+        elements[index] = Element(value)
+    }
+
+    operator fun set(index: Int, value: Byte) {
         elements[index] = Element(value)
     }
 
@@ -93,9 +107,15 @@ open class Vect() {
         return pad(padding, size, 0.0)
     }
 
-    open fun pad(padding: Padding, size: Int, bias: Double): Vect {
+    open fun pad(padding: Padding, size: Int, bias: Any): Vect {
 
-        var newBias = Element(bias)
+        var newBias = Element(0.0)
+
+        when(elementType){
+            ElementType.DOUBLE ->{ newBias = Element(bias as Double) }
+            ElementType.BYTE->{ newBias = Element(bias as Byte) }
+            else->{}
+        }
 
         when (padding) {
             Padding.ZERO -> {}
@@ -124,7 +144,14 @@ open class Vect() {
         }
 
         val size: Int = (elements.size - vect.elements.size) / stride + 1
-        val convolutionVect = Vect(Array(size) { Element(0.0) })
+        var convolutionVect = Vect(Array(size) { Element(0.0) })
+
+        when(elementType){
+            ElementType.DOUBLE ->{}
+            ElementType.BYTE->{ convolutionVect = Vect(Array(size) { Element((0).toByte())})}
+            else->{}
+        }
+
 
         for (i in convolutionVect.elements.indices) {
             for (j in vect.elements.indices) {
@@ -142,12 +169,20 @@ open class Vect() {
 
     fun sum(): Element {
         var sum = Element(0.0)
+
+        when(elementType){
+            ElementType.DOUBLE ->{}
+            ElementType.BYTE->{ sum = Element(0)}
+            else->{}
+        }
+
         for (value in elements) {
             sum += value
         }
         return sum
     }
 
+    //TODO Need to fix for Byte
     fun mean(): Element {
         return sum() / Element(elements.size.toDouble())
     }
@@ -156,10 +191,22 @@ open class Vect() {
 
         var max = elements.first()
 
-        elements.forEach {
-            if ((it.getValue() as Double) > max.getValue() as Double) {
-                max = it
+        when(elementType){
+            ElementType.DOUBLE ->{
+                elements.forEach {
+                    if ((it.getValue() as Double) > max.getValue() as Double) {
+                        max = it
+                    }
+                }
             }
+            ElementType.BYTE->{
+                elements.forEach {
+                    if ((it.getValue() as Byte) > max.getValue() as Byte) {
+                        max = it
+                    }
+                }
+            }
+            else->{}
         }
 
         return max
@@ -169,15 +216,28 @@ open class Vect() {
 
         var min = elements.first()
 
-        elements.forEach {
-            if ((it.getValue() as Double) < min.getValue() as Double) {
-                min = it
+        when(elementType){
+            ElementType.DOUBLE ->{
+                elements.forEach {
+                    if ((it.getValue() as Double) < min.getValue() as Double) {
+                        min = it
+                    }
+                }
             }
+            ElementType.BYTE->{
+                elements.forEach {
+                    if ((it.getValue() as Byte) < min.getValue() as Byte) {
+                        min = it
+                    }
+                }
+            }
+            else->{}
         }
 
         return min
     }
 
+    //TODO Need to fix for Byte
     fun roundUp(decimalPlaces: Int): Vect {
         val factor = Element(10.0.pow(decimalPlaces))
         for (i: Int in elements.indices) {
@@ -189,13 +249,19 @@ open class Vect() {
     fun dot(vect: Vect): Element {
         var scalar = Element(0.0)
 
+        when(elementType){
+            ElementType.DOUBLE ->{}
+            ElementType.BYTE->{ scalar = Element((0).toByte())}
+            else->{}
+        }
+
         elements.forEachIndexed { index, it ->
             scalar += it * vect[index]
         }
         return scalar
     }
 
-    //TODO This is Temporary. Need To Fix
+    //TODO Need to fix for Byte
     fun l1norm(): Element {
 
         var sum = Element(0.0)
@@ -207,6 +273,7 @@ open class Vect() {
         return sum
     }
 
+    //TODO Need to fix for Byte
     fun l2norm(): Element {
 
         var sum = Element(0.0)
@@ -218,6 +285,7 @@ open class Vect() {
         return Element(sqrt(sum as Double))
     }
 
+    //TODO Need to fix for Byte
     fun l3norm(): Element {
         var sum = Element(0.0)
 

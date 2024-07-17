@@ -46,6 +46,12 @@ open class Mat : Vect {
         elements = Array(row * column) { bias }
     }
 
+    constructor(row : Int, column : Int, values: Array<Byte>) : this() {
+        this.row = row
+        this.column = column
+        this.elements = values.map { Element(it) }.toTypedArray()
+    }
+
     constructor(row : Int, column : Int, values: Array<Number>) : this() {
         this.row = row
         this.column = column

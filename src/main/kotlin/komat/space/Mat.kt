@@ -46,6 +46,24 @@ open class Mat : Vect {
         elements = Array(row * column) { bias }
     }
 
+    constructor(row : Int, column : Int, values: Array<Number>) : this() {
+        this.row = row
+        this.column = column
+        this.elements = values.map { Element(it) }.toTypedArray()
+    }
+
+    constructor(row : Int, column : Int, values: DoubleArray) : this() {
+        this.row = row
+        this.column = column
+        this.elements = values.map { Element(it) }.toTypedArray()
+    }
+
+    constructor(row : Int, column : Int, values: ByteArray) : this() {
+        this.row = row
+        this.column = column
+        this.elements = values.map { Element(it) }.toTypedArray()
+    }
+
     fun v(vararg elements: Double) {
         if (column == 0) {
             column = elements.size

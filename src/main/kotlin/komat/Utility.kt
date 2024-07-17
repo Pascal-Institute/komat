@@ -9,12 +9,12 @@ class Utility {
         val EPSLION: Double = 1e-10
 
         //please use eq instead of ==
-        infix fun Element.eq(other: Double): Boolean = this.getValue() as Double == other
+        infix fun Element.eq(other: Double): Boolean = this.toDouble() == other
 
         //Activate
         fun relu(vect: Vect): Vect {
             for (i: Int in vect.elements.indices) {
-                vect.elements[i] = if ((vect[i] as Double) > 0) vect[i] else Element(0.0)
+                vect.elements[i] = if (vect[i].toDouble() > 0) vect[i] else Element(0.0)
             }
 
             return vect
@@ -23,8 +23,8 @@ class Utility {
         fun tanh(vect: Vect): Vect {
             for (i: Int in vect.elements.indices) {
                 vect[i] =
-                    (exp(vect[i].getValue() as Double) - exp(-(vect[i].getValue() as Double))) / (exp(vect[i].getValue() as Double) + exp(
-                        -(vect[i].getValue() as Double)
+                    (exp(vect[i].toDouble()) - exp(-(vect[i].toDouble()))) / (exp(vect[i].toDouble()) + exp(
+                        -(vect[i].toDouble())
                     ))
             }
             return vect
@@ -32,7 +32,7 @@ class Utility {
 
         fun sigmoid(vect: Vect): Vect {
             for (i: Int in vect.elements.indices) {
-                vect[i] = 1 / (1 + exp(vect[i].getValue() as Double))
+                vect[i] = 1 / (1 + exp(vect[i].toDouble()))
             }
             return vect
         }
@@ -41,11 +41,11 @@ class Utility {
             var denominator = Element(0.0)
 
             vect.elements.forEach {
-                denominator += Element(exp(it.getValue() as Double))
+                denominator += Element(exp(it.toDouble()))
             }
 
             for (i: Int in vect.elements.indices) {
-                val numerator = Element(exp(vect[i].getValue() as Double))
+                val numerator = Element(exp(vect[i].toDouble()))
                 vect[i] = numerator / denominator
             }
 
@@ -57,7 +57,7 @@ class Utility {
             val softmaxVect = softmax(vect)
 
             for (i: Int in vect.elements.indices) {
-                vect[i] = (vect[i].getValue() as Double) * (softmaxVect[i].getValue() as Double)
+                vect[i] = (vect[i].toDouble()) * (softmaxVect[i].toDouble())
             }
 
             return vect

@@ -22,7 +22,7 @@ open class Vect() {
         operator fun Element.times(vect: Vect): Vect {
 
             for (i: Int in 0..<vect.column) {
-                vect[i] = this.getValue() as Double * (vect[i].getValue() as Double)
+                vect[i] = this.toDouble() * (vect[i].toDouble())
             }
 
             return vect
@@ -194,14 +194,14 @@ open class Vect() {
         when(elementType){
             ElementType.DOUBLE ->{
                 elements.forEach {
-                    if ((it.getValue() as Double) > max.getValue() as Double) {
+                    if ((it.toDouble()) > max.toDouble()) {
                         max = it
                     }
                 }
             }
             ElementType.BYTE->{
                 elements.forEach {
-                    if ((it.getValue() as Byte) > max.getValue() as Byte) {
+                    if (it.toByte() > max.toByte()) {
                         max = it
                     }
                 }
@@ -219,14 +219,14 @@ open class Vect() {
         when(elementType){
             ElementType.DOUBLE ->{
                 elements.forEach {
-                    if ((it.getValue() as Double) < min.getValue() as Double) {
+                    if ((it.toDouble()) < min.toDouble()) {
                         min = it
                     }
                 }
             }
             ElementType.BYTE->{
                 elements.forEach {
-                    if ((it.getValue() as Byte) < min.getValue() as Byte) {
+                    if (it.toByte() < min.toByte()) {
                         min = it
                     }
                 }
@@ -241,7 +241,7 @@ open class Vect() {
     fun roundUp(decimalPlaces: Int): Vect {
         val factor = Element(10.0.pow(decimalPlaces))
         for (i: Int in elements.indices) {
-            this[i] = Element(round((this[i] as Double) * (factor as Double))) / factor
+            this[i] = Element(round(this[i].toDouble() * factor.toDouble())) / factor
         }
         return this
     }
@@ -267,7 +267,7 @@ open class Vect() {
         var sum = Element(0.0)
 
         elements.forEach {
-            sum += Element(abs(it as Double))
+            sum += Element(abs(it.toDouble()))
         }
 
         return sum
@@ -282,7 +282,7 @@ open class Vect() {
             sum += (it * it)
         }
 
-        return Element(sqrt(sum as Double))
+        return Element(sqrt(sum.toDouble()))
     }
 
     //TODO Need to fix for Byte
@@ -293,7 +293,7 @@ open class Vect() {
             sum += (it * it * it)
         }
 
-        return Element(cbrt(sum as Double))
+        return Element(cbrt(sum.toDouble()))
     }
 
     fun hat(): Vect {

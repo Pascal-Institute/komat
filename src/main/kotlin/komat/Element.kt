@@ -70,6 +70,14 @@ sealed class Element {
         }
     }
 
+    fun toByte() : Byte {
+        return (this.getValue() as Byte)
+    }
+
+    fun toDouble() : Double {
+        return (this.getValue() as Double)
+    }
+
     abstract fun getValue(): Any
 
     override fun toString(): String {

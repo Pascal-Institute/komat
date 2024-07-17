@@ -178,11 +178,11 @@ open class Mat : Vect {
         for (i in 0..<row) {
             for (j in 0..<row) {
                 if (i == j) {
-                    if (abs(identityMat[i, j].getValue() as Double - 1.0) > EPSLION) {
+                    if (abs(identityMat[i, j].toDouble() - 1.0) > EPSLION) {
                         return false
                     }
                 } else {
-                    if (abs(identityMat[i, j].getValue() as Double) > EPSLION) {
+                    if (abs(identityMat[i, j].toDouble()) > EPSLION) {
                         return false
                     }
                 }
@@ -584,7 +584,7 @@ open class Mat : Vect {
         }
 
         if (row == 2 && column == 2) {
-            return Element(this[0, 0].getValue() as Double * this[1, 1].getValue() as Double - this[0, 1].getValue() as Double * this[1, 0].getValue() as Double)
+            return Element(this[0, 0].toDouble() * this[1, 1].toDouble() - this[0, 1].toDouble() * this[1, 0].toDouble())
         }
 
         for (j: Int in 0..<column) {

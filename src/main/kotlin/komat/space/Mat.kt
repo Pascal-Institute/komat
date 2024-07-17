@@ -53,18 +53,27 @@ open class Mat : Vect {
     }
 
     constructor(row : Int, column : Int, values: DoubleArray) : this() {
+
+        elementType = ElementType.DOUBLE
+
         this.row = row
         this.column = column
         this.elements = values.map { Element(it) }.toTypedArray()
     }
 
     constructor(row : Int, column : Int, values: ByteArray) : this() {
+
+        elementType = ElementType.BYTE
+
         this.row = row
         this.column = column
         this.elements = values.map { Element(it) }.toTypedArray()
     }
 
     fun v(vararg elements: Double) {
+
+        elementType = ElementType.DOUBLE
+
         if (column == 0) {
             column = elements.size
         }
@@ -77,6 +86,9 @@ open class Mat : Vect {
     }
 
     fun v(elements: MutableList<Double>) {
+
+        elementType = ElementType.DOUBLE
+
         if (column == 0) {
             column = elements.size
         }
@@ -101,6 +113,9 @@ open class Mat : Vect {
     }
 
     fun v(vararg elements: Number) {
+
+        elementType = ElementType.DOUBLE
+
         if (column == 0) {
             column = elements.size
         }

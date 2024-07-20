@@ -72,6 +72,14 @@ open class Vect() {
         elements[index] = Element(value)
     }
 
+    fun toDoubleArray() : DoubleArray {
+       return elements.map { it.toDouble() }.toDoubleArray()
+    }
+
+    fun toByteArray() : ByteArray {
+       return elements.map { it.toByte() }.toByteArray()
+    }
+
     operator fun plus(vect: Vect): Vect {
 
         for (i: Int in elements.indices) {

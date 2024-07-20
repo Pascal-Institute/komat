@@ -18,31 +18,48 @@ class Hyper : Cube {
         elements = Array(group * depth * row * column) { Element(0.0) }
     }
 
-    operator fun get(g: Int, h: Int, i: Int, j: Int): Element {
-        if (i >= row || j >= column || h >= depth) {
-            throw IndexOutOfBoundsException("Index out of bounds: [$i, $j]")
-        }
-        return elements[g * depth * row * column + h * row * column + i * column + j]
+    override fun size() : Int{
+        return group * depth * row * column
     }
 
-    operator fun set(g: Int, h: Int, i: Int, j: Int, value: Double) {
-        if (i >= row || j >= column) {
-            throw IndexOutOfBoundsException("Index out of bounds: [$i, $j]")
+    operator fun get(g: Int, d: Int, r: Int, c: Int): Element {
+        if (g >= group || d >= row || r >= column || c >= depth) {
+            throw IndexOutOfBoundsException("Index out of bounds: [$g, $d, $r, $c]")
         }
-        elements[g * depth * row * column + h * row * column + i * column + j] = Element(value)
+        return elements[g * depth * row * column + d * row * column + r * column + c]
     }
 
-    operator fun set(g: Int, h: Int, i: Int, j: Int, value: Number) {
-        if (i >= row || j >= column) {
-            throw IndexOutOfBoundsException("Index out of bounds: [$i, $j]")
+    operator fun set(g: Int, d: Int, r: Int, c: Int, value: Double) {
+        if (g >= group || d >= row || r >= column || c >= depth) {
+            throw IndexOutOfBoundsException("Index out of bounds: [$g, $d, $r, $c]")
         }
-        elements[g * depth * row * column + h * row * column + i * column + j] = Element(value)
+        elements[g * depth * row * column + d * row * column + r * column + c] = Element(value)
     }
 
-    operator fun set(g: Int, h: Int, i: Int, j: Int, value: Element) {
-        if (i >= row || j >= column) {
-            throw IndexOutOfBoundsException("Index out of bounds: [$i, $j]")
+    operator fun set(g: Int, d: Int, r: Int, c: Int, value: Number) {
+        if (g >= group || d >= row || r >= column || c >= depth) {
+            throw IndexOutOfBoundsException("Index out of bounds: [$g, $d, $r, $c]")
         }
-        elements[g * depth * row * column + h * row * column + i * column + j] = value
+        elements[g * depth * row * column + d * row * column + r * column + c] = Element(value)
+    }
+
+    operator fun set(g: Int, d: Int, r: Int, c: Int, value: Byte) {
+        if (g >= group || d >= row || r >= column || c >= depth) {
+            throw IndexOutOfBoundsException("Index out of bounds: [$g, $d, $r, $c]")
+        }
+        elements[g * depth * row * column + d * row * column + r * column + c] = Element(value)
+    }
+
+    operator fun set(g: Int, d: Int, r: Int, c: Int, value: Element) {
+        if (g >= group || d >= row || r >= column || c >= depth) {
+            throw IndexOutOfBoundsException("Index out of bounds: [$g, $d, $r, $c]")
+        }
+        elements[g * depth * row * column + d * row * column + r * column + c] = value
+    }
+
+    override fun copy(): Hyper {
+        val copiedHyper = Hyper(group, depth, row, column)
+        copiedHyper.elements = elements.copyOf()
+        return copiedHyper
     }
 }

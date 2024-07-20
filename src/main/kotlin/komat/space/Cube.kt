@@ -177,6 +177,15 @@ open class Cube : Mat {
         return this
     }
 
+    override fun size() : Int{
+        return depth * row * column
+    }
+
+    override fun copy(): Cube {
+        val copiedCube = Cube(depth, row, column)
+        copiedCube.elements = elements.copyOf()
+        return copiedCube
+    }
 
     override fun print() {
         println("[")

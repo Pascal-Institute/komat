@@ -46,18 +46,21 @@ open class Mat : Vect {
         elements = Array(row * column) { bias }
     }
 
+    @Deprecated("WARNING : This constructor will be removed on v1.9.3")
     constructor(row : Int, column : Int, values: Array<Byte>) : this() {
         this.row = row
         this.column = column
         this.elements = values.map { Element(it) }.toTypedArray()
     }
 
+    @Deprecated("WARNING : This constructor will be removed on v1.9.3")
     constructor(row : Int, column : Int, values: Array<Number>) : this() {
         this.row = row
         this.column = column
         this.elements = values.map { Element(it) }.toTypedArray()
     }
 
+    @Deprecated("WARNING : This constructor will be removed on v1.9.3")
     constructor(row : Int, column : Int, values: DoubleArray) : this() {
 
         elementType = ElementType.DOUBLE
@@ -67,6 +70,7 @@ open class Mat : Vect {
         this.elements = values.map { Element(it) }.toTypedArray()
     }
 
+    @Deprecated("WARNING : This constructor will be removed on v1.9.3")
     constructor(row : Int, column : Int, values: ByteArray) : this() {
 
         elementType = ElementType.BYTE
@@ -242,6 +246,16 @@ open class Mat : Vect {
         return this
     }
 
+    override fun size(): Int {
+        return row * column
+    }
+
+    override fun copy(): Mat {
+        val copiedMat = Mat(row, column)
+        copiedMat.elements = elements.copyOf()
+        return copiedMat
+    }
+
     override fun print() {
         for (i: Int in 0..<row) {
             print("[")
@@ -312,12 +326,6 @@ open class Mat : Vect {
         this.elements = newMat.elements
 
         return this
-    }
-
-    fun copy(): Mat {
-        val copyMat2D = Mat(row, column)
-        copyMat2D.elements = elements.copyOf()
-        return copyMat2D
     }
 
     fun appendRow(elements: Array<Element>): Mat {

@@ -72,6 +72,14 @@ open class Vect() {
         elements[index] = Element(value)
     }
 
+    fun toDoubleArray() : DoubleArray {
+       return elements.map { it.toDouble() }.toDoubleArray()
+    }
+
+    fun toByteArray() : ByteArray {
+       return elements.map { it.toByte() }.toByteArray()
+    }
+
     operator fun plus(vect: Vect): Vect {
 
         for (i: Int in elements.indices) {
@@ -92,6 +100,16 @@ open class Vect() {
 
     open fun isOrthogonal(vect: Vect): Boolean {
         return dot(vect) eq 0.0
+    }
+
+    open fun size() : Int {
+        return column
+    }
+
+    open fun copy(): Vect {
+        val copiedVect = Vect(column)
+        copiedVect.elements = elements.copyOf()
+        return copiedVect
     }
 
     open fun print() {

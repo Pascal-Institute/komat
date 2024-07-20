@@ -98,6 +98,12 @@ open class Vect() {
         return column
     }
 
+    open fun copy(): Vect {
+        val copiedVect = Vect(column)
+        copiedVect.elements = elements.copyOf()
+        return copiedVect
+    }
+
     open fun print() {
         print("[")
         for (i: Int in elements.indices - 1) {

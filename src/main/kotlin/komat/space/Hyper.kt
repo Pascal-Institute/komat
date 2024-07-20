@@ -56,4 +56,10 @@ class Hyper : Cube {
         }
         elements[g * depth * row * column + d * row * column + r * column + c] = value
     }
+
+    override fun copy(): Hyper {
+        val copiedHyper = Hyper(group, depth, row, column)
+        copiedHyper.elements = elements.copyOf()
+        return copiedHyper
+    }
 }

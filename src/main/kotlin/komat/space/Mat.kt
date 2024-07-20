@@ -246,6 +246,12 @@ open class Mat : Vect {
         return row * column
     }
 
+    override fun copy(): Mat {
+        val copiedMat = Mat(row, column)
+        copiedMat.elements = elements.copyOf()
+        return copiedMat
+    }
+
     override fun print() {
         for (i: Int in 0..<row) {
             print("[")
@@ -316,12 +322,6 @@ open class Mat : Vect {
         this.elements = newMat.elements
 
         return this
-    }
-
-    fun copy(): Mat {
-        val copyMat2D = Mat(row, column)
-        copyMat2D.elements = elements.copyOf()
-        return copyMat2D
     }
 
     fun appendRow(elements: Array<Element>): Mat {

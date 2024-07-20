@@ -13,7 +13,7 @@ repositories {
 }
 
 dependencies {
-    implementation ("com.github.Pascal-Institute:komat:1.9.0")
+    implementation ("com.github.Pascal-Institute:komat:1.9.2")
 }
 
 ```

@@ -242,6 +242,10 @@ open class Mat : Vect {
         return this
     }
 
+    override fun size(): Int {
+        return row * column
+    }
+
     override fun print() {
         for (i: Int in 0..<row) {
             print("[")

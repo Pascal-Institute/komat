@@ -94,6 +94,10 @@ open class Vect() {
         return dot(vect) eq 0.0
     }
 
+    open fun size() : Int {
+        return column
+    }
+
     open fun print() {
         print("[")
         for (i: Int in elements.indices - 1) {

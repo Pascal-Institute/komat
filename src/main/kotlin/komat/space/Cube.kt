@@ -177,6 +177,9 @@ open class Cube : Mat {
         return this
     }
 
+    override fun size() : Int{
+        return depth * row * column
+    }
 
     override fun print() {
         println("[")

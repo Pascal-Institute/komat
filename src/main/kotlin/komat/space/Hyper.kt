@@ -18,6 +18,10 @@ class Hyper : Cube {
         elements = Array(group * depth * row * column) { Element(0.0) }
     }
 
+    override fun size() : Int{
+        return group * depth * row * column
+    }
+
     operator fun get(g: Int, h: Int, i: Int, j: Int): Element {
         if (i >= row || j >= column || h >= depth) {
             throw IndexOutOfBoundsException("Index out of bounds: [$i, $j]")

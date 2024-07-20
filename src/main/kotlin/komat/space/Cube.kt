@@ -18,6 +18,14 @@ open class Cube : Mat {
         elements = Array(depth * row * column) { Element(0.0) }
     }
 
+    constructor(depth : Int, row: Int, column: Int, bias: Element) {
+        this.depth = depth
+        this.row = row
+        this.column = column
+
+        elements = Array(depth * row * column) { bias }
+    }
+
     operator fun get(d: Int, r: Int, c: Int): Element {
         if (d >= depth || r >= row || c >= column) {
             throw IndexOutOfBoundsException("Index out of bounds: [$d, $r, $c]")

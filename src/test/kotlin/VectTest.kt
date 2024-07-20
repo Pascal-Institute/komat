@@ -50,4 +50,11 @@ class VectTest {
 
     }
 
+    @Test
+    fun `test toByteArray`(){
+        vect4.toByteArray().contentEquals(
+            byteArrayOf(127,126,125,124)
+        )
+    }
+
 }

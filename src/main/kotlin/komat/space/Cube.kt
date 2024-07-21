@@ -47,6 +47,13 @@ open class Cube : Mat {
         elements[d * row * column + r * column + c] = Element(value)
     }
 
+    operator fun set(d: Int, r: Int, c: Int, value: Byte) {
+        if (d >= depth || r >= row || c >= column) {
+            throw IndexOutOfBoundsException("Index out of bounds: [$d, $r, $c]")
+        }
+        elements[d * row * column + r * column + c] = Element(value)
+    }
+
     operator fun set(d: Int, r: Int, c: Int, value: Element) {
         if (d >= depth || r >= row || c >= column) {
             throw IndexOutOfBoundsException("Index out of bounds: [$d, $r, $c]")

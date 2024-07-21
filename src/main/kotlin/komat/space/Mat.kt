@@ -46,40 +46,6 @@ open class Mat : Vect {
         elements = Array(row * column) { bias }
     }
 
-    @Deprecated("WARNING : This constructor will be removed on v1.9.3")
-    constructor(row : Int, column : Int, values: Array<Byte>) : this() {
-        this.row = row
-        this.column = column
-        this.elements = values.map { Element(it) }.toTypedArray()
-    }
-
-    @Deprecated("WARNING : This constructor will be removed on v1.9.3")
-    constructor(row : Int, column : Int, values: Array<Number>) : this() {
-        this.row = row
-        this.column = column
-        this.elements = values.map { Element(it) }.toTypedArray()
-    }
-
-    @Deprecated("WARNING : This constructor will be removed on v1.9.3")
-    constructor(row : Int, column : Int, values: DoubleArray) : this() {
-
-        elementType = ElementType.DOUBLE
-
-        this.row = row
-        this.column = column
-        this.elements = values.map { Element(it) }.toTypedArray()
-    }
-
-    @Deprecated("WARNING : This constructor will be removed on v1.9.3")
-    constructor(row : Int, column : Int, values: ByteArray) : this() {
-
-        elementType = ElementType.BYTE
-
-        this.row = row
-        this.column = column
-        this.elements = values.map { Element(it) }.toTypedArray()
-    }
-
     fun v(vararg elements: Double) {
 
         elementType = ElementType.DOUBLE

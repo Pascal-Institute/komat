@@ -142,7 +142,7 @@ open class Cube : Mat {
                     for (r: Int in 0..<row) {
                         for (i: Int in 0..<cube.column) {
                             for (c in 0..<column) {
-                                cube[d, r, c] = this[depth - d - 1, row, column]
+                                cube[d, r, c] = this[depth - d - 1, r, c]
                             }
                         }
                     }
@@ -154,7 +154,7 @@ open class Cube : Mat {
                     for (r: Int in 0..<row) {
                         for (i: Int in 0..<cube.column) {
                             for (c in 0..<column) {
-                                cube[d, r, c] = this[d, row - r - 1, column]
+                                cube[d, r, c] = this[d, row - r - 1, c]
                             }
                         }
                     }

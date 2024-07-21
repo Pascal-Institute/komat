@@ -13,7 +13,7 @@ repositories {
 }
 
 dependencies {
-    implementation ("com.github.Pascal-Institute:komat:1.9.2")
+    implementation ("com.github.Pascal-Institute:komat:1.9.3")
 }
 
 ```
@@ -25,6 +25,11 @@ dependencies {
 'Element' is a data class for contains various data types to apply komat matrix system.
 
 It aims that it is possible to calculate other data type into matrix system as well as double.
+
+### Available data type in Element
+
+- Double
+- Byte
 
 ### komat DSL
 

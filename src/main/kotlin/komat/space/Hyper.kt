@@ -18,6 +18,14 @@ class Hyper : Cube {
         elements = Array(group * depth * row * column) { Element(0.0) }
     }
 
+    constructor(group: Int, depth : Int, row: Int, column: Int, bias: Element) {
+        this.depth = depth
+        this.row = row
+        this.column = column
+
+        elements = Array(group * depth * row * column) { bias }
+    }
+
     override fun size() : Int{
         return group * depth * row * column
     }

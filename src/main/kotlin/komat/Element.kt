@@ -56,26 +56,62 @@ sealed class Element {
 
     }
 
+    data class BooleanElement(var value: Boolean) : Element(){
+        override fun getValue(): Any = value
+        override fun div(value: Element): Element {
+            TODO("Not yet implemented")
+        }
+
+        override fun times(value: Element): Element {
+            return Element((getValue() as Boolean) && value.getValue() as Boolean)
+        }
+
+        override fun plusAssign(value: Element) {
+            this.value = (getValue() as Boolean ||  value.getValue() as Boolean)
+        }
+
+        override fun minusAssign(value: Element) {
+            TODO("Not yet implemented")
+        }
+
+        override fun divAssign(value: Element) {
+            TODO("Not yet implemented")
+        }
+
+        override fun unaryMinus(): Element {
+            return Element(!(getValue() as Boolean))
+        }
+
+    }
+
     companion object {
         operator fun invoke(value: Double): Element {
             return DoubleElement(value)
+        }
+
+        operator fun invoke(value: Number): Element {
+            return DoubleElement(value.toDouble())
         }
 
         operator fun invoke(value: Byte): Element {
             return ByteElement(value)
         }
 
-        operator fun invoke(value: Number): Element {
-            return DoubleElement(value.toDouble())
+        operator fun invoke(value: Boolean): Element {
+            return BooleanElement(value)
         }
+    }
+
+    fun toDouble() : Double {
+        return (this.getValue() as Double)
     }
 
     fun toByte() : Byte {
         return (this.getValue() as Byte)
     }
 
-    fun toDouble() : Double {
-        return (this.getValue() as Double)
+    fun toBoolean() : Boolean{
+        return (this.getValue() as Boolean)
     }
 
     abstract fun getValue(): Any
@@ -84,6 +120,7 @@ sealed class Element {
         return when (this) {
             is DoubleElement -> "DoubleElement(value=$value)"
             is ByteElement -> "ByteElement(value=$value)"
+            is BooleanElement -> "BooleanElement(value=$value)"
         }
     }
 

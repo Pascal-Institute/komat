@@ -13,7 +13,7 @@ repositories {
 }
 
 dependencies {
-    implementation ("com.github.Pascal-Institute:komat:1.9.3")
+    implementation ("com.github.Pascal-Institute:komat:1.9.4")
 }
 
 ```
@@ -30,6 +30,7 @@ It aims that it is possible to calculate other data type into matrix system as w
 
 - Double
 - Byte
+- Boolean
 
 ### komat DSL
 

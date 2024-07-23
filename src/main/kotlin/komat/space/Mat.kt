@@ -188,6 +188,34 @@ open class Mat : Vect {
         elements[i * column + j] = value
     }
 
+    operator fun set(i: Int, j: Int, value: Number) {
+        if (i >= row || j >= column) {
+            throw IndexOutOfBoundsException("Index out of bounds: [$i, $j]")
+        }
+        elements[i * column + j] = Element(value)
+    }
+
+    operator fun set(i: Int, j: Int, value: Double) {
+        if (i >= row || j >= column) {
+            throw IndexOutOfBoundsException("Index out of bounds: [$i, $j]")
+        }
+        elements[i * column + j] = Element(value)
+    }
+
+    operator fun set(i: Int, j: Int, value: Byte) {
+        if (i >= row || j >= column) {
+            throw IndexOutOfBoundsException("Index out of bounds: [$i, $j]")
+        }
+        elements[i * column + j] = Element(value)
+    }
+
+    operator fun set(i: Int, j: Int, value: Boolean) {
+        if (i >= row || j >= column) {
+            throw IndexOutOfBoundsException("Index out of bounds: [$i, $j]")
+        }
+        elements[i * column + j] = Element(value)
+    }
+
     operator fun times(mat: Mat): Mat {
 
         if (!isValid(column, mat.row)) {

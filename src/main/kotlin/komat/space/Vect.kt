@@ -52,6 +52,12 @@ open class Vect() {
         this.column = this.elements.size
     }
 
+    constructor(values: BooleanArray) : this() {
+        this.elementType = ElementType.BYTE
+        this.elements = values.map { Element(it) }.toTypedArray()
+        this.column = this.elements.size
+    }
+
     operator fun get(index: Int): Element {
         return elements[index]
     }
@@ -72,12 +78,21 @@ open class Vect() {
         elements[index] = Element(value)
     }
 
+    operator fun set(index: Int, value: Boolean) {
+        elements[index] = Element(value)
+    }
+
+
     fun toDoubleArray() : DoubleArray {
        return elements.map { it.toDouble() }.toDoubleArray()
     }
 
     fun toByteArray() : ByteArray {
        return elements.map { it.toByte() }.toByteArray()
+    }
+
+    fun toBooleanArray() : BooleanArray {
+        return elements.map { it.toBoolean() }.toBooleanArray()
     }
 
     operator fun plus(vect: Vect): Vect {

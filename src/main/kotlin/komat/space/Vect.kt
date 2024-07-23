@@ -58,28 +58,46 @@ open class Vect() {
         this.column = this.elements.size
     }
 
-    operator fun get(index: Int): Element {
-        return elements[index]
+    operator fun get(c: Int): Element {
+        if (c >= column) {
+            throw IndexOutOfBoundsException("Index out of bounds: [$c]")
+        }
+        return elements[c]
     }
 
-    operator fun set(index: Int, value: Element) {
-        elements[index] = value
+    operator fun set(c: Int, value: Element) {
+        if (c >= column) {
+            throw IndexOutOfBoundsException("Index out of bounds: [$c]")
+        }
+        elements[c] = value
     }
 
-    operator fun set(index: Int, value: Number) {
-        elements[index] = Element(value)
+    operator fun set(c: Int, value: Number) {
+        if (c >= column) {
+            throw IndexOutOfBoundsException("Index out of bounds: [$c]")
+        }
+        elements[c] = Element(value)
     }
 
-    operator fun set(index: Int, value: Double) {
-        elements[index] = Element(value)
+    operator fun set(c: Int, value: Double) {
+        if (c >= column) {
+            throw IndexOutOfBoundsException("Index out of bounds: [$c]")
+        }
+        elements[c] = Element(value)
     }
 
-    operator fun set(index: Int, value: Byte) {
-        elements[index] = Element(value)
+    operator fun set(c: Int, value: Byte) {
+        if (c >= column) {
+            throw IndexOutOfBoundsException("Index out of bounds: [$c]")
+        }
+        elements[c] = Element(value)
     }
 
-    operator fun set(index: Int, value: Boolean) {
-        elements[index] = Element(value)
+    operator fun set(c: Int, value: Boolean) {
+        if (c >= column) {
+            throw IndexOutOfBoundsException("Index out of bounds: [$c]")
+        }
+        elements[c] = Element(value)
     }
 
 

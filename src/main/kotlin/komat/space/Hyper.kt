@@ -37,14 +37,21 @@ class Hyper : Cube {
         return elements[g * depth * row * column + d * row * column + r * column + c]
     }
 
-    operator fun set(g: Int, d: Int, r: Int, c: Int, value: Double) {
+    operator fun set(g: Int, d: Int, r: Int, c: Int, value: Element) {
+        if (g >= group || d >= row || r >= column || c >= depth) {
+            throw IndexOutOfBoundsException("Index out of bounds: [$g, $d, $r, $c]")
+        }
+        elements[g * depth * row * column + d * row * column + r * column + c] = value
+    }
+
+    operator fun set(g: Int, d: Int, r: Int, c: Int, value: Number) {
         if (g >= group || d >= row || r >= column || c >= depth) {
             throw IndexOutOfBoundsException("Index out of bounds: [$g, $d, $r, $c]")
         }
         elements[g * depth * row * column + d * row * column + r * column + c] = Element(value)
     }
 
-    operator fun set(g: Int, d: Int, r: Int, c: Int, value: Number) {
+    operator fun set(g: Int, d: Int, r: Int, c: Int, value: Double) {
         if (g >= group || d >= row || r >= column || c >= depth) {
             throw IndexOutOfBoundsException("Index out of bounds: [$g, $d, $r, $c]")
         }
@@ -58,11 +65,11 @@ class Hyper : Cube {
         elements[g * depth * row * column + d * row * column + r * column + c] = Element(value)
     }
 
-    operator fun set(g: Int, d: Int, r: Int, c: Int, value: Element) {
+    operator fun set(g: Int, d: Int, r: Int, c: Int, value: Boolean) {
         if (g >= group || d >= row || r >= column || c >= depth) {
             throw IndexOutOfBoundsException("Index out of bounds: [$g, $d, $r, $c]")
         }
-        elements[g * depth * row * column + d * row * column + r * column + c] = value
+        elements[g * depth * row * column + d * row * column + r * column + c] = Element(value)
     }
 
     override fun copy(): Hyper {
